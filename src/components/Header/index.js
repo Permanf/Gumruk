@@ -7,8 +7,8 @@ import logo_white from "../../assets/Logo/logo_white.svg";
 import logo_blue from "../../assets/Logo/logo_blue.svg";
 import Image from "next/image";
 import Link from "next/link";
-// import { Button, Group } from "@mantine/core";
 import { SpotlightProvider, openSpotlight } from "@mantine/spotlight";
+// import { Button, Group } from "@mantine/core";
 // import type { SpotlightAction } from "@mantine/spotlight";
 // import {
 //   IconHome,
