@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font-Manrope
+Weight-400 */
+
+body{
+  font-family: "Manrope";
+}
+/* @font-face {
+  font-family: "Manrope";
+  src: url("./Manrope/Manrope-VariableFont_wght.ttf");
+} */
+
+.bg_gray{
+  background-color: #F5F6F8;
+}
+.bg_blue{
+  background-color: #043375;
+}
+
+.bannerHome{
+  background-color: #143B4C;
+}
+/* .bannerHome{
+  background-image :linear-gradient(to right,#143B4C, #295467);
+} */
+.bannerHeader{
+  background-color: #143B4C;
+}
+.blue1{
+  background-color: #043375;
+}
+.container_out{
+    width: 1150px;
+}
+@media (max-width: 1150px) {
+    .container_out {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+  .container_md{
+    width: 960px;
+}
+@media (max-width: 960px) {
+    .container_md {
+      width: 100%;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  /* mantine */
+  .mantine-Carousel-control{
+    background-color: #043375;
+    padding: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+ 
+  .mantine-Select-input{
+    border: none;
+    /* background-color: inherit; */
+    /* padding: 2px; */
+  }
+
+  .mantine-Select-item{
+    text-align: center;
+  }
+
+  /* header */
+
+  /* footer */
+  .footer{
+    height: 350px;
+    background-color: #252A36;
+  }
