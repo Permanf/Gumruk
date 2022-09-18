@@ -193,7 +193,7 @@ const Home = () => {
                   <p className="font-semibold text-xs sm:text-sm md:text-xl ml-2">
                     {item.title}
                   </p>
-                  <span className="text-xs w-32 md:w-60">
+                  <span className="text-xs w-32 md:w-60 break-all">
                     {item?.description}
                   </span>
                   <Icon

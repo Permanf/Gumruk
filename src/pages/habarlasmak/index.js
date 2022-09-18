@@ -14,8 +14,11 @@ import {
   Anchor,
 } from "@mantine/core";
 import image from "../../assets/Contact/banner.svg";
+import { useViewportSize } from "@mantine/hooks";
 
 const Habarlasmak = () => {
+  const { width } = useViewportSize();
+
   const banner = {
     title: "Контакты",
     description:
@@ -61,57 +64,73 @@ const Habarlasmak = () => {
     <Layout title="Habarlasmak" className="bg_gray">
       <BannerHero banner={banner} />
       <div className="w-full flex flex-col items-center">
-        {data?.map((item, index) => {
-          return (
-            <div
-              key={`item${index}`}
-              className="container_md bg-white rounded-lg my-5 px-10 py-5"
-            >
-              <div className="py-3 border-b-2 border-gray-300">
-                <p className="font-semibold text-xl">{item.title}</p>
-              </div>
-              <div className="w-full flex justify-between py-3">
-                <div className="w-1/3">
-                  <span className="text-gray-400 text-sm">
-                    {item.description}
-                  </span>
+        <div className="container_md">
+          {data?.map((item, index) => {
+            return (
+              <div
+                key={`item${index}`}
+                className="w-full bg-white rounded-lg my-5 sm:my-10 px-3 sm:px-10 py-2 sm:py-5 shadow-md cursor-pointer"
+              >
+                <div className="py-3 border-b-2 border-gray-300">
+                  <p className="font-semibold text-base sm:text-xl">
+                    {item.title}
+                  </p>
                 </div>
-                <div className="w-1/3 flex flex-col items-end">
-                  <p className="font-medium text-lg">{item.email}</p>
-                  <span className="text-gray-300 text-sm">э-почта</span>
-                  <p className="font-medium text-lg">{item.phone}</p>
-                  <span className="text-gray-300 text-sm">телефон</span>
+                <div className="w-full flex flex-col sm:flex-row justify-between py-3">
+                  <div className="sm:w-1/3">
+                    <span className="text-gray-400 text-xs sm:text-sm">
+                      {item.description}
+                    </span>
+                  </div>
+                  <div className="sm:w-1/3 flex flex-col items-end mt-3 sm:mt-0">
+                    <p className="font-medium text-sm sm:text-lg">
+                      {item.email}
+                    </p>
+                    <span className="text-gray-300 text-sm">э-почта</span>
+                    <p className="font-medium text-sm sm:text-lg">
+                      {item.phone}
+                    </p>
+                    <span className="text-gray-300 text-sm">телефон</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-      <div className="flex justify-center container my-5 mx-5">
+      <div className="flex justify-center container my-5">
         <div className="container_md flex flex-col">
-          <p className="text-blue-500 mb-4 ml-5">не нашли ответа?</p>
-          <h1 className="text-3xl font-medium ml-5">
+          <p className="text-blue-500 mb-4 ml-5 text-sm sm:text-base">
+            не нашли ответа?
+          </p>
+          <h1 className="text-xl sm:text-3xl font-medium ml-5">
             Задайте ворпрос службе <br /> поддержки
           </h1>
           <form>
-            <Grid grow className="my-5">
-              <Grid.Col span={6}>
-                <TextInput size="lg" placeholder="Ваш телефон" />
+            <Grid grow className="my-5 px-1">
+              <Grid.Col span={width > 500 ? 6 : 12}>
+                <TextInput
+                  size={width > 500 ? "lg" : "md"}
+                  placeholder="Ваш телефон"
+                />
               </Grid.Col>
-              <Grid.Col span={6}>
-                <TextInput size="lg" placeholder="Ваша почта" />
+              <Grid.Col span={width > 500 ? 6 : 12}>
+                <TextInput
+                  size={width > 500 ? "lg" : "md"}
+                  placeholder="Ваша почта"
+                />
               </Grid.Col>
               <Grid.Col>
                 <Textarea
-                  size="lg"
+                  size={width > 500 ? "lg" : "md"}
                   placeholder="Ваш вопрос"
                   autosize
                   minRows={6}
                 />
               </Grid.Col>
             </Grid>
-            <div className="flex justify-between">
-              <Button className="bg-blue-700">Отправить</Button>
+            <div className="flex flex-col sm:flex-row justify-between px-1">
+              <Button className="bg-blue-700 mb-3 sm:mb-0">Отправить</Button>
               <Text color="dimmed" size="sm">
                 Нажимая Отправить, вы принимаете{" "}
                 <Anchor

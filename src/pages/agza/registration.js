@@ -15,33 +15,30 @@ import {
 } from "@mantine/core";
 import InputMask from "react-input-mask";
 import { IconLock, IconMail } from "@tabler/icons";
+import { useViewportSize } from "@mantine/hooks";
 
 const Registr = () => {
+  const { width } = useViewportSize();
+
   return (
     <Layout title="Registration" className="bg-gray-100">
       <Container size={820} py={60}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-        >
-          Регистрация
-        </Title>
+        <Title align="center">Регистрация</Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Для входа в кабинет, пожалуйста, зарегистрируйтесь
         </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper
+          withBorder
+          shadow="md"
+          p={width > 600 ? 30 : 15}
+          mt={30}
+          radius="md"
+        >
           <SimpleGrid
             cols={2}
             spacing="lg"
-            // breakpoints={[
-            //   { maxWidth: 980, cols: 3, spacing: "md" },
-            //   { maxWidth: 755, cols: 2, spacing: "sm" },
-            //   { maxWidth: 600, cols: 1, spacing: "sm" },
-            // ]}
+            breakpoints={[{ maxWidth: 755, cols: 1, spacing: "sm" }]}
           >
             <TextInput label="Фамилия" placeholder="Фамилия" />
             <TextInput label="Имя" placeholder="Имя" />

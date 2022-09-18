@@ -61,29 +61,43 @@ const Portlar = () => {
     <Layout title="Portlar" className="bg_gray">
       <BannerHero banner={banner} />
       <div className="w-full flex flex-col items-center">
-        {data?.map((item, index) => {
-          return (
-            <div
-              key={`port${index}`}
-              className="container_md shadow-md bg-white rounded-lg my-5 px-10 py-5 cursor-pointer transition ease-in-out delay-200  hover:bg-blue-700  hover:text-white"
-            >
-              <div className="py-3 border-b-2 border-gray-300">
-                <p className="font-semibold text-xl mb-3">{item.title}</p>
-                <span className="text-gray-400 text-sm">{item.region}</span>
-              </div>
-              <div className="w-full flex justify-between py-3">
-                <div>
-                  <p className="font-medium text-lg">{item.phone}</p>
-                  <span className="text-gray-300 text-sm">телефон</span>
+        <div className="container_md ">
+          {data?.map((item, index) => {
+            return (
+              <div
+                key={`port${index}`}
+                className="w-full shadow-md bg-white rounded-lg my-5 sm:my-10 px-3 sm:px-10 py-2 sm:py-5 cursor-pointer transition ease-in-out delay-200  hover:bg-blue-700  hover:text-white"
+              >
+                <div className="py-3 border-b-2 border-gray-300">
+                  <p className="font-semibold text-lg sm:text-xl mb-3">
+                    {item.title}
+                  </p>
+                  <span className="text-gray-400 text-xs sm:text-sm">
+                    {item.region}
+                  </span>
                 </div>
-                <div>
-                  <p className="font-medium text-lg">{item.email}</p>
-                  <span className="text-gray-300 text-sm">э-почта</span>
+                <div className="w-full flex flex-col sm:flex-row justify-between py-3">
+                  <div>
+                    <p className="font-medium text-base sm:text-lg">
+                      {item.phone}
+                    </p>
+                    <span className="text-gray-300 text-xs sm:text-sm">
+                      телефон
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-base sm:text-lg">
+                      {item.email}
+                    </p>
+                    <span className="text-gray-300 text-xs sm:text-sm">
+                      э-почта
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
       <Banner />
     </Layout>

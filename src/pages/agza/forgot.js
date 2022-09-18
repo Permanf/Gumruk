@@ -57,7 +57,7 @@ const Forgot = () => {
             icon={<IconMail size={16} />}
           />
           <PasswordInput
-            label="Password"
+            label="New password"
             placeholder="New password"
             icon={<IconLock size={16} />}
             required

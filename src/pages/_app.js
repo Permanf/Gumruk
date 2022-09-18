@@ -14,21 +14,6 @@ function MyApp({ Component, pageProps }) {
   if (!hasMounted) {
     return null;
   }
-  // const [tempUserShortId, setTempUserShortId] = useState("");
-  // const getTempUserShortId = () => {
-  //   if (typeof window === "undefined") {
-  //     return "";
-  //   } else {
-  //     let tempUserShortId = localStorage.getItem("tempUserShortId");
-  //     if (tempUserShortId === null) {
-  //       tempUserShortId = randomString(4);
-  //       localStorage.setItem("tempUserShortId", tempUserShortId);
-  //     }
-  //     return tempUserShortId;
-  //   }
-  // };
-
-  // useEffect(() => setTempUserShortId(getTempUserShortId()), []);
   return (
     <MantineProvider
       theme={{

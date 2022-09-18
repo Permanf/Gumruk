@@ -1,6 +1,5 @@
 import HeaderTop from "./header_top";
 import { IconPhoto, IconSearch, IconUser } from "@tabler/icons";
-// import { ThemeIcon } from "@mantine/core";
 import { categories } from "./categories";
 import { useRouter } from "next/router";
 import logo_white from "../../assets/Logo/logo_white.svg";
@@ -11,17 +10,8 @@ import { SpotlightProvider, openSpotlight } from "@mantine/spotlight";
 import { useState } from "react";
 import { Drawer, Button, Group, Burger } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-// import { Button, Group } from "@mantine/core";
-// import type { SpotlightAction } from "@mantine/spotlight";
-// import {
-//   IconHome,
-//   IconDashboard,
-//   IconFileText,
-//   // IconSearch,
-// } from "@tabler/icons";
 
 const Header = () => {
-  // console.log(categories);
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const title = opened ? "Close navigation" : "Open navigation";
@@ -93,14 +83,6 @@ const Header = () => {
                   height={width > 500 ? 100 : 45}
                 />
               )}
-
-              {/* <ThemeIcon
-                size="xl"
-                variant="gradient"
-                gradient={{ from: "indigo", to: "cyan" }}
-              >
-                <IconPhoto size={30} />
-              </ThemeIcon> */}
               <Link href="/">
                 <a className="text-xs sm:text-sm font-normal sm:font-semibold ml-3 cursor-pointer">
                   ДИРЕКЦИЯ ХОЗЯЙСТВЕННОГО УПРАВЛЕНИЯ

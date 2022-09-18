@@ -61,12 +61,12 @@ const Footer = () => {
               lg={3}
               className="flex flex-col leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
-              <h1 className="text-lg sm:text-2xl font-medium">Услуги</h1>
-              <p>Грузовые операции</p>
-              <p>Гостиница</p>
-              <p>Тамаженный склад</p>
-              <p>Временное хранение</p>
-              <p>Стоянки</p>
+              <h1 className="text-lg sm:text-2xl font-medium mb-3">Услуги</h1>
+              <p className="my-0 sm:my-2">Грузовые операции</p>
+              <p className="my-0 sm:my-2">Гостиница</p>
+              <p className="my-0 sm:my-2">Тамаженный склад</p>
+              <p className="my-0 sm:my-2">Временное хранение</p>
+              <p className="my-0 sm:my-2">Стоянки</p>
             </Grid.Col>
             <Grid.Col
               sm={6}
@@ -74,7 +74,7 @@ const Footer = () => {
               lg={3}
               className="flex flex-col  leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
-              <h1 className="text-lg sm:text-2xl font-medium">Помощь</h1>
+              <h1 className="text-lg sm:text-2xl font-medium mb-3">Помощь</h1>
 
               {categories?.map((item, index) => {
                 return (
@@ -83,7 +83,7 @@ const Footer = () => {
                     href={`${item?.link}`}
                     className="lowercase first-letter:uppercase"
                   >
-                    {item?.name}
+                    <a className="my-0 sm:my-2">{item?.name}</a>
                   </Link>
                 );
               })}
@@ -94,10 +94,12 @@ const Footer = () => {
               lg={3}
               className="flex flex-col  leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
-              <h1 className="text-lg sm:text-2xl font-medium">Партнерам</h1>
-              <p>Банкам</p>
-              <p>Электронный документооборот</p>
-              <p>Агентам</p>
+              <h1 className="text-lg sm:text-2xl font-medium mb-3">
+                Партнерам
+              </h1>
+              <p className="my-0 sm:my-2">Банкам</p>
+              <p className="my-0 sm:my-2">Электронный документооборот</p>
+              <p className="my-0 sm:my-2">Агентам</p>
             </Grid.Col>
           </Grid>
           {/* </div> */}

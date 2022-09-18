@@ -51,14 +51,8 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.xl * 1.5,
   },
 }));
-// p@$$w0rd1230
 const NotFound = () => {
   const router = useRouter();
-  // useEffect(() => {
-  //   if (router.asPath == "/profile") {
-  //     router.push("/profile/settings");
-  //   }
-  // }, []);
   const { classes } = useStyles();
   return (
     <Layout title="404 Not found" className="bg-gray-100">

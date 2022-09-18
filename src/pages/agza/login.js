@@ -17,15 +17,7 @@ const Login = () => {
   return (
     <Layout title="Login" className="bg-gray-100">
       <Container size={420} py={60}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-        >
-          Личный кабинет
-        </Title>
+        <Title align="center">Личный кабинет</Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Для входа в кабинет, пожалуйста, авторизуйтесь
         </Text>

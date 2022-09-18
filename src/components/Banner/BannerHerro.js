@@ -15,17 +15,6 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: 80,
   },
 
-  title: {
-    fontWeight: 700,
-    fontSize: 34,
-    marginBottom: theme.spacing.md,
-    // fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-
-    [theme.fn.smallerThan("sm")]: {
-      fontSize: 32,
-    },
-  },
-
   control: {
     [theme.fn.smallerThan("sm")]: {
       width: "100%",
@@ -66,7 +55,7 @@ export function BannerHero({ banner }) {
             alt="image"
             className={classes.mobileImage}
           /> */}
-          <div>
+          <div className="my-5">
             <Title
               className={`${classes.title} text-2xl sm:text-3xl ${
                 router.pathname == "/" ? "text-white" : ""
@@ -74,7 +63,11 @@ export function BannerHero({ banner }) {
             >
               {banner?.title}
             </Title>
-            <Text color="dimmed" size="lg">
+            <Text
+              color="dimmed"
+              size="lg"
+              className="text-sm sm:text-base my-3"
+            >
               {banner?.description}
             </Text>
             {banner?.button ? (
@@ -93,12 +86,12 @@ export function BannerHero({ banner }) {
                   return (
                     <div
                       key={`${item?.id}`}
-                      className="flex flex-col items-center mx-3"
+                      className="flex flex-col items-center"
                     >
-                      <p className="rounded-full bg-blue-700 text-white font-medium text-xl w-20 h-20 flex justify-center items-center">
+                      <p className="rounded-full bg-blue-700 text-white font-medium text-lg sm:text-xl w-20 h-20 flex justify-center items-center">
                         {item.qty}
                       </p>
-                      <span className="text-xs font-medium text-center mt-2">
+                      <span className="text-xs font-medium text-center mt-2 break-all mx-3">
                         {item.description}
                       </span>
                     </div>

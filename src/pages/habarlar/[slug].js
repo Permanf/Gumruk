@@ -79,17 +79,20 @@ const News = () => {
       <BannerHero banner={banner} />
       <div className="flex justify-center items-center">
         <div className="container_out">
-          <p>{detail}</p>
+          <p className="text-sm sm:text-base p-2">{detail}</p>
         </div>
       </div>
       <Banner />
       <div className="w-full flex flex-col items-center py-20">
         <div className="container_out flex justify-between mb-4">
-          <h1 className="font-bold text-4xl mb-4">Другие публикации</h1>
+          <h1 className="font-bold text-2xl sm:text-4xl mb-4">
+            Другие публикации
+          </h1>
           <Button
             variant="outline"
             radius="md"
             size="md"
+            className="text-sm sm:text-base"
             onClick={() => {
               router.push(`/habarlar`);
             }}
@@ -102,15 +105,21 @@ const News = () => {
             return (
               <Grid.Col
                 key={`newdetails${index}`}
-                span={3}
+                xs={6}
+                md={4}
+                lg={3}
                 className="bg-white rounded-md p-5 flex flex-col border cursor-pointer"
                 onClick={() => {
                   router.push(`/habarlar/${index}`);
                 }}
               >
-                <h1 className="text-blue-500 mb-3 font-medium">{item.title}</h1>
-                <span className="mb-2 font-medium">{item?.description}</span>
-                <span>{item?.date}</span>
+                <h1 className="text-blue-500 mb-3 font-medium ">
+                  {item.title}
+                </h1>
+                <span className="mb-2 font-semibold text-sm sm:text-base">
+                  {item?.description}
+                </span>
+                <span className="text-sm">{item?.date}</span>
               </Grid.Col>
             );
           })}

@@ -4,8 +4,10 @@ import Layout from "../../components/Layouts/Layout";
 import { IconVideo } from "@tabler/icons";
 import { Grid, Anchor, ThemeIcon } from "@mantine/core";
 import image from "../../assets/About-us/banner.svg";
-
+import { useViewportSize } from "@mantine/hooks";
 const BizBarada = () => {
+  const { width } = useViewportSize();
+
   const banner = {
     title: "О нас",
     description:
@@ -49,7 +51,7 @@ const BizBarada = () => {
       <div className="w-full flex flex-col items-center my-20">
         <Grid
           grow
-          gutter={100}
+          gutter={width > 500 ? 100 : 25}
           justify="space-between"
           className="container_out"
         >
@@ -69,17 +71,19 @@ const BizBarada = () => {
         </Grid>
       </div>
       <div className="flex justify-center my-20">
-        <div className="container_out flex flex-col">
-          <p className="text-blue-500 mb-4 ml-20">Деятельность сухих портов</p>
-          <h1 className="text-3xl font-semibold ml-20 mb-5">
+        <div className="container_md flex flex-col">
+          <p className="text-blue-500 mb-4 text-sm sm:text-base">
+            Деятельность сухих портов
+          </p>
+          <h1 className="text-xl sm:text-3xl font-semibold mb-5">
             Дирекция управляет деятельностью <br /> следующих сухих портов:
           </h1>
           <div className="w-full flex flex-col items-center">
             <Grid
               grow
-              gutter={100}
+              gutter={width > 500 ? 100 : 25}
               justify="space-between"
-              className="container"
+              className="container_out"
             >
               {section2?.map((item, index) => {
                 return (

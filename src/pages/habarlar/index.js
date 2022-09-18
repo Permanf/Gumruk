@@ -86,35 +86,42 @@ const News = () => {
         <div className="container_out bg-white py-6 px-2 rounded-md">
           <Tabs defaultValue="first">
             <Tabs.List className="font-semibold">
-              <Tabs.Tab value="first" className="text-lg">
+              <Tabs.Tab value="first" className="text-xs sm:text-lg">
                 Главное
               </Tabs.Tab>
-              <Tabs.Tab value="second" className="text-lg">
+              <Tabs.Tab value="second" className="text-xs sm:text-lg">
                 Новости компании
               </Tabs.Tab>
-              <Tabs.Tab value="third" className="text-lg">
+              <Tabs.Tab value="third" className="text-xs sm:text-lg">
                 Мероприятия
               </Tabs.Tab>
             </Tabs.List>
           </Tabs>
         </div>
         <div className="container_out my-10">
-          <h1 className="font-bold text-4xl mb-4">Главное</h1>
+          <h1 className="font-bold text-2xl sm:text-4xl mb-4">Главное</h1>
           <hr />
         </div>
-        <Grid className="container_out">
+        <Grid
+          className="container_out"
+          // breakpoints={[{ minWidth: 400, cols: 2 }]}
+        >
           {news?.map((item, index) => {
             return (
               <Grid.Col
                 key={`news${index}`}
-                span={3}
+                xs={6}
+                md={4}
+                lg={3}
                 className="bg-white rounded-md p-5 flex flex-col border cursor-pointer hover:text-blue-500"
                 onClick={() => {
                   router.push(`/habarlar/${index}`);
                 }}
               >
-                <h1 className="text-blue-500 mb-3 font-medium">{item.title}</h1>
-                <span className="mb-2 font-semibold text-base">
+                <h1 className="text-blue-500 mb-3 font-medium ">
+                  {item.title}
+                </h1>
+                <span className="mb-2 font-semibold text-sm sm:text-base">
                   {item?.description}
                 </span>
                 <span className="text-sm">{item?.date}</span>

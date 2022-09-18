@@ -93,8 +93,8 @@ function SliderHome() {
             }}
             className="bg-white flex flex-col py-5 px-5 border rounded-md cursor-pointer hover:text-blue-600"
           >
-            <h1 className="text-blue-500 mb-3 font-medium">{item.title}</h1>
-            <span className="mb-2 font-medium text-sm sm:text-base">
+            <h1 className="text-blue-500 mb-3 font-medium ">{item.title}</h1>
+            <span className="mb-2 font-semibold text-sm sm:text-base">
               {item?.description}
             </span>
             <span className="text-sm">{item?.date}</span>

@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
     // fontFamily: `Greycliff CF, ${theme.fontFamily}`,
 
     [theme.fn.smallerThan("sm")]: {
-      fontSize: 32,
+      fontSize: 27,
     },
   },
 
