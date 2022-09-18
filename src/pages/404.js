@@ -8,6 +8,8 @@ import {
   Group,
 } from "@mantine/core";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -51,6 +53,12 @@ const useStyles = createStyles((theme) => ({
 }));
 // p@$$w0rd1230
 const NotFound = () => {
+  const router = useRouter();
+  // useEffect(() => {
+  //   if (router.asPath == "/profile") {
+  //     router.push("/profile/settings");
+  //   }
+  // }, []);
   const { classes } = useStyles();
   return (
     <Layout title="404 Not found" className="bg-gray-100">

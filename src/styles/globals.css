@@ -35,11 +35,17 @@ body{
 .container_out{
     width: 1150px;
 }
+.container_banner{
+  width: 1150px;
+}
 @media (max-width: 1150px) {
     .container_out {
       width: 100%;
       padding-left: 10px;
       padding-right: 10px;
+    }
+    .container_banner{
+      width: 100%;
     }
   }
   .container_md{
@@ -75,6 +81,6 @@ body{
 
   /* footer */
   .footer{
-    height: 350px;
+    /* height: 350px; */
     background-color: #252A36;
   }

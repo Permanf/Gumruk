@@ -9,10 +9,11 @@ import {
 import { LanguagePicker } from "../Language/Lang";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import { useViewportSize } from "@mantine/hooks";
 
 const HeaderTop = () => {
   const { lang } = useSelector((state) => state.data);
-  console.log(lang);
+  const { width } = useViewportSize();
 
   return (
     <div className="w-full flex justify-center bg-blue-50">
@@ -22,20 +23,23 @@ const HeaderTop = () => {
           <span className="mx-2">{moment().format("HH:mm")}</span>
           <span>{moment().format("DD.MM.YYYY")}</span>
         </div>
-        <div className="flex">
-          <div className="flex mr-10 items-center cursor-pointer">
-            <IconMailForward size={20} />
-            <a className="pl-2 font-semibold" href="info@terminal@.gov.tm">
-              info@terminal@.gov.tm
-            </a>
+        {width > 750 ? (
+          <div className="flex">
+            <div className="flex mr-10 items-center cursor-pointer">
+              <IconMailForward size={20} />
+              <a className="pl-2 font-semibold" href="info@terminal@.gov.tm">
+                info@terminal@.gov.tm
+              </a>
+            </div>
+            <div className="flex items-center cursor-pointer">
+              <IconPhoneCall size={20} />
+              <a className="pl-2 font-semibold" href="+99361181818">
+                +993 61181818
+              </a>
+            </div>
           </div>
-          <div className="flex items-center cursor-pointer">
-            <IconPhoneCall size={20} />
-            <a className="pl-2 font-semibold" href="+99361181818">
-              +993 61181818
-            </a>
-          </div>
-        </div>
+        ) : null}
+
         <LanguagePicker />
       </div>
     </div>

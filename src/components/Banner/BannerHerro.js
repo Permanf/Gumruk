@@ -61,14 +61,14 @@ export function BannerHero({ banner }) {
           cols={2}
           breakpoints={[{ maxWidth: "sm", cols: 1, spacing: 40 }]}
         >
-          <Image
+          {/* <Image
             src={banner.image}
             alt="image"
             className={classes.mobileImage}
-          />
+          /> */}
           <div>
             <Title
-              className={`${classes.title} ${
+              className={`${classes.title} text-2xl sm:text-3xl ${
                 router.pathname == "/" ? "text-white" : ""
               }`}
             >
@@ -82,7 +82,7 @@ export function BannerHero({ banner }) {
                 // variant="outline"
                 size="md"
                 mt="xl"
-                className={` bg-blue-700`}
+                className={` bg-blue-700 text-sm sm:text-lg`}
               >
                 {banner?.button}
               </Button>
@@ -108,7 +108,6 @@ export function BannerHero({ banner }) {
             ) : null}
           </div>
           <div
-            // className="bg-yellow-400"
             style={{
               backgroundImage: `url(${banner?.image?.src})`,
               backgroundSize: "cover",
@@ -117,9 +116,8 @@ export function BannerHero({ banner }) {
               width: `${banner.width}`,
               height: `${banner.height}`,
             }}
-          >
-            {/* <Image src={banner.image.src} className={classes.desktopImage} /> */}
-          </div>
+          ></div>
+          {/* <Image src={banner.image.src} className={classes.desktopImage} /> */}
         </SimpleGrid>
       </Container>
     </div>

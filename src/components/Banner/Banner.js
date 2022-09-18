@@ -50,21 +50,28 @@ export function Banner() {
 
   return (
     <div className="w-full flex justify-center bg_gray">
-      <div className={` container_out blue1 my-10 rounded-xl px-10`}>
+      <div className={`container_banner`}>
         <SimpleGrid
           spacing={80}
           cols={2}
           breakpoints={[{ maxWidth: "sm", cols: 1, spacing: 40 }]}
+          className="w-full blue1 my-10 sm:rounded-xl px-3 sm:px-10 py-5 sm:py-0"
         >
-          <Image src={image} alt="image" className={classes.mobileImage} />
+          {/* <Image src={image} alt="image" className={classes.mobileImage} /> */}
           <div className="flex flex-col justify-center ">
-            <Title className={`${classes.title} text-white`}>
+            <Title
+              className={`${classes.title} text-white text-xl sm:text-3xl`}
+            >
               ГОСУДАРСТВЕННАЯ ТАМОЖЕННАЯ СЛУЖБА ТУРКМЕНИСТАНА
             </Title>
-            <Text color="dimmed" size="lg">
+            <Text color="dimmed" size="lg" className="text-sm sm:text-lg">
               Посмотрите на новую систему декларирования поближе
             </Text>
-            <Button size="md" mt="xl" className="bg-blue-700 w-36">
+            <Button
+              size="md"
+              mt="xl"
+              className="bg-blue-700 w-36 text-sm sm:text-lg"
+            >
               Подробнее
             </Button>
           </div>

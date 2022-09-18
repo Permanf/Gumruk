@@ -4,11 +4,19 @@ import Header from "../Header";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { LoadUser } from "../../store/middlewares/auth";
+import { useRouter } from "next/router";
 
 const Layout = ({ children, title, className }) => {
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(LoadUser());
+  // }, []);
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (router.asPath == "/profile") {
+  //     router.push("/profile/settings");
+  //   }
   // }, []);
   return (
     <>
