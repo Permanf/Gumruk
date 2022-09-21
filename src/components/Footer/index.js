@@ -6,9 +6,11 @@ import logo_white from "../../assets/Logo/logo_white.svg";
 import { categories } from "../Header/categories";
 import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
   const { width } = useViewportSize();
+  const { lang } = useSelector((state) => state.data);
 
   return (
     <>
@@ -76,7 +78,7 @@ const Footer = () => {
             >
               <h1 className="text-lg sm:text-2xl font-medium mb-3">Помощь</h1>
 
-              {categories?.map((item, index) => {
+              {categories(lang)?.map((item, index) => {
                 return (
                   <Link
                     key={`item${index}`}

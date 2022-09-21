@@ -57,19 +57,31 @@ const useStyles = createStyles((theme, { opened }) => ({
 
 export function LanguagePicker() {
   const dispatch = useDispatch();
-  const [value, setValue] = useLocalStorage({
-    key: "lang",
-    defaultValue: "Russian",
-  });
+  // const [value, setValue] = useLocalStorage({
+  //   key: "lang",
+  //   // defaultValue: "Russian",
+  //   deserialize: (str) => (str === undefined ? defaultValue : "Russian"),
+  // });
 
   const [opened, setOpened] = useState(false);
   const { classes } = useStyles({ opened });
-  const [selected, setSelected] = useState(data[0]);
+
+  const lang = localStorage.getItem("lang");
+  // console.log(lang, "-------lang");
+  const [selected, setSelected] = useState(
+    lang == "undefined" ? "Russian" : data[0]
+  );
   useEffect(() => {
     // console.log(selected.label);
-    dispatch(setHelperData({ lang: selected.label }));
-    setValue((current) => (current === "Turkmen" ? "Russian" : "Turkmen"));
-  }, []);
+    if (lang == "undefined") {
+      localStorage.setItem("lang", "Russian");
+      dispatch(setHelperData({ lang: "Russian" }));
+    } else {
+      localStorage.setItem("lang", JSON.stringify(selected.label));
+      dispatch(setHelperData({ lang: selected.label }));
+    }
+    // setValue((current) => (current === "Turkmen" ? "Russian" : "Turkmen"));
+  }, [selected]);
 
   const items = data.map((item) => (
     <Menu.Item

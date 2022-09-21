@@ -10,12 +10,15 @@ import { SpotlightProvider, openSpotlight } from "@mantine/spotlight";
 import { useState } from "react";
 import { Drawer, Button, Group, Burger } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const title = opened ? "Close navigation" : "Open navigation";
   const { width } = useViewportSize();
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
   function SpotlightControl() {
     return (
       <IconSearch
@@ -91,7 +94,7 @@ const Header = () => {
             </div>
             {width > 950 ? (
               <div className="flex items-center">
-                {categories?.map((item, index) => {
+                {categories(lang)?.map((item, index) => {
                   return (
                     <Link key={index} href={`${item.link}`}>
                       <a
@@ -139,7 +142,7 @@ const Header = () => {
       >
         {/* Drawer content */}
         <div className="flex flex-col">
-          {categories?.map((item, index) => {
+          {categories(lang)?.map((item, index) => {
             return (
               <Link key={index} href={`${item.link}`}>
                 <a

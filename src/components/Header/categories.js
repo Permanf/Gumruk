@@ -1,28 +1,30 @@
-export const categories = [
+import { category } from "./translation";
+
+export const categories = (lang) => [
   {
     id: 0,
-    name: "СУХИЕ ПОРТЫ",
+    name: category[lang]?.portlar,
     link: "/portlar",
   },
 
   {
     id: 1,
-    name: "УСЛУГИ",
+    name: category[lang]?.service,
     link: "/hyzmatlar",
   },
   {
     id: 2,
-    name: "НОВОСТИ",
+    name: category[lang]?.news,
     link: "/habarlar",
   },
   {
     id: 3,
-    name: "О НАС",
+    name: category[lang]?.about_us,
     link: "/biz-barada",
   },
   {
     id: 4,
-    name: "КОНТАКТЫ",
+    name: category[lang]?.contact,
     link: "/habarlasmak",
   },
 ];
