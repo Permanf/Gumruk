@@ -7,6 +7,7 @@ import { Logout } from "../middlewares/auth";
 
 const axiosInstance = axios.create({
   baseURL: "http://95.85.124.119:9000",
+  // baseURL: "http://192.168.21.72:9000",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

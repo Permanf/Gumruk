@@ -24,6 +24,7 @@ import { useViewportSize } from "@mantine/hooks";
 import Select from "../../components/Agza/Select";
 import { DatePicker } from "@mantine/dates";
 import { useState, useEffect, useReducer } from "react";
+import { SetCookie } from "../../utils/cookie";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -103,8 +104,8 @@ const Register = () => {
   } = useForm({
     resolver: yupResolver(schema(legal)),
   });
-  const sene =
-    "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
+  // const sene =
+  //   "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
 
   const onSubmit = (data) => {
     setState({ type: "SET_LOADING", payload: true });
@@ -116,16 +117,19 @@ const Register = () => {
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("/");
     }
-    data.birthday = convert(data.birthday);
+    data.birthday = data.legal_entity == 1 ? "" : convert(data.birthday);
     console.log(data);
-
     dispatch(
       post({
-        url: `/api/register`,
+        url: `register`,
         data,
         action: (response) => {
+          console.log(response?.data);
           setState({ type: "SET_LOADING", payload: false });
-          console.log(response);
+          if (response.success) {
+            SetCookie("token", response?.data?.data?.token);
+          } else {
+          }
         },
       })
     );
@@ -139,6 +143,7 @@ const Register = () => {
     setValue("password", "");
     setValue("birthday", "");
   }, [legal]);
+
   // const onSubmit = (data) => {
   //   // setState({ type: "SET_LOADING", payload: true });
   //   dispatch(

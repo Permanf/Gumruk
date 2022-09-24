@@ -23,7 +23,7 @@ const LayoutProfile = ({ children, title }) => {
             </h1>
             <div className="w-full flex my-10">
               <div
-                className={`w-1/4 flex-col bg-white p-6  rounded-md shadow-lg ${
+                className={`w-1/4 flex-col bg-white p-6  rounded-md shadow-lg h-80 ${
                   width > 1000 ? "flex" : "hidden"
                 }`}
               >
@@ -33,10 +33,10 @@ const LayoutProfile = ({ children, title }) => {
                     <span>Профиль</span>
                   </a>
                 </Link>
-                <Link href={`/profile/document`}>
+                <Link href={`/profile/tickets`}>
                   <a className={`font-normal my-3 text-base flex items-center`}>
                     <FileUpload size={30} className="cursor-pointer mr-2" />
-                    <span>Ticket</span>
+                    <span>Tickets</span>
                   </a>
                 </Link>
                 <Link href={`/profile/history`}>
@@ -98,10 +98,10 @@ const LayoutProfile = ({ children, title }) => {
                 <span>Профиль</span>
               </a>
             </Link>
-            <Link href={`/profile/document`} onClick={() => setOpened(true)}>
+            <Link href={`/profile/tickets`} onClick={() => setOpened(true)}>
               <a className={`font-normal my-3 text-base flex items-center`}>
                 <FileUpload size={30} className="cursor-pointer mr-2" />
-                <span>Ticket</span>
+                <span>Tickets</span>
               </a>
             </Link>
             <Link href={`/profile/history`} onClick={() => setOpened(true)}>

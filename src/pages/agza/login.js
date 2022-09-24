@@ -45,12 +45,18 @@ const Login = () => {
   });
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   fetch("http://192.168.21.72:9000/sanctum/csrf-cookie")
+  //     .then((response) => response)
+  //     .then((json) => console.log(json));
+  // }, []);
+
   const onSubmit = (data) => {
     console.log(data);
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
-        url: `/api/login`,
+        url: `login`,
         data,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
