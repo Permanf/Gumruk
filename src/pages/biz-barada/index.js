@@ -5,6 +5,7 @@ import { IconVideo } from "@tabler/icons";
 import { Grid, Anchor, ThemeIcon } from "@mantine/core";
 import image from "../../assets/About-us/banner.svg";
 import { useViewportSize } from "@mantine/hooks";
+
 const BizBarada = () => {
   const { width } = useViewportSize();
 

@@ -1,5 +1,5 @@
 import { useQRCode } from "next-qrcode";
-import { Grid } from "@mantine/core";
+import { Grid, Badge } from "@mantine/core";
 import Link from "next/link";
 
 const Ticket = () => {
@@ -25,6 +25,30 @@ const Ticket = () => {
               <div className="my-1">
                 <span className="text-gray-400 text-xs">Created at</span>
                 <p className="font-semibold text-sm">23/09/2022 4:53 PM</p>
+              </div>
+              <div className="my-1 flex flex-col">
+                <span className="text-gray-400 text-xs">Status</span>
+                {/* <Badge
+                  variant="gradient"
+                  className="mt-1"
+                  gradient={{ from: "indigo", to: "cyan" }}
+                >
+                  Pending
+                </Badge> */}
+                <Badge
+                  variant="gradient"
+                  className="mt-1"
+                  gradient={{ from: "green", to: "teal" }}
+                >
+                  Success
+                </Badge>
+                {/* <Badge
+                  variant="gradient"
+                  className="mt-1"
+                  gradient={{ from: "red", to: "yellow" }}
+                >
+                  Error
+                </Badge> */}
               </div>
             </div>
 

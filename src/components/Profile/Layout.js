@@ -23,32 +23,40 @@ const LayoutProfile = ({ children, title }) => {
             </h1>
             <div className="w-full flex my-10">
               <div
-                className={`w-1/4 flex-col bg-white p-6  rounded-md shadow-lg h-80 ${
+                className={`w-1/4 flex-col bg-white py-5  rounded-md shadow-lg h-80 ${
                   width > 1000 ? "flex" : "hidden"
                 }`}
               >
                 <Link href={`/profile`}>
-                  <a className={`font-normal my-3 text-base flex items-center`}>
-                    <User size={30} className="cursor-pointer mr-2" />
+                  <a
+                    className={`font-normal my-3 text-base flex items-center px-5 py-1 border-l-4 border-blue-500 text-blue-500`}
+                  >
+                    <User size={22} className="cursor-pointer mr-2" />
                     <span>Профиль</span>
                   </a>
                 </Link>
                 <Link href={`/profile/tickets`}>
-                  <a className={`font-normal my-3 text-base flex items-center`}>
-                    <FileUpload size={30} className="cursor-pointer mr-2" />
+                  <a
+                    className={`font-normal my-3 text-base flex items-center px-5`}
+                  >
+                    <FileUpload size={22} className="cursor-pointer mr-2" />
                     <span>Tickets</span>
                   </a>
                 </Link>
                 <Link href={`/profile/history`}>
-                  <a className={`font-normal my-3 text-base flex items-center`}>
-                    <FilePencil size={30} className="cursor-pointer mr-2" />
+                  <a
+                    className={`font-normal my-3 text-base flex items-center px-5`}
+                  >
+                    <FilePencil size={22} className="cursor-pointer mr-2" />
                     <span>История деклораций</span>
                   </a>
                 </Link>
                 <hr className="my-5" />
 
-                <div className={`font-normal my-3 text-base flex items-center`}>
-                  <Logout size={30} className="cursor-pointer mr-2" />
+                <div
+                  className={`font-normal my-3 text-base flex items-center px-5`}
+                >
+                  <Logout size={22} className="cursor-pointer mr-2" />
                   <span>Выйти</span>
                 </div>
               </div>
@@ -94,26 +102,26 @@ const LayoutProfile = ({ children, title }) => {
           <div className="flex flex-col">
             <Link href={`/profile`} onClick={() => setOpened(true)}>
               <a className={`font-normal my-3 text-base flex items-center`}>
-                <User size={30} className="cursor-pointer mr-2" />
+                <User size={22} className="cursor-pointer mr-2" />
                 <span>Профиль</span>
               </a>
             </Link>
             <Link href={`/profile/tickets`} onClick={() => setOpened(true)}>
               <a className={`font-normal my-3 text-base flex items-center`}>
-                <FileUpload size={30} className="cursor-pointer mr-2" />
+                <FileUpload size={22} className="cursor-pointer mr-2" />
                 <span>Tickets</span>
               </a>
             </Link>
             <Link href={`/profile/history`} onClick={() => setOpened(true)}>
               <a className={`font-normal my-3 text-base flex items-center`}>
-                <FilePencil size={30} className="cursor-pointer mr-2" />
+                <FilePencil size={22} className="cursor-pointer mr-2" />
                 <span>История деклораций</span>
               </a>
             </Link>
             <hr className="my-5" />
 
             <div className={`font-normal my-3 text-base flex items-center`}>
-              <Logout size={30} className="cursor-pointer mr-2" />
+              <Logout size={22} className="cursor-pointer mr-2" />
               <span>Выйти</span>
             </div>
           </div>
