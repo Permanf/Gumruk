@@ -87,6 +87,64 @@ const Home = () => {
       date: "05.06.2022",
     },
   ];
+  const news_last = [
+    {
+      id: 0,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 1,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 2,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 3,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 4,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 5,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 6,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+    {
+      id: 7,
+      title: "Новости компании",
+      description:
+        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
+      date: "05.06.2022",
+    },
+  ];
   const service = [
     {
       id: 0,
@@ -119,27 +177,10 @@ const Home = () => {
     <Layout title="Home">
       <BannerHero banner={banner} />
       {width > 950 ? (
-        <div className="w-full flex flex-col items-center py-20 bg_gray">
-          <Grid className="container_out -mt-36" justify="flex-end">
-            {news.slice(0, 3)?.map((item, index) => {
-              return (
-                <Grid.Col
-                  key={`item${index}`}
-                  span={3}
-                  className="bg-white rounded-md p-5 flex flex-col border cursor-pointer hover:text-blue-600"
-                  onClick={() => {
-                    router.push(`/habarlar/${index}`);
-                  }}
-                >
-                  <h1 className="text-blue-500 mb-3 font-medium">
-                    {item.title}
-                  </h1>
-                  <span className="mb-2 font-medium">{item?.description}</span>
-                  <span className="text-sm">{item?.date}</span>
-                </Grid.Col>
-              );
-            })}
-          </Grid>
+        <div className="w-full flex flex-col items-center bg_gray">
+          <div className="container_out -mt-10 pb-10">
+            <SliderHome data={news} withControls={false} />
+          </div>
         </div>
       ) : null}
 
@@ -236,8 +277,8 @@ const Home = () => {
             Все новости
           </Button>
         </div>
-        <div className="container_out px-1">
-          <SliderHome />
+        <div className="container_out py-2">
+          <SliderHome data={news_last} withControls={true} />
         </div>
       </div>
       <Banner />

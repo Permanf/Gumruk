@@ -14,8 +14,41 @@ import {
   Anchor,
 } from "@mantine/core";
 import image from "../../assets/Contact/banner.svg";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const Hyzmatlar = () => {
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `services`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          // setState({ type: "SET_LOADING", payload: false });
+          console.log(response);
+        },
+      })
+    );
+  }, [lang]);
+
   const banner = {
     title: "Услуги",
     description:

@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   SimpleGrid,
+  Skeleton,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 
@@ -61,14 +62,28 @@ export function BannerHero({ banner }) {
                 router.pathname == "/" ? "text-white" : ""
               }`}
             >
-              {banner?.title}
+              {banner?.title ? (
+                banner?.title
+              ) : (
+                <>
+                  <Skeleton height={12} width={100} radius="xl" mb={20} />
+                </>
+              )}
             </Title>
             <Text
               color="dimmed"
               size="lg"
               className="text-sm sm:text-base my-3"
             >
-              {banner?.description}
+              {banner?.description ? (
+                banner?.description
+              ) : (
+                <>
+                  <Skeleton height={8} radius="xl" my={10} />
+                  <Skeleton height={8} radius="xl" my={10} />
+                  <Skeleton height={8} radius="xl" my={10} />
+                </>
+              )}
             </Text>
             {banner?.button ? (
               <Button

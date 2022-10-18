@@ -2,6 +2,7 @@ import axios from "axios";
 import store from "../index";
 import { userLoaded } from "../actions/auth";
 import { Logout } from "../middlewares/auth";
+import { useSelector } from "react-redux";
 
 // const API_BASE_URL = process.env.REACT_APP_IS_PRODUCTION === 'production' ? process.env.REACT_APP_API_BASE_PRODUCTION_URL : process.env.REACT_APP_API_BASE_URL
 
@@ -53,14 +54,15 @@ axiosInstance.interceptors.response.use(
 );
 
 const api = {
-  getApi: async ({ url, token, withCredentials, contentType }) => {
-    console.log(contentType);
-    // console.log(token)
+  getApi: async ({ url, token, withCredentials, contentType, lang }) => {
+    // console.log(contentType);
+    // console.log(lang, "lang");
     const config = {
       headers: {
         "Content-Type": contentType ? contentType : "application/json",
         accept: "application/json",
         Authorization: `Bearer ${token}`,
+        "Accept-Language": "ru",
       },
       timeout: contentType ? 100000 : 20000,
       withCredentials: withCredentials,

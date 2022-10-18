@@ -3,8 +3,41 @@ import { Banner } from "../../components/Banner/Banner";
 import { BannerHero } from "../../components/Banner/BannerHerro";
 import Layout from "../../components/Layouts/Layout";
 import image from "../../assets/Potlar/banner.svg";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const Portlar = () => {
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `ports`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          // setState({ type: "SET_LOADING", payload: false });
+          console.log(response, "-portlar");
+        },
+      })
+    );
+  }, [lang]);
+
   const banner = {
     title: "Сухие порты",
     description:

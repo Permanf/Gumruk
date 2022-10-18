@@ -36,12 +36,12 @@ const useStyles = createStyles((theme, { opened }) => ({
         ? theme.colors.gray[0]
         : theme.white,
 
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[0],
-    },
+    // "&:hover": {
+    //   backgroundColor:
+    //     theme.colorScheme === "dark"
+    //       ? theme.colors.dark[5]
+    //       : theme.colors.gray[0],
+    // },
   },
 
   label: {
@@ -99,6 +99,7 @@ export function LanguagePicker() {
       onClose={() => setOpened(false)}
       radius="md"
       width="target"
+      className="bg-none border-none hover:bg-none"
     >
       <Menu.Target>
         <UnstyledButton className={classes.control}>

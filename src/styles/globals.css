@@ -60,11 +60,29 @@ body{
   }
 
   /* mantine */
-  .mantine-Carousel-control{
+  .mantine-Carousel-control:first-child{
     background-color: #043375;
     padding: 10px;
     padding-left: 12px;
     padding-right: 12px;
+    border-radius: 10px;
+
+  }
+  .mantine-Carousel-control:last-child{
+    background-color: #043375;
+    padding: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  .mantine-Carousel-controls{
+    /* background-color: #043375; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 100px;
+    /* position: absolute; */
   }
  
   .mantine-Select-input{
@@ -72,6 +90,7 @@ body{
     /* background-color: inherit; */
     /* padding: 2px; */
   }
+  
 
   .mantine-Select-item{
     text-align: center;

@@ -15,9 +15,41 @@ import {
 } from "@mantine/core";
 import image from "../../assets/Contact/banner.svg";
 import { useViewportSize } from "@mantine/hooks";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const Habarlasmak = () => {
   const { width } = useViewportSize();
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `contact`,
+        lang: lang == "Russian" ? "ru" : lang == "Turkmen" ? "tm" : "en",
+        action: (response) => {
+          // setState({ type: "SET_LOADING", payload: false });
+          console.log(response);
+        },
+      })
+    );
+  }, [lang]);
 
   const banner = {
     title: "Контакты",

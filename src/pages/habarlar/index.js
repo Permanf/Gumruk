@@ -8,11 +8,44 @@ import Pagination from "../../components/News/Pagination";
 import { useRouter } from "next/router";
 // import image from "../../assets/News/banner.svg";
 import image from "../../assets/About-us/banner.svg";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const News = () => {
   const router = useRouter();
   const [activePage, setPage] = useState(1);
   const total = 10;
+  const { lang } = useSelector((state) => state.data);
+  console.log(lang);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `news`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          // setState({ type: "SET_LOADING", payload: false });
+          console.log(response, "-news");
+        },
+      })
+    );
+  }, [lang]);
+
   const banner = {
     title: "Новости",
     description:

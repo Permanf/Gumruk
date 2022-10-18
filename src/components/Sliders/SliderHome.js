@@ -4,77 +4,21 @@ import { arrowLeft2 } from "react-icons-kit/icomoon/arrowLeft2";
 import { arrowRight2 } from "react-icons-kit/icomoon/arrowRight2";
 import { useRouter } from "next/router";
 
-function SliderHome() {
+function SliderHome({ data, withControls }) {
   const router = useRouter();
 
-  const news = [
-    {
-      id: 0,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 1,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 2,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 3,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 4,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 5,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 6,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 7,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-  ];
   return (
     <Carousel
       withIndicators
-      height={220}
+      withControls={withControls}
+      // height={220}
+      // className="bg-red-300 py-10"
       slideSize="33.333333%"
       slideGap="md"
-      breakpoints={[
-        { maxWidth: "md", slideSize: "50%" },
-        { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
-      ]}
+      // breakpoints={[
+      //   { maxWidth: "md", slideSize: "50%" },
+      //   { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
+      // ]}
       loop
       align="start"
       nextControlIcon={
@@ -84,7 +28,7 @@ function SliderHome() {
         <Icon size={20} icon={arrowLeft2} className="text-white font-bold" />
       }
     >
-      {news?.map((item, index) => {
+      {data?.map((item, index) => {
         return (
           <Carousel.Slide
             key={`slide${index}`}

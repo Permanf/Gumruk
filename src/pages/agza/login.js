@@ -13,8 +13,8 @@ import {
 } from "@mantine/core";
 import { post } from "../../store/middlewares/index";
 import { useEffect, useReducer } from "react";
-import { IconLock, IconMail } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
+import { IconLock, IconMail } from "@tabler/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";

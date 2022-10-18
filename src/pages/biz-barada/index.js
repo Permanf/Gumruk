@@ -2,17 +2,72 @@ import { Banner } from "../../components/Banner/Banner";
 import { BannerHero } from "../../components/Banner/BannerHerro";
 import Layout from "../../components/Layouts/Layout";
 import { IconVideo } from "@tabler/icons";
-import { Grid, Anchor, ThemeIcon } from "@mantine/core";
+import {
+  Grid,
+  Anchor,
+  ThemeIcon,
+  Center,
+  Skeleton,
+  Modal,
+} from "@mantine/core";
 import image from "../../assets/About-us/banner.svg";
 import { useViewportSize } from "@mantine/hooks";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_DATA":
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case "SET_MODAL":
+      return {
+        ...state,
+        opened: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const BizBarada = () => {
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+    data: {},
+    opened: false,
+  });
   const { width } = useViewportSize();
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `about`,
+        lang: lang == "Russian" ? "ru" : lang == "Turkmen" ? "tm" : "en",
+        action: (response) => {
+          setState({ type: "SET_LOADING", payload: false });
+          setState({ type: "SET_DATA", payload: response.data.data });
+          console.log(response.data.data);
+        },
+      })
+    );
+  }, [lang]);
 
   const banner = {
-    title: "О нас",
-    description:
-      "Была создана дирекция управления Хозяйством при Государственной таможенной службы Туркменистана по обработке грузоперевозок в международном торговом деле и по услугам их хранении.",
+    title: state.data.title,
+    description: state.data.description,
+    // description:"Была создана дирекция управления Хозяйством при Государственной таможенной службы Туркменистана по обработке грузоперевозок в международном торговом деле и по услугам их хранении.",
     // button: "Подробнее",
     image: image,
     with: "500px",
@@ -49,7 +104,26 @@ const BizBarada = () => {
   return (
     <Layout title="Biz-barada" className="bg_gray">
       <BannerHero banner={banner} />
-      <div className="w-full flex flex-col items-center my-20">
+      <Center>
+        <div className="container_out">
+          {state.data.content ? (
+            <div dangerouslySetInnerHTML={{ __html: state.data.content }} />
+          ) : (
+            <>
+              <Skeleton height={15} width={200} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+              <Skeleton height={10} radius="xl" my={20} />
+            </>
+          )}
+        </div>
+      </Center>
+
+      {/* <div className="w-full flex flex-col items-center my-20">
         <Grid
           grow
           gutter={width > 500 ? 100 : 25}
@@ -96,18 +170,33 @@ const BizBarada = () => {
             </Grid>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="container_out h-96 bg-gray-500 rounded-md flex justify-center items-center">
-          <ThemeIcon
-            size="2xl"
-            variant="gradient"
-            gradient={{ from: "indigo", to: "cyan" }}
+      </div> */}
+      <div className="flex justify-center mt-20">
+        <div className="container_out h-96 bg-gray-300 rounded-md flex justify-center items-center">
+          <div
+            onClick={() => setState({ type: "SET_MODAL", payload: true })}
+            className="w-28 h-28 rounded-full bg-white text-blue-500 flex justify-center items-center cursor-pointer"
           >
             <IconVideo size={50} />
-          </ThemeIcon>
+          </div>
         </div>
       </div>
+      <Modal
+        opened={state.opened}
+        size="lg"
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        onClose={() => setState({ type: "SET_MODAL", payload: false })}
+        // title="Introduce yourself!"
+      >
+        {/* Modal content */}
+        <iframe
+          width="100%"
+          height={width > 600 ? "400" : "240"}
+          title="videos"
+          src={state.data.video}
+        />
+      </Modal>
       <Banner />
     </Layout>
   );
