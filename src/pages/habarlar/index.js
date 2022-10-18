@@ -11,6 +11,7 @@ import image from "../../assets/About-us/banner.svg";
 import { fetchData, post } from "../../store/middlewares/index";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Skeletons from "../../components/News/Skeletons";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -19,27 +20,38 @@ function reducer(state, action) {
         ...state,
         loading: action.payload,
       };
+    case "SET_DATA":
+      return {
+        ...state,
+        data: action.payload,
+      };
     default:
       return state;
   }
 }
 
 const News = () => {
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+    data: [],
+  });
   const router = useRouter();
   const [activePage, setPage] = useState(1);
   const total = 10;
   const { lang } = useSelector((state) => state.data);
-  console.log(lang);
+  // console.log(lang);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // setState({ type: "SET_LOADING", payload: true });
+    setState({ type: "SET_LOADING", payload: true });
     dispatch(
       fetchData({
         url: `news`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
-          // setState({ type: "SET_LOADING", payload: false });
+          setState({ type: "SET_LOADING", payload: false });
+          setState({ type: "SET_DATA", payload: response.data.data });
+
           console.log(response, "-news");
         },
       })
@@ -139,38 +151,44 @@ const News = () => {
           className="container_out"
           // breakpoints={[{ minWidth: 400, cols: 2 }]}
         >
-          {news?.map((item, index) => {
-            return (
-              <Grid.Col
-                key={`news${index}`}
-                xs={6}
-                md={4}
-                lg={3}
-                className="bg-white rounded-md p-5 flex flex-col border cursor-pointer hover:text-blue-500"
-                onClick={() => {
-                  router.push(`/habarlar/${index}`);
-                }}
-              >
-                <h1 className="text-blue-500 mb-3 font-medium ">
-                  {item.title}
-                </h1>
-                <span className="mb-2 font-semibold text-sm sm:text-base">
-                  {item?.description}
-                </span>
-                <span className="text-sm">{item?.date}</span>
-              </Grid.Col>
-            );
-          })}
+          {state.data ? (
+            state.data?.map((item) => {
+              return (
+                <Grid.Col
+                  key={item.id}
+                  xs={6}
+                  md={4}
+                  lg={3}
+                  className="bg-white rounded-md p-5 flex flex-col border cursor-pointer hover:text-blue-500"
+                  onClick={() => {
+                    router.push(`/habarlar/${item.id}`);
+                  }}
+                >
+                  <h1 className="text-blue-500 mb-3 font-medium ">
+                    {item.category}
+                  </h1>
+                  <span className="mb-2 font-semibold text-sm sm:text-base">
+                    {item?.title}
+                  </span>
+                  <span className="text-sm">{item?.date}</span>
+                </Grid.Col>
+              );
+            })
+          ) : (
+            <Skeletons />
+          )}
         </Grid>
-        <div className="container_out mt-10">
-          <Pagination
-            activePage={activePage}
-            setPage={setPage}
-            total={total}
-            siblings={2}
-            boundaries={2}
-          />
-        </div>
+        {state.data ? (
+          <div className="container_out mt-10">
+            <Pagination
+              activePage={activePage}
+              setPage={setPage}
+              total={state.data.length}
+              siblings={2}
+              boundaries={2}
+            />
+          </div>
+        ) : null}
       </div>
       <Banner />
     </Layout>

@@ -7,10 +7,10 @@ export const category = {
     contact: "Habarlaşmak",
   },
   Russian: {
-    portlar: "СУХИЕ ПОРТЫ",
-    service: "УСЛУГИ",
-    news: "НОВОСТИ",
-    about_us: "О НАС",
-    contact: "КОНТАКТЫ",
+    portlar: "Сухие порты",
+    service: "Услуги",
+    news: "Новости",
+    about_us: "О нас",
+    contact: "Контакты",
   },
 };
