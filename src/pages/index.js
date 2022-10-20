@@ -17,10 +17,79 @@ import { arrowRight2 } from "react-icons-kit/icomoon/arrowRight2";
 import SliderHome from "../components/Sliders/SliderHome";
 import { useRouter } from "next/router";
 import { useViewportSize } from "@mantine/hooks";
+import { fetchData, post } from "../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Skeletons from "../components/Home/Skeletons";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_DATA":
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case "SET_LOADING2":
+      return {
+        ...state,
+        loading2: action.payload,
+      };
+    case "SET_DATA_SERVICE":
+      return {
+        ...state,
+        data_service: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const Home = () => {
-  const router = useRouter();
   const { width } = useViewportSize();
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+    loading2: false,
+    data: [],
+    data_ports: [],
+  });
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+
+  useEffect(() => {
+    setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `news`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          setState({ type: "SET_LOADING", payload: false });
+          setState({ type: "SET_DATA", payload: response?.data?.data });
+          // console.log(response, "-news");
+        },
+      })
+    );
+  }, [lang]);
+  useEffect(() => {
+    setState({ type: "SET_LOADING2", payload: true });
+    dispatch(
+      fetchData({
+        url: `services`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          setState({ type: "SET_LOADING2", payload: false });
+          setState({ type: "SET_DATA_SERVICE", payload: response?.data?.data });
+          console.log(response, "-service");
+        },
+      })
+    );
+  }, [lang]);
 
   const banner = {
     title: "Единая система для таможенного оформления",
@@ -179,7 +248,7 @@ const Home = () => {
       {width > 950 ? (
         <div className="w-full flex flex-col items-center bg_gray">
           <div className="container_out -mt-10 pb-10">
-            <SliderHome data={news} withControls={false} />
+            <SliderHome data={state.data} withControls={false} />
           </div>
         </div>
       ) : null}
@@ -218,34 +287,38 @@ const Home = () => {
       </div>
       <div className="w-full bg_gray flex justify-center">
         <div className="container_out flex flex-col -mt-14 sm:-mt-20">
-          {service?.map((item, index) => {
-            return (
-              <div
-                key={`service${index}`}
-                className="w-full bg-white rounded-lg my-5 p-4 md:p-10  cursor-pointer shadow-md"
-              >
-                <div className="w-full flex justify-between items-center py-3">
-                  <Image
-                    src={item.icon.src}
-                    alt="image"
-                    width={width > 500 ? 60 : 26}
-                    height={width > 500 ? 60 : 26}
-                  />
-                  <p className="font-semibold text-xs sm:text-sm md:text-xl ml-2">
-                    {item.title}
-                  </p>
-                  <span className="text-xs w-32 md:w-60 break-all">
-                    {item?.description}
-                  </span>
-                  <Icon
-                    size={width > 500 ? 25 : 15}
-                    icon={arrowRight2}
-                    className="text-blue-700"
-                  />
+          {state.data_service ? (
+            state.data_service?.map((item, index) => {
+              return (
+                <div
+                  key={item.id}
+                  className="w-full bg-white rounded-lg my-5 p-4 md:p-10  cursor-pointer shadow-md"
+                >
+                  <div className="w-full flex justify-between items-center py-3">
+                    {/* <Image
+                        src={item?.icon}
+                        alt="image"
+                        width={width > 500 ? 60 : 26}
+                        height={width > 500 ? 60 : 26}
+                      /> */}
+                    <p className="font-semibold text-xs sm:text-sm md:text-xl ml-2">
+                      {item?.title}
+                    </p>
+                    <span className="text-xs w-32 md:w-60 break-all">
+                      {item?.description}
+                    </span>
+                    <Icon
+                      size={width > 500 ? 25 : 15}
+                      icon={arrowRight2}
+                      className="text-blue-700"
+                    />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <Skeletons />
+          )}
         </div>
       </div>
       <div className="flex justify-center bg_gray py-10 sm:py-20">
@@ -278,7 +351,7 @@ const Home = () => {
           </Button>
         </div>
         <div className="container_out py-2">
-          <SliderHome data={news_last} withControls={true} />
+          <SliderHome data={state.data} withControls={true} />
         </div>
       </div>
       <Banner />

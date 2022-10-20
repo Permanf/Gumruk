@@ -2,7 +2,6 @@ import axios from "axios";
 import store from "../index";
 import { userLoaded } from "../actions/auth";
 import { Logout } from "../middlewares/auth";
-import { useSelector } from "react-redux";
 
 // const API_BASE_URL = process.env.REACT_APP_IS_PRODUCTION === 'production' ? process.env.REACT_APP_API_BASE_PRODUCTION_URL : process.env.REACT_APP_API_BASE_URL
 

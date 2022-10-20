@@ -4,9 +4,55 @@ import Layout from "../../components/Layouts/Layout";
 import { IconVideo } from "@tabler/icons";
 import { Grid, Anchor, ThemeIcon, Tabs, Button } from "@mantine/core";
 import { useRouter } from "next/router";
+import { fetchData, post } from "../../store/middlewares/index";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Skeletons from "../../components/News/Skeletons";
+import SkeletonSlug from "../../components/News/SkeletonSlug";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_DATA":
+      return {
+        ...state,
+        data: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const News = () => {
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+    data: [],
+  });
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { lang } = useSelector((state) => state.data);
+  // console.log(lang);
+  // console.log(activePage);
+
+  useEffect(() => {
+    setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `news`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          setState({ type: "SET_LOADING", payload: false });
+          setState({ type: "SET_DATA", payload: response?.data?.data });
+          console.log(response, "-news");
+        },
+      })
+    );
+  }, [lang]);
+
   const banner = {
     title:
       "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
@@ -79,7 +125,11 @@ const News = () => {
       <BannerHero banner={banner} />
       <div className="flex justify-center items-center">
         <div className="container_out">
-          <p className="text-sm sm:text-base p-2">{detail}</p>
+          {1 === 1 ? (
+            <p className="text-sm sm:text-base p-2">{detail}</p>
+          ) : (
+            <SkeletonSlug />
+          )}
         </div>
       </div>
       <Banner />
@@ -101,28 +151,32 @@ const News = () => {
           </Button>
         </div>
         <Grid className="container_out">
-          {news.slice(0, 4)?.map((item, index) => {
-            return (
-              <Grid.Col
-                key={`newdetails${index}`}
-                xs={6}
-                md={4}
-                lg={3}
-                className="bg-white rounded-md p-5 flex flex-col border cursor-pointer"
-                onClick={() => {
-                  router.push(`/habarlar/${index}`);
-                }}
-              >
-                <h1 className="text-blue-500 mb-3 font-medium ">
-                  {item.title}
-                </h1>
-                <span className="mb-2 font-semibold text-sm sm:text-base">
-                  {item?.description}
-                </span>
-                <span className="text-sm">{item?.date}</span>
-              </Grid.Col>
-            );
-          })}
+          {!state.loading ? (
+            state.data.slice(0, 4)?.map((item) => {
+              return (
+                <Grid.Col
+                  key={item.id}
+                  xs={6}
+                  md={4}
+                  lg={3}
+                  className="bg-white rounded-md p-5 flex flex-col border cursor-pointer"
+                  onClick={() => {
+                    router.push(`/habarlar/${item.id}`);
+                  }}
+                >
+                  <h1 className="text-blue-500 mb-3 font-medium ">
+                    {item.category}
+                  </h1>
+                  <span className="mb-2 font-semibold text-sm sm:text-base">
+                    {item?.title}
+                  </span>
+                  <span className="text-sm">{item?.date}</span>
+                </Grid.Col>
+              );
+            })
+          ) : (
+            <Skeletons />
+          )}
         </Grid>
       </div>
     </Layout>

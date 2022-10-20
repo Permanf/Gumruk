@@ -20,10 +20,25 @@ function reducer(state, action) {
         ...state,
         loading: action.payload,
       };
+    case "SET_TRIGGER":
+      return {
+        ...state,
+        trigger: action.payload,
+      };
+    case "SET_CATEGORY":
+      return {
+        ...state,
+        category: action.payload,
+      };
     case "SET_DATA":
       return {
         ...state,
         data: action.payload,
+      };
+    case "SET_TOTAL":
+      return {
+        ...state,
+        total: action.payload,
       };
     default:
       return state;
@@ -33,30 +48,40 @@ function reducer(state, action) {
 const News = () => {
   const [state, setState] = useReducer(reducer, {
     loading: false,
+    trigger: false,
+    category: "",
     data: [],
+    total: 0,
   });
   const router = useRouter();
+  const dispatch = useDispatch();
   const [activePage, setPage] = useState(1);
-  const total = 10;
   const { lang } = useSelector((state) => state.data);
   // console.log(lang);
-  const dispatch = useDispatch();
+  // console.log(activePage);
 
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       fetchData({
-        url: `news`,
+        url: `${
+          state.category == ""
+            ? `news?page=${activePage}`
+            : `news/${state.category}?page=${activePage}`
+        }`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
-          setState({ type: "SET_DATA", payload: response.data.data });
-
-          console.log(response, "-news");
+          setState({ type: "SET_DATA", payload: response?.data?.data });
+          setState({
+            type: "SET_TOTAL",
+            payload: Math.floor(response?.data?.meta?.total / 9) + 1,
+          });
+          // console.log(response, "-news");
         },
       })
     );
-  }, [lang]);
+  }, [lang, activePage, state.category]);
 
   const banner = {
     title: "Новости",
@@ -131,27 +156,54 @@ const News = () => {
         <div className="container_out bg-white py-6 px-2 rounded-md">
           <Tabs defaultValue="first">
             <Tabs.List className="font-semibold">
-              <Tabs.Tab value="first" className="text-xs sm:text-lg">
+              <Tabs.Tab
+                value="first"
+                className="text-xs sm:text-lg"
+                onClick={() => {
+                  setState({ type: "SET_CATEGORY", payload: "" });
+                  // setState({ type: "SET_TRIGGER", payload: true });
+                }}
+              >
                 Главное
               </Tabs.Tab>
-              <Tabs.Tab value="second" className="text-xs sm:text-lg">
+              <Tabs.Tab
+                value="second"
+                className="text-xs sm:text-lg"
+                onClick={() => {
+                  setState({ type: "SET_CATEGORY", payload: "company" });
+                  // setState({ type: "SET_TRIGGER", payload: true });
+                }}
+              >
                 Новости компании
               </Tabs.Tab>
-              <Tabs.Tab value="third" className="text-xs sm:text-lg">
+              <Tabs.Tab
+                value="third"
+                className="text-xs sm:text-lg"
+                onClick={() => {
+                  setState({ type: "SET_CATEGORY", payload: "event" });
+                  // setState({ type: "SET_TRIGGER", payload: true });
+                }}
+              >
                 Мероприятия
               </Tabs.Tab>
             </Tabs.List>
           </Tabs>
         </div>
         <div className="container_out my-10">
-          <h1 className="font-bold text-2xl sm:text-4xl mb-4">Главное</h1>
+          <h1 className="font-bold text-2xl sm:text-4xl mb-4">
+            {state.category == ""
+              ? "Главное"
+              : state.category == "company"
+              ? "Новости компании"
+              : "Мероприятия"}
+          </h1>
           <hr />
         </div>
         <Grid
           className="container_out"
           // breakpoints={[{ minWidth: 400, cols: 2 }]}
         >
-          {state.data ? (
+          {!state.loading ? (
             state.data?.map((item) => {
               return (
                 <Grid.Col
@@ -178,12 +230,12 @@ const News = () => {
             <Skeletons />
           )}
         </Grid>
-        {state.data ? (
+        {state.total ? (
           <div className="container_out mt-10">
             <Pagination
               activePage={activePage}
               setPage={setPage}
-              total={state.data.length}
+              total={state.total}
               siblings={2}
               boundaries={2}
             />
