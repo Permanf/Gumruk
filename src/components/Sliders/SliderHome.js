@@ -29,7 +29,7 @@ function SliderHome({ data, withControls }) {
         <Icon size={20} icon={arrowLeft2} className="text-white font-bold" />
       }
     >
-      {data.length ? (
+      {data?.length ? (
         data?.map((item) => {
           return (
             <Carousel.Slide

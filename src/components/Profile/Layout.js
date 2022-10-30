@@ -12,6 +12,7 @@ import { Drawer, Button, Group, Burger } from "@mantine/core";
 const LayoutProfile = ({ children, title }) => {
   const { width } = useViewportSize();
   const [opened, setOpened] = useState(false);
+  console.log("layout-profile");
 
   return (
     <>
@@ -23,7 +24,7 @@ const LayoutProfile = ({ children, title }) => {
             </h1>
             <div className="w-full flex my-10">
               <div
-                className={`w-1/4 flex-col bg-white py-5  rounded-md shadow-lg h-80 ${
+                className={`w-1/4 flex-col bg-white py-5  rounded-2xl shadow-lg h-80 ${
                   width > 1000 ? "flex" : "hidden"
                 }`}
               >
@@ -54,7 +55,7 @@ const LayoutProfile = ({ children, title }) => {
                 <hr className="my-5" />
 
                 <div
-                  className={`font-normal my-3 text-base flex items-center px-5`}
+                  className={`font-normal my-3 text-base flex items-center px-5 text-red-500`}
                 >
                   <Logout size={22} className="cursor-pointer mr-2" />
                   <span>Выйти</span>
@@ -67,7 +68,7 @@ const LayoutProfile = ({ children, title }) => {
                   width > 1000
                     ? "w-3/4 ml-5 shadow-lg"
                     : "w-full relative overflow-hidden"
-                } bg-white rounded-md `}
+                } bg-white rounded-2xl `}
               >
                 <div
                   className={`${

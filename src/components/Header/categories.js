@@ -13,6 +13,12 @@ export const categories = (lang) => [
     link: "/hyzmatlar",
   },
   {
+    id: 1,
+    name: category[lang]?.notice,
+    link: "/bildirisler",
+  },
+
+  {
     id: 2,
     name: category[lang]?.news,
     link: "/habarlar",

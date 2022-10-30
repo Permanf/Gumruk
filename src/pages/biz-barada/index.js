@@ -107,7 +107,7 @@ const BizBarada = () => {
       <Center>
         <div className="container_out">
           {state.data.content ? (
-            <div dangerouslySetInnerHTML={{ __html: state.data.content }} />
+            <div dangerouslySetInnerHTML={{ __html: state?.data?.content }} />
           ) : (
             <>
               <Skeleton height={15} width={200} radius="xl" my={20} />

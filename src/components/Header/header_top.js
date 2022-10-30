@@ -4,11 +4,14 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconMailForward,
+  IconPlus,
 } from "@tabler/icons";
+import { Button } from "@mantine/core";
 // import { ThemeIcon } from "@mantine/core";
 import { LanguagePicker } from "../Language/Lang";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
 
 const HeaderTop = () => {
@@ -39,8 +42,20 @@ const HeaderTop = () => {
             </div>
           </div>
         ) : null}
+        <div className="flex items-center">
+          <Link href={`/bildiris-gosmak`}>
+            <Button
+              size="xs"
+              className="rounded-full mr-3 border border-blue-500 text-blue-500 bg-white hover:bg-white"
+              // leftIcon={}
+            >
+              <IconPlus size={14} className="mr-2" />
+              Добавить объявление
+            </Button>
+          </Link>
 
-        <LanguagePicker />
+          <LanguagePicker />
+        </div>
       </div>
     </div>
   );
