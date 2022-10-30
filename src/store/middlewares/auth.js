@@ -12,7 +12,7 @@ import {
 } from "../actions/auth";
 import api from "../api";
 import toast from "react-hot-toast";
-import { GetCookie, SetCookie } from "../../utils/cookie";
+import { GetCookie, SetCookie, RemoveCookie } from "../../utils/cookie";
 import cookie from "js-cookie";
 
 export const Logout = () => async (dispatch) => {
@@ -28,25 +28,44 @@ export const Logout = () => async (dispatch) => {
     toast.error("Unknown error");
   }
 };
-
-export const LoadUser = () => async (dispatch) => {
-  dispatch(userLoading());
-  // let token = GetCookie();
-  let token = cookie.get("refresh_token");
-  // console.log(token,"   send")
-  const response = await api.getApi({
-    url: "user/load-user",
-    token,
-    withCredentials: true,
-  });
-  // dispatch(userLoaded(response.data));
-  // console.log(response);
-  if (response.status == 200) {
-    const payload = { token: response.data.token, data: response.data.data };
-    dispatch(loginSuccess(payload));
-    // console.log("i have done it")
+export const Logout1 = () => async (dispatch) => {
+  try {
+    RemoveCookie("token");
+    dispatch(logout());
+  } catch (error) {
+    dispatch(logout());
+    RemoveCookie("token");
+    // toast.error('Неизвестная ошибка');
   }
 };
+export const LoadUser = () => async (dispatch) => {
+  // let token = GetCookie("token");
+  let token = cookie.get("token");
+  // console.log(token);
+  if (!token) {
+    dispatch(userLoadFailed());
+  } else {
+    dispatch(loginSuccess(token));
+  }
+};
+// export const LoadUser = () => async (dispatch) => {
+//   dispatch(userLoading());
+//   // let token = GetCookie();
+//   let token = cookie.get("refresh_token");
+//   // console.log(token,"   send")
+//   const response = await api.getApi({
+//     url: "user/load-user",
+//     token,
+//     withCredentials: true,
+//   });
+//   // dispatch(userLoaded(response.data));
+//   // console.log(response);
+//   if (response.status == 200) {
+//     const payload = { token: response.data.token, data: response.data.data };
+//     dispatch(loginSuccess(payload));
+//     // console.log("i have done it")
+//   }
+// };
 
 export const AdminRegister =
   ({ data, setError, history }) =>

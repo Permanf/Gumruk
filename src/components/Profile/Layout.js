@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { LoadUser } from "../../store/middlewares/auth";
+import { useDispatch, useSelector } from "react-redux";
+// import { LoadUser } from "../../store/middlewares/auth";
 import { Center } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,11 +8,22 @@ import Layout from "../Layouts/Layout";
 import { User, FileUpload, FilePencil, Logout } from "tabler-icons-react";
 import { useViewportSize } from "@mantine/hooks";
 import { Drawer, Button, Group, Burger } from "@mantine/core";
+import { userLoadFailed } from "../../store/actions/auth";
+import { Logout1 } from "../../store/middlewares/auth";
 
 const LayoutProfile = ({ children, title }) => {
   const { width } = useViewportSize();
   const [opened, setOpened] = useState(false);
-  console.log("layout-profile");
+  const router = useRouter();
+  const dispatch = useDispatch();
+  // const { token } = useSelector((state) => state.auth);
+  // console.log(token);
+  // useEffect(() => {
+  //   if (!token) {
+  //     router.push("/agza/login");
+  //   }
+  // }, [token]);
+  // console.log("layout-profile");
 
   return (
     <>
@@ -30,7 +41,7 @@ const LayoutProfile = ({ children, title }) => {
               >
                 <Link href={`/profile`}>
                   <a
-                    className={`font-normal my-3 text-base flex items-center px-5 py-1 border-l-4 border-blue-500 text-blue-500`}
+                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
                   >
                     <User size={22} className="cursor-pointer mr-2" />
                     <span>Профиль</span>
@@ -38,7 +49,7 @@ const LayoutProfile = ({ children, title }) => {
                 </Link>
                 <Link href={`/profile/tickets`}>
                   <a
-                    className={`font-normal my-3 text-base flex items-center px-5`}
+                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
                   >
                     <FileUpload size={22} className="cursor-pointer mr-2" />
                     <span>Tickets</span>
@@ -46,7 +57,7 @@ const LayoutProfile = ({ children, title }) => {
                 </Link>
                 <Link href={`/profile/history`}>
                   <a
-                    className={`font-normal my-3 text-base flex items-center px-5`}
+                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
                   >
                     <FilePencil size={22} className="cursor-pointer mr-2" />
                     <span>История деклораций</span>
@@ -55,7 +66,12 @@ const LayoutProfile = ({ children, title }) => {
                 <hr className="my-5" />
 
                 <div
-                  className={`font-normal my-3 text-base flex items-center px-5 text-red-500`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(Logout1());
+                    router.push("/");
+                  }}
+                  className={`font-normal py-3 text-base flex items-center mx-1 rounded-lg px-5 text-red-500 cursor-pointer hover:bg-blue-100`}
                 >
                   <Logout size={22} className="cursor-pointer mr-2" />
                   <span>Выйти</span>

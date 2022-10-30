@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import LayoutProfile from "../../components/Profile/Layout";
 
 const Settings = () => {

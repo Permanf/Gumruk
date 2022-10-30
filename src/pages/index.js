@@ -85,7 +85,7 @@ const Home = () => {
         action: (response) => {
           setState({ type: "SET_LOADING2", payload: false });
           setState({ type: "SET_DATA_SERVICE", payload: response?.data?.data });
-          console.log(response, "-service");
+          // console.log(response, "-service");
         },
       })
     );

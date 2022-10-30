@@ -2,22 +2,36 @@ import Head from "next/head";
 import Footer from "../Footer";
 import Header from "../Header";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LoadUser } from "../../store/middlewares/auth";
-import { useRouter } from "next/router";
+import { fetchData } from "../../store/middlewares";
+import { userData } from "../../store/actions/auth";
 
 const Layout = ({ children, title, className }) => {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(LoadUser());
-  // }, []);
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const { lang, token } = useSelector((state) => state.auth);
+  useEffect(() => {
+    dispatch(LoadUser());
+  }, []);
 
-  // useEffect(() => {
-  //   if (router.asPath == "/profile") {
-  //     router.push("/profile/settings");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (token) {
+      dispatch(
+        fetchData({
+          token,
+          url: `user/me`,
+          action: (response) => {
+            console.log(response.data);
+            if (response.success) {
+              dispatch(userData(response.data));
+            } else {
+              console.log(response.message);
+            }
+          },
+        })
+      );
+    } // eslint-disable-next-line
+  }, [lang, token]);
   return (
     <>
       <Head>

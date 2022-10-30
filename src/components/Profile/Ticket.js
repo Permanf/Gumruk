@@ -2,15 +2,16 @@ import { useQRCode } from "next-qrcode";
 import { Grid, Badge } from "@mantine/core";
 import Link from "next/link";
 
-const Ticket = () => {
+const Ticket = ({ nomer }) => {
   const { Canvas } = useQRCode();
 
   return (
     <Grid.Col sm={12} md={6} lg={6}>
       <Link href="/profile/tickets/information">
         <div className="rounded-lg shadow-md hover:-translate-y-1 hover:scale-100 overflow-hidden cursor-pointer">
-          <div className="w-full h-12 bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500 flex items-center text-white p-4">
-            Tickets
+          <div className="w-full flex justify-between h-12 bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500 flex items-center text-white p-4">
+            <h1>Tickets</h1>
+            <span>№ {nomer}</span>
           </div>
           <div className="flex justify-between items-start p-2">
             <div className="p-2">
@@ -52,7 +53,7 @@ const Ticket = () => {
               </div>
             </div>
 
-            <div className="flex justify-end px-4">
+            {/* <div className="flex justify-end px-4">
               <Canvas
                 text={"https://github.com/bunlong/next-qrcode"}
                 options={{
@@ -68,7 +69,7 @@ const Ticket = () => {
                   // },
                 }}
               />
-            </div>
+            </div> */}
           </div>
           <div className="w-full h-2 bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500 flex items-center"></div>
         </div>

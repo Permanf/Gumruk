@@ -25,6 +25,8 @@ import Select from "../../components/Agza/Select";
 import { DatePicker } from "@mantine/dates";
 import { useState, useEffect, useReducer } from "react";
 import { SetCookie } from "../../utils/cookie";
+import { loginSuccess } from "../../store/actions/auth";
+import { useRouter } from "next/router";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -45,6 +47,7 @@ const Register = () => {
   const { width } = useViewportSize();
   const [legal, setLegal] = useState("fiziki");
   const dispatch = useDispatch();
+  const router = useRouter();
   const schema = (legal) =>
     Yup.object().shape({
       email: Yup.string()
@@ -128,7 +131,10 @@ const Register = () => {
           setState({ type: "SET_LOADING", payload: false });
           if (response.success) {
             SetCookie("token", response?.data?.data?.token);
+            dispatch(loginSuccess(response?.data?.data?.token));
+            router.push("/");
           } else {
+            console.log(response);
           }
         },
       })

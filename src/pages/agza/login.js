@@ -18,6 +18,9 @@ import { IconLock, IconMail } from "@tabler/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
+import { SetCookie } from "../../utils/cookie";
+import { loginSuccess } from "../../store/actions/auth";
+import { useRouter } from "next/router";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -44,7 +47,16 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
   const dispatch = useDispatch();
-
+  const router = useRouter();
+  const { token } = useSelector((state) => state.auth);
+  // console.log(token);
+  useEffect(() => {
+    if (token) {
+      router.push("/");
+    } else {
+      router.push("/agza/login");
+    }
+  }, [token]);
   // useEffect(() => {
   //   fetch("http://192.168.21.72:9000/sanctum/csrf-cookie")
   //     .then((response) => response)
@@ -61,6 +73,13 @@ const Login = () => {
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           console.log(response);
+          if (response.success) {
+            SetCookie("token", response?.data?.data?.token);
+            dispatch(loginSuccess(response?.data?.data?.token));
+            router.push("/");
+          } else {
+            console.log(response);
+          }
         },
       })
     );

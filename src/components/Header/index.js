@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SpotlightProvider, openSpotlight } from "@mantine/spotlight";
 import { useState } from "react";
-import { Drawer, Button, Group, Burger } from "@mantine/core";
+import { Drawer, Button, Group, Burger, Avatar } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { useSelector } from "react-redux";
 
@@ -18,7 +18,9 @@ const Header = () => {
   const title = opened ? "Close navigation" : "Open navigation";
   const { width } = useViewportSize();
   const { lang } = useSelector((state) => state.data);
-  // console.log(lang);
+  const { token, user } = useSelector((state) => state.auth);
+
+  // console.log(token);
   function SpotlightControl() {
     return (
       <IconSearch
@@ -122,12 +124,24 @@ const Header = () => {
             >
               <SpotlightControl />
             </SpotlightProvider>
-            <Link href="agza/login">
-              <IconUser
-                size={width > 500 ? 30 : 23}
-                className="cursor-pointer"
-              />
-            </Link>
+            {token ? (
+              <Link href="/profile">
+                <Avatar
+                  color="cyan"
+                  radius="xl"
+                  className="cursor-pointer uppercase"
+                >
+                  {user?.first_name ? user?.first_name?.slice(0, 2) : "AD"}
+                </Avatar>
+              </Link>
+            ) : (
+              <Link href="agza/login">
+                <IconUser
+                  size={width > 500 ? 30 : 23}
+                  className="cursor-pointer"
+                />
+              </Link>
+            )}
           </div>
         </div>
       </div>
