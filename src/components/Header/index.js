@@ -131,7 +131,7 @@ const Header = () => {
                   radius="xl"
                   className="cursor-pointer uppercase"
                 >
-                  {user?.first_name ? user?.first_name?.slice(0, 2) : "AD"}
+                  {user?.first_name ? user?.first_name?.slice(0, 2) : "X"}
                 </Avatar>
               </Link>
             ) : (

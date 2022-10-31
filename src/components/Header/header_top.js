@@ -47,7 +47,7 @@ const HeaderTop = () => {
           <Link href={token?.length ? `/bildiris-gosmak` : `/agza/login`}>
             <Button
               size="xs"
-              className="rounded-full mr-3 border border-blue-500 text-blue-500 bg-white hover:bg-white"
+              className="rounded-full mr-3 border bg-blue-500 text-white"
               // leftIcon={}
             >
               <IconPlus size={14} className="mr-2" />

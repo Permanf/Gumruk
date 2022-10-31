@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   InputBase,
   Textarea,
+  Select,
 } from "@mantine/core";
 import { post } from "../../store/middlewares/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,6 +75,9 @@ const NoticeAdd = () => {
   } = useForm({
     resolver: yupResolver(schema()),
   });
+  const data = Array(50)
+    .fill(0)
+    .map((_, index) => `Item ${index}`);
   const onSubmit = (data) => {
     // setState({ type: "SET_LOADING", payload: true });
     console.log(data.file[0]);
@@ -108,24 +112,104 @@ const NoticeAdd = () => {
             mt={30}
             radius="md"
           >
-            <Controller
-              control={control}
-              name="title"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    className={`text-sm mb-5`}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label={"Name"}
-                    placeholder={"Name"}
-                    error={errors?.title?.message}
-                  />
-                );
-              }}
-            />
+            <SimpleGrid
+              cols={2}
+              spacing="lg"
+              breakpoints={[{ maxWidth: 755, cols: 1, spacing: "sm" }]}
+            >
+              <Controller
+                control={control}
+                name="category"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <Select
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      className="text-sm"
+                      label="Category"
+                      placeholder="Pick one"
+                      searchable
+                      nothingFound="No options"
+                      maxDropdownHeight={280}
+                      data={data}
+                      error={errors?.title?.message}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="sub_category"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <Select
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Sub_category"
+                      className="text-sm"
+                      placeholder="Pick one"
+                      searchable
+                      nothingFound="No options"
+                      maxDropdownHeight={280}
+                      data={data}
+                      error={errors?.title?.message}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="phone"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <TextInput
+                      className={`text-sm mb-5`}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Телефон"
+                      placeholder="Телефон"
+                      type="tel"
+                      icon={
+                        <p
+                          className={`${
+                            errors?.phone ? "text-red-500" : "text-black"
+                          } font-normal mx-2`}
+                        >
+                          +993
+                        </p>
+                      }
+                      error={errors?.phone?.message}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="phone"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <TextInput
+                      className={`text-sm mb-5`}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Цена"
+                      placeholder="Цена"
+                      type="text"
+                      error={errors?.phone?.message}
+                    />
+                  );
+                }}
+              />
+            </SimpleGrid>
+
             <Controller
               control={control}
               name="description"
@@ -147,34 +231,6 @@ const NoticeAdd = () => {
               }}
             />
 
-            <Controller
-              control={control}
-              name="phone"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    className={`text-sm mb-5`}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label="Телефон"
-                    placeholder="Телефон"
-                    type="tel"
-                    icon={
-                      <p
-                        className={`${
-                          errors?.phone ? "text-red-500" : "text-black"
-                        } font-normal mx-2`}
-                      >
-                        +993
-                      </p>
-                    }
-                    error={errors?.phone?.message}
-                  />
-                );
-              }}
-            />
             {/* <Controller
               control={control}
               name="email"

@@ -33,6 +33,7 @@ const mockdata = [
     ],
   },
   { label: "Yorite tehnikalar", icon: IconGauge },
+  { label: "Ýolagçylar", icon: IconGauge },
 
   // {
   //   label: "Releases",
