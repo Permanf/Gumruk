@@ -16,6 +16,7 @@ import { useViewportSize } from "@mantine/hooks";
 
 const HeaderTop = () => {
   const { lang } = useSelector((state) => state.data);
+  const { token } = useSelector((state) => state.auth);
   const { width } = useViewportSize();
 
   return (
@@ -43,7 +44,7 @@ const HeaderTop = () => {
           </div>
         ) : null}
         <div className="flex items-center">
-          <Link href={`/bildiris-gosmak`}>
+          <Link href={token?.length ? `/bildiris-gosmak` : `/agza/login`}>
             <Button
               size="xs"
               className="rounded-full mr-3 border border-blue-500 text-blue-500 bg-white hover:bg-white"
