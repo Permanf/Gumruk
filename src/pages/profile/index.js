@@ -93,7 +93,7 @@ const Settings = () => {
     resolver: yupResolver(schema()),
   });
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       setValue("first_name", user?.first_name);
       setValue("last_name", user?.last_name);
       setValue("fathers_name", user?.fathers_name);

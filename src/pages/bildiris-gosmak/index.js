@@ -14,6 +14,7 @@ import {
   InputBase,
   Textarea,
   Select,
+  Progress,
 } from "@mantine/core";
 import { post } from "../../store/middlewares/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import InputMask from "react-input-mask";
-import { IconLock, IconMail, IconCalendar } from "@tabler/icons";
+import {
+  IconLock,
+  IconMail,
+  IconCalendar,
+  IconPictureInPicture,
+  IconTrash,
+} from "@tabler/icons";
 import { useViewportSize } from "@mantine/hooks";
 import { useState, useEffect, useReducer } from "react";
 import { SetCookie } from "../../utils/cookie";
@@ -250,13 +257,35 @@ const NoticeAdd = () => {
               }}
             /> */}
             <span className="mt-3 text-sm">Image</span>
+
             <div
               className={`w-full rounded-2xl border-4 border-dashed flex p-3 mt-1 mb-4 ${
                 errors?.file?.message ? "border-red-400" : "border-gray-300"
               }`}
             >
-              <div className="w-1/2 flex justify-center items-center">
-                No image
+              <div className="w-1/2 flex justify-center mr-4">
+                <div className="w-full">
+                  <div className="rounded-xl shadow-lg p-3 border flex items-center">
+                    {/* <IconPictureInPicture size={30} className="mr-3" /> */}
+                    <div className="w-full">
+                      <span className="text-sm mb-1">Upload file name</span>
+                      <Progress
+                        value={75}
+                        // label="75%"
+                        size="md"
+                        radius="xl"
+                        animate
+                      />
+                      <Group position="right">
+                        <span className="text-sm mt-1">75%</span>
+                      </Group>
+                    </div>
+                    <IconTrash
+                      size={23}
+                      className="ml-3 text-red-600 cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
               <div className="w-1/2">
                 <div className="flex justify-center items-center w-full">
