@@ -264,9 +264,8 @@ const NoticeAdd = () => {
               }`}
             >
               <div className="w-1/2 flex justify-center mr-4">
-                <div className="w-full">
-                  <div className="rounded-xl shadow-lg p-3 border flex items-center">
-                    {/* <IconPictureInPicture size={30} className="mr-3" /> */}
+                <div className="w-full flex flex-col">
+                  <div className="rounded-xl p-3 border flex items-center my-1">
                     <div className="w-full">
                       <span className="text-sm mb-1">Upload file name</span>
                       <Progress
@@ -278,6 +277,25 @@ const NoticeAdd = () => {
                       />
                       <Group position="right">
                         <span className="text-sm mt-1">75%</span>
+                      </Group>
+                    </div>
+                    <IconTrash
+                      size={23}
+                      className="ml-3 text-red-600 cursor-pointer"
+                    />
+                  </div>
+                  <div className="rounded-xl p-3 border flex items-center my-1">
+                    <div className="w-full">
+                      <span className="text-sm mb-1">Upload file name</span>
+                      <Progress
+                        value={38}
+                        // label="75%"
+                        size="md"
+                        radius="xl"
+                        animate
+                      />
+                      <Group position="right">
+                        <span className="text-sm mt-1">38%</span>
                       </Group>
                     </div>
                     <IconTrash
