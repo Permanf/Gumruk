@@ -46,7 +46,7 @@ const Settings = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  // console.log(user);
   const schema = () =>
     Yup.object().shape({
       email: Yup.string()

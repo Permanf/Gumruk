@@ -13,7 +13,7 @@ const Tickets = () => {
           <Link href={"/profile/tickets/create"}>
             <Button className="bg-blue-500">
               <IconPlus size={14} className="mr-2" />
-              Create Ticket
+              Declaration create
             </Button>
           </Link>
         </div>

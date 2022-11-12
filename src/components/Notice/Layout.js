@@ -3,6 +3,7 @@ import Layout from "../Layouts/Layout";
 import { useViewportSize } from "@mantine/hooks";
 import Link from "next/link";
 import { Sidebar } from "./Sidebar";
+import { Filter } from "tabler-icons-react";
 
 function LayoutNotice({ children, title }) {
   const { width } = useViewportSize();
@@ -22,20 +23,26 @@ function LayoutNotice({ children, title }) {
               }`}
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
-                <span className="font-semibold">
+                <span className="font-semibold text-sm sm:text-base">
                   Найдено всего 21 результата
                 </span>
-                <Select
-                  className="border rounded-sm"
-                  // label="Your favorite framework/library"
-                  placeholder="Saylanmadyk"
-                  data={[
-                    { value: "high", label: "По цене убывания" },
-                    { value: "loew", label: "По цене возрастания" },
-                    { value: "time1", label: "По дате убывания" },
-                    { value: "time2", label: "По дате возрастания" },
-                  ]}
-                />
+                <div className="w-full sm:w-fit flex justify-between items-center ">
+                  <span className="font-semibold flex sm:hidden">
+                    <Filter />
+                    Filter
+                  </span>
+                  <Select
+                    className="border border-gray-50 rounded-sm"
+                    // label="Your favorite framework/library"
+                    placeholder="Saylanmadyk"
+                    data={[
+                      { value: "high", label: "По цене убывания" },
+                      { value: "loew", label: "По цене возрастания" },
+                      { value: "time1", label: "По дате убывания" },
+                      { value: "time2", label: "По дате возрастания" },
+                    ]}
+                  />
+                </div>
               </Group>
               {children}
             </div>

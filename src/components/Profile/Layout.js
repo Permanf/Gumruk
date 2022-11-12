@@ -16,7 +16,8 @@ const LayoutProfile = ({ children, title }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  // const { token } = useSelector((state) => state.auth);
+  // console.log(router);
+  const { token } = useSelector((state) => state.auth);
   // console.log(token);
   // useEffect(() => {
   //   if (!token) {
@@ -84,7 +85,7 @@ const LayoutProfile = ({ children, title }) => {
                   width > 1000
                     ? "w-3/4 ml-5 shadow-lg"
                     : "w-full relative overflow-hidden"
-                } bg-white rounded-2xl `}
+                } bg-white rounded-2xl px-2 py-6`}
               >
                 <div
                   className={`${

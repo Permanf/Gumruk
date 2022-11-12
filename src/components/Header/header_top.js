@@ -54,8 +54,7 @@ const HeaderTop = () => {
               Добавить объявление
             </Button>
           </Link>
-
-          <LanguagePicker />
+          {width > 750 ? <LanguagePicker /> : null}
         </div>
       </div>
     </div>

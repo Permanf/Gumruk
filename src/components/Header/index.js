@@ -77,19 +77,23 @@ const Header = () => {
                 <Image
                   src={logo_white}
                   alt="image"
-                  width={width > 500 ? 100 : 45}
-                  height={width > 500 ? 100 : 45}
+                  width={width > 600 ? 100 : 45}
+                  height={width > 600 ? 100 : 45}
                 />
               ) : (
                 <Image
                   src={logo_blue}
                   alt="image"
-                  width={width > 500 ? 100 : 45}
-                  height={width > 500 ? 100 : 45}
+                  width={width > 600 ? 100 : 45}
+                  height={width > 600 ? 100 : 45}
                 />
               )}
               <Link href="/">
-                <a className="text-xs sm:text-sm font-normal sm:font-semibold ml-3 cursor-pointer">
+                <a
+                  className={`${
+                    width > 600 ? "text-sm " : "text-xs"
+                  }  font-semibold ml-3 cursor-pointer`}
+                >
                   ДИРЕКЦИЯ ХОЗЯЙСТВЕННОГО УПРАВЛЕНИЯ
                 </a>
               </Link>

@@ -125,7 +125,7 @@ const Notice = () => {
       price: 73648,
     },
   ];
-  console.log(router);
+  // console.log(router);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -138,7 +138,7 @@ const Notice = () => {
         <Skeletons />
       ) : data?.length ? (
         data?.map((item) => {
-          return <Card item={item} key={item.id} />;
+          return <Card item={item} />;
         })
       ) : (
         <h1>Tapylmady</h1>

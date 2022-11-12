@@ -85,6 +85,8 @@ const NoticeAdd = () => {
   const data = Array(50)
     .fill(0)
     .map((_, index) => `Item ${index}`);
+
+  const region = ["Ashgabat", "Mary", "Dashoguz", "Ahal", "Lebap"];
   const onSubmit = (data) => {
     // setState({ type: "SET_LOADING", payload: true });
     console.log(data.file[0]);
@@ -174,7 +176,7 @@ const NoticeAdd = () => {
                 render={({ field: { onChange, onBlur, value, ref } }) => {
                   return (
                     <TextInput
-                      className={`text-sm mb-5`}
+                      className={`text-sm`}
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
@@ -202,7 +204,7 @@ const NoticeAdd = () => {
                 render={({ field: { onChange, onBlur, value, ref } }) => {
                   return (
                     <TextInput
-                      className={`text-sm mb-5`}
+                      className={`text-sm`}
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
@@ -211,6 +213,28 @@ const NoticeAdd = () => {
                       placeholder="Цена"
                       type="text"
                       error={errors?.phone?.message}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="region"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <Select
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Место"
+                      className="text-sm"
+                      placeholder="Место"
+                      searchable
+                      nothingFound="No options"
+                      maxDropdownHeight={280}
+                      data={region}
+                      error={errors?.region?.message}
                     />
                   );
                 }}
@@ -228,7 +252,7 @@ const NoticeAdd = () => {
                     value={value}
                     ref={ref}
                     placeholder="Description..."
-                    className={`text-sm mb-5`}
+                    className={`text-sm my-5`}
                     autosize
                     minRows={6}
                     label={"Description"}
@@ -259,11 +283,11 @@ const NoticeAdd = () => {
             <span className="mt-3 text-sm">Image</span>
 
             <div
-              className={`w-full rounded-2xl border-4 border-dashed flex p-3 mt-1 mb-4 ${
+              className={`w-full rounded-2xl border-4 border-dashed flex flex-col sm:flex-row p-3 mt-1 mb-4 ${
                 errors?.file?.message ? "border-red-400" : "border-gray-300"
               }`}
             >
-              <div className="w-1/2 flex justify-center mr-4">
+              <div className="w-full sm:w-1/2 flex  justify-center mr-4">
                 <div className="w-full flex flex-col">
                   <div className="rounded-xl p-3 border flex items-center my-1">
                     <div className="w-full">
@@ -305,7 +329,7 @@ const NoticeAdd = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-1/2">
+              <div className="w-full sm:w-1/2 mt-5 sm:mt-0">
                 <div className="flex justify-center items-center w-full">
                   <label
                     htmlFor="dropzone-file"

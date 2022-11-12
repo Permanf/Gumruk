@@ -89,10 +89,10 @@ const Register = () => {
         .min(6, "minimum 6 simbol bolmaly")
         .max(50, "maxsimum 50 simbol bolmaly")
         .required("acar soz yazmaly"),
-      // password2: Yup.string()
-      //   .min(6, "minimum 6 simbol bolmaly")
-      //   .max(50, "maxsimum 50 simbol bolmaly")
-      //   .required("acar soz yazmaly"),
+      password_confirmation: Yup.string()
+        .min(6, "minimum 6 simbol bolmaly")
+        .max(50, "maxsimum 50 simbol bolmaly")
+        .required("acar soz yazmaly"),
       birthday:
         legal === "fiziki"
           ? Yup.string().required("Doglan senaniz bolmaly")
@@ -147,6 +147,7 @@ const Register = () => {
     setValue("fathers_name", "");
     setValue("phone", "");
     setValue("password", "");
+    setValue("password_confirmation", "");
     setValue("birthday", "");
   }, [legal]);
 
@@ -315,25 +316,6 @@ const Register = () => {
                   );
                 }}
               />
-
-              <Controller
-                control={control}
-                name="password"
-                render={({ field: { onChange, onBlur, value, ref } }) => {
-                  return (
-                    <PasswordInput
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      value={value}
-                      ref={ref}
-                      label="Password"
-                      placeholder="Your password"
-                      icon={<IconLock size={16} />}
-                      error={errors?.password?.message}
-                    />
-                  );
-                }}
-              />
               {legal == "fiziki" ? (
                 <Controller
                   control={control}
@@ -357,6 +339,42 @@ const Register = () => {
                   }}
                 />
               ) : null}
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <PasswordInput
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Password"
+                      placeholder="Your password"
+                      icon={<IconLock size={16} />}
+                      error={errors?.password?.message}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="password_confirmation"
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <PasswordInput
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                      label="Password confirmation"
+                      placeholder="Repeat password"
+                      icon={<IconLock size={16} />}
+                      error={errors?.password_confirmation?.message}
+                    />
+                  );
+                }}
+              />
             </SimpleGrid>
             <div className="w-full sm:w-3/5 mt-5">
               <div className="flex flex-col sm:flex-row sm:items-center my-3">
