@@ -2,23 +2,20 @@ import Layout from "../../components/Layouts/Layout";
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
   Anchor,
   Paper,
   Title,
   Text,
   Container,
-  Group,
   Button,
   SimpleGrid,
-  InputBase,
 } from "@mantine/core";
 import { post } from "../../store/middlewares/index";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import InputMask from "react-input-mask";
+// import InputMask from "react-input-mask";
 import { IconLock, IconMail, IconCalendar } from "@tabler/icons";
 import { useViewportSize } from "@mantine/hooks";
 import Select from "../../components/Agza/Select";
@@ -27,6 +24,7 @@ import { useState, useEffect, useReducer } from "react";
 import { SetCookie } from "../../utils/cookie";
 import { loginSuccess } from "../../store/actions/auth";
 import { useRouter } from "next/router";
+import { showNotification } from "@mantine/notifications";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -111,34 +109,43 @@ const Register = () => {
   //   "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
 
   const onSubmit = (data) => {
-    setState({ type: "SET_LOADING", payload: true });
-    data = { ...data, legal_entity: legal == "fiziki" ? 0 : 1 };
-    data.phone = `+993${data.phone}`;
-    function convert(str) {
-      var date = new Date(str),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("/");
+    if (data.password == data.password_confirmation) {
+      setState({ type: "SET_LOADING", payload: true });
+      data = { ...data, legal_entity: legal == "fiziki" ? 0 : 1 };
+      data.phone = `+993${data.phone}`;
+      function convert(str) {
+        var date = new Date(str),
+          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+          day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("/");
+      }
+      data.birthday = data.legal_entity == 1 ? "" : convert(data.birthday);
+      console.log(data);
+      dispatch(
+        post({
+          url: `register`,
+          data,
+          action: (response) => {
+            console.log(response?.data);
+            setState({ type: "SET_LOADING", payload: false });
+            if (response.success) {
+              SetCookie("token", response?.data?.data?.token);
+              dispatch(loginSuccess(response?.data?.data?.token));
+              router.push("/");
+            } else {
+              console.log(response);
+            }
+          },
+        })
+      );
+    } else {
+      // console.log("den dal");
+      showNotification({
+        color: "red",
+        title: "Açar sözüňiz den däl!",
+        // message: "",
+      });
     }
-    data.birthday = data.legal_entity == 1 ? "" : convert(data.birthday);
-    console.log(data);
-    dispatch(
-      post({
-        url: `register`,
-        data,
-        action: (response) => {
-          console.log(response?.data);
-          setState({ type: "SET_LOADING", payload: false });
-          if (response.success) {
-            SetCookie("token", response?.data?.data?.token);
-            dispatch(loginSuccess(response?.data?.data?.token));
-            router.push("/");
-          } else {
-            console.log(response);
-          }
-        },
-      })
-    );
   };
   useEffect(() => {
     setValue("email", "");

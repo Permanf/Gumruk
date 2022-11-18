@@ -91,14 +91,14 @@ const LayoutProfile = ({ children, title }) => {
                   className={`${
                     width > 1000
                       ? "hidden"
-                      : "w-16 h-16 rounded-full bg-blue-300 absolute -top-4 -left-4 flex justify-center items-center "
+                      : "w-16 h-16 rounded-full  absolute -top-3 -left-2 flex justify-center items-center "
                   }`}
                 >
                   <Burger
                     color={"#000000"}
-                    size={18}
+                    size={23}
                     onClick={() => setOpened(true)}
-                    className="ml-2 mt-2"
+                    className="ml-2 mt-2 font-semibold"
                   />
                 </div>
                 {children}

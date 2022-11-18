@@ -21,7 +21,7 @@ const Layout = ({ children, title, className }) => {
           token,
           url: `user/me`,
           action: (response) => {
-            console.log(response.data);
+            // console.log(response.data);
             if (response.success) {
               dispatch(userData(response.data));
             } else {
