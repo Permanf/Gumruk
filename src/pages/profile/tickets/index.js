@@ -3,8 +3,13 @@ import { Grid, Button } from "@mantine/core";
 import Ticket from "../../../components/Profile/Ticket";
 import Link from "next/link";
 import { IconPlus } from "@tabler/icons";
+import { useDispatch } from "react-redux";
+import { imageIds, setDeclarationId } from "../../../store/actions/data";
 
 const Tickets = () => {
+  const dispatch = useDispatch();
+  // dispatch(imageIds([]));
+  // dispatch(setDeclarationId(null));
   return (
     <LayoutProfile title="Bilet">
       <div className="p-7">

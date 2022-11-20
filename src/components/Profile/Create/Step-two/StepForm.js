@@ -1,7 +1,7 @@
 import { TextInput, Button, SimpleGrid, Select, Group } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { memo } from "react";
-// import { post } from "../../store/middlewares/index";
+import { memo, useReducer } from "react";
+import { post } from "../../../../store/middlewares/index";
 import { useDispatch, useSelector } from "react-redux";
 // import { useEffect, useState } from "react";
 // import { fetchData } from "../../../store/middlewares";
@@ -9,28 +9,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import { getImageIds } from "../../../../store/selectors/auth";
+import { getImageIds, getToken } from "../../../../store/selectors/auth";
+import { setDeclarationId } from "../../../../store/actions/data";
 // import { IconLock, IconMail, IconCalendar } from "@tabler/icons";
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
 const StepForm = ({ data, active, setActive }) => {
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+  });
+  const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
   const ids = useSelector(getImageIds);
+  const token = useSelector(getToken);
   if (ids.length == 0) {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   }
-  // const nextStep = () => {
-  //   if (ids.length > 0) {
-  //     setActive((current) => (current < 3 ? current + 1 : current));
-  //     scrollTo({ y: 0 });
-  //   } else {
-  //     showNotification({
-  //       color: "red",
-  //       title: "Surat hokman bolmaly!",
-  //       // message: "",
-  //     });
-  //   }
-  // };
   const prevStep = () => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
@@ -66,33 +72,61 @@ const StepForm = ({ data, active, setActive }) => {
   // console.log(data_yurt);
   const schema = () =>
     Yup.object().shape({
-      // email: Yup.string()
-      //   .required("E-mail address yazmaly")
-      //   .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
-      // first_name: Yup.string()
-      //   .required("Adynyzy yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // last_name: Yup.string()
-      //   .required("Familyanyzy yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // fathers_name: Yup.string()
-      //   .required("Atanyzyn adyny yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // phone: Yup.string()
-      //   .required("Telefon nomer bolmaly")
-      //   .min(8, "minimum 8 simbol bolmaly")
-      //   .max(8, "mixsimum 8 simbol bolmaly")
-      //   .matches(
-      //     /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
-      //     "Dine san bolmaly!"
-      //   ),
-      // password: Yup.string()
-      //   .min(6, "minimum 6 simbol bolmaly")
-      //   .max(50, "maxsimum 50 simbol bolmaly")
-      //   .required("acar soz yazmaly"),
+      type_of_declaration: Yup.string().required(
+        "type_of_declaration hokman yazmaly"
+      ),
+      exporter_name: Yup.string()
+        .required("exporter_name hokman yazmaly")
+        .min(3, "minimum 3 simbol bolmaly")
+        .max(500, "maxsimum 500 simbol bolmaly"),
+      exporter_code: Yup.number(),
+      consignee_name: Yup.string()
+        .required("consignee_name hokman yazmaly")
+        .min(10, "minimum 10 simbol bolmaly")
+        .max(500, "maxsimum 500 simbol bolmaly"),
+      consignee_code: Yup.number(),
+      financial_name: Yup.string()
+        .required("financial_name hokman yazmaly")
+        .min(10, "minimum 10 simbol bolmaly")
+        .max(500, "maxsimum 500 simbol bolmaly"),
+      financial_code: Yup.number(),
+      trading_country: Yup.string().required("trading_country hokman yazmaly"),
+      export_country_name: Yup.string().required(
+        "export_country_name hokman yazmaly"
+      ),
+      destination_country_name: Yup.string().required(
+        "destination_country_name hokman yazmaly"
+      ),
+      country_of_origin_name: Yup.string().required(
+        "country_of_origin_name hokman yazmaly"
+      ),
+      departure_arrival_information_identity: Yup.string()
+        .required("departure_arrival_information_identity hokman yazmaly")
+        .min(3, "minimum 3 simbol bolmaly")
+        .max(255, "maxsimum 255 simbol bolmaly"),
+      departure_arrival_information_nationality: Yup.string().required(
+        "departure_arrival_information_nationality hokman yazmaly"
+      ),
+      border_information_identity: Yup.string()
+        .required("border_information_identity hokman yazmaly")
+        .min(3, "minimum 3 simbol bolmaly")
+        .max(255, "maxsimum 255 simbol bolmaly"),
+      border_information_nationality: Yup.string().required(
+        "border_information_nationality hokman yazmaly"
+      ),
+      delivery_terms_code: Yup.string().required(
+        "delivery_terms_code hokman yazmaly"
+      ),
+      delivery_terms_place: Yup.string()
+        .required("delivery_terms_place hokman yazmaly")
+        .min(3, "minimum 3 simbol bolmaly")
+        .max(255, "maxsimum 255 simbol bolmaly"),
+      delivery_terms_situation: Yup.string().required(
+        "delivery_terms_situation hokman yazmaly"
+      ),
+      border_office_name: Yup.string().required(
+        "border_office_name hokman yazmaly"
+      ),
     });
   const {
     handleSubmit,
@@ -105,9 +139,39 @@ const StepForm = ({ data, active, setActive }) => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    setActive((current) => (current < 3 ? current + 1 : current));
-    scrollTo({ y: 0 });
+    data = {
+      ...data,
+      export_country_code: data?.export_country_name,
+      destination_country_code: data?.destination_country_name,
+      border_office_code: data?.border_office_name,
+      representative_id: 1,
+      images_id: ids,
+    };
+    console.log(data, "2 step data");
+    setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      post({
+        url: `user/declaration/create-declaration`,
+        data,
+        token,
+        action: (response) => {
+          // console.log(response?.data);
+          if (response.success) {
+            setState({ type: "SET_LOADING", payload: false });
+            console.log(response?.data?.data?.declaration_id);
+            dispatch(setDeclarationId(response?.data?.data?.declaration_id));
+            setActive((current) => (current < 3 ? current + 1 : current));
+            scrollTo({ y: 0 });
+            // console.log(response);
+          } else {
+            console.log(response.data);
+            setState({ type: "SET_LOADING", payload: false });
+          }
+        },
+      })
+    );
+
+    // export_country_code
   };
   return (
     <>
@@ -307,23 +371,7 @@ const StepForm = ({ data, active, setActive }) => {
               );
             }}
           />
-          {/* <Controller
-          control={control}
-          name="destination_country_code"
-          render={({ field: { onChange, onBlur, value, ref } }) => {
-            return (
-              <TextInput
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                ref={ref}
-                label="Destination_country_code"
-                placeholder="Destination_country_code"
-                error={errors?.destination_country_code?.message}
-              />
-            );
-          }}
-        /> */}
+
           <Controller
             control={control}
             name="country_of_origin_name"
@@ -540,7 +588,7 @@ const StepForm = ({ data, active, setActive }) => {
             </div>
             <Button
               type="submit"
-              // loading={state.loading}
+              loading={state.loading}
               className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
             >
               Next step

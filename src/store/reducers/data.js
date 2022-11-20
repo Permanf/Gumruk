@@ -1,5 +1,5 @@
 import {
-  SET_CATEGORY,
+  // SET_CATEGORY,
   SET_FILTER_ID,
   GET_HELPER_DATA,
   SET_UPLOAD_FILE,
@@ -7,6 +7,7 @@ import {
   SUCCESS_UPLOAD_FILE,
   FAILURE_UPLOAD_FILE,
   SET_IMAGE_IDS,
+  SET_DECLARATON_ID,
 } from "../actions/data";
 import { modifyFiles } from "../../utils/uploadFile";
 import { modifyImageIds } from "../../utils/imageIds";
@@ -15,17 +16,9 @@ const initialState = {
   // categories: [],
   filters: {},
   lang: "",
-  fileProgress: {
-    // format will be like below
-    // 1: {
-    //   id: 1,
-    // file: "",
-    //   progress: 0,
-    // cancelSource: source,
-    //   status: 0,
-    // },
-  },
+  fileProgress: {},
   imageIds: [],
+  declarationId: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -93,10 +86,12 @@ const reducer = (state = initialState, action) => {
     case SET_IMAGE_IDS:
       return {
         ...state,
-        imageIds: [
-          // ...state.imageIds,
-          ...modifyImageIds(state.imageIds, action.payload),
-        ],
+        imageIds: [...modifyImageIds(state.imageIds, action.payload)],
+      };
+    case SET_DECLARATON_ID:
+      return {
+        ...state,
+        declarationId: action.payload,
       };
     default:
       return state;

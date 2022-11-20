@@ -166,12 +166,12 @@ const Login = () => {
 const schema = Yup.object().shape({
   email: Yup.string()
     .min(5, "Минимум 5 значений")
-    .max(15, "Максимум 15 значений")
+    .max(255, "Максимум 255 значений")
     .required("E-mail address yazmaly")
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
   password: Yup.string()
     .min(5, "Минимум 5 значений")
-    .max(20, "Максимум 20 значений")
+    .max(50, "Максимум 50 значений")
     .required("Пароль обязателен"),
 });
 export default Login;

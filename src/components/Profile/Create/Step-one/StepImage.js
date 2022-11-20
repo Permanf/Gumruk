@@ -23,6 +23,7 @@ import {
 } from "../../../../store/selectors/auth";
 import { size, toArray } from "lodash";
 import { showNotification } from "@mantine/notifications";
+import { IconX } from "@tabler/icons";
 
 const StepImage = ({ active, setActive }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const StepImage = ({ active, setActive }) => {
       showNotification({
         color: "red",
         title: "Surat hokman bolmaly!",
+        icon: <IconX />,
         // message: "",
       });
     }
@@ -81,9 +83,9 @@ const StepImage = ({ active, setActive }) => {
             },
             withCredentials: false,
           }).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status == 200) {
-              console.log(res.data);
+              // console.log(res.data);
               dispatch(imageIds(res.data.images_id));
               dispatch(successUploadFile(file.id));
             }

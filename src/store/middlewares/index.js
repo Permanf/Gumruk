@@ -21,6 +21,7 @@ export const fetchData =
 export const post =
   ({ url, token, action, data }) =>
   async (dispatch) => {
+    console.log(data, "--postpayload");
     try {
       const response = await api.postApi({
         url,

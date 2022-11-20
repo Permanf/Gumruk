@@ -11,3 +11,4 @@ export const getFilters = (state) => state.data.filters;
 export const getlang = (state) => state.data.lang;
 export const getUpload = (state) => state.data.fileProgress;
 export const getImageIds = (state) => state.data.imageIds;
+export const getDeclarationId = (state) => state.data.declarationId;

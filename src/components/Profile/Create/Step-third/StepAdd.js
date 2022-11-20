@@ -11,7 +11,8 @@ import {
   Center,
 } from "@mantine/core";
 import { Plus } from "tabler-icons-react";
-import { useState } from "react";
+import { useState, useReducer, useEffect } from "react";
+import { post } from "../../../../store/middlewares/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
@@ -22,11 +23,49 @@ import {
   IconDotsVertical,
   IconTrash,
   IconEdit,
+  IconX,
+  IconCheck,
 } from "@tabler/icons";
+import { getDeclarationId, getToken } from "../../../../store/selectors/auth";
+import { showNotification } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_PRODUCTS":
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+      };
+    default:
+      return state;
+  }
+}
 function StepAdd({ data, active, setActive }) {
+  const [state, setState] = useReducer(reducer, {
+    loading: false,
+    products: [],
+  });
   const [opened, setOpened] = useState(false);
-  console.log(data, "--dec");
+  const dispatch = useDispatch();
+  const token = useSelector(getToken);
+  const get_declaration_id = useSelector(getDeclarationId);
+  const router = useRouter();
+
+  // if (state.products.length == 0) {
+  //   setActive((current) => (current > 0 ? current - 1 : current));
+  //   scrollTo({ y: 0 });
+  // }
+  const prevStep = () => {
+    setActive((current) => (current > 0 ? current - 1 : current));
+    scrollTo({ y: 0 });
+  };
+  // console.log(data, "--dec");
   const data_yurt = [];
   for (let i = 0; i < data?.countries?.length; i++) {
     data_yurt.push({
@@ -43,33 +82,18 @@ function StepAdd({ data, active, setActive }) {
   }
   const schema = () =>
     Yup.object().shape({
-      // email: Yup.string()
-      //   .required("E-mail address yazmaly")
-      //   .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
-      // first_name: Yup.string()
-      //   .required("Adynyzy yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // last_name: Yup.string()
-      //   .required("Familyanyzy yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // fathers_name: Yup.string()
-      //   .required("Atanyzyn adyny yazmaly")
-      //   .min(3, "minimum 3 simbol bolmaly")
-      //   .max(35, "maxsimum 35 simbol bolmaly"),
-      // phone: Yup.string()
-      //   .required("Telefon nomer bolmaly")
-      //   .min(8, "minimum 8 simbol bolmaly")
-      //   .max(8, "mixsimum 8 simbol bolmaly")
-      //   .matches(
-      //     /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
-      //     "Dine san bolmaly!"
-      //   ),
-      // password: Yup.string()
-      //   .min(6, "minimum 6 simbol bolmaly")
-      //   .max(50, "maxsimum 50 simbol bolmaly")
-      //   .required("acar soz yazmaly"),
+      name: Yup.string()
+        .required("Harydyn ady hokman yazmaly")
+        .min(3, "minimum 3 simbol bolmaly"),
+      code: Yup.number().required("code hokman yazmaly"),
+      country_of_origin_code: Yup.string().required(
+        "country_of_origin_code hokman yazmaly"
+      ),
+      uom_name: Yup.string().required("uom_name hokman yazmaly"),
+      uom_quantity: Yup.number().required("uom_quantity hokman yazmaly"),
+      uom_price: Yup.number().required("uom_price hokman yazmaly"),
+      brutto_weight: Yup.number().required("brutto_weight hokman yazmaly"),
+      netto_weight: Yup.number().required("netto_weight hokman yazmaly"),
     });
   const {
     handleSubmit,
@@ -82,24 +106,85 @@ function StepAdd({ data, active, setActive }) {
   });
 
   const onSubmit = (data) => {
+    data = {
+      ...data,
+      uom_code: data?.uom_name,
+    };
+
     console.log(data);
+    setState({ type: "SET_PRODUCTS", payload: data });
+    setOpened(false);
+    setValue("name", "");
+    setValue("code", "");
+    setValue("country_of_origin_code", "");
+    setValue("uom_name", "");
+    setValue("uom_quantity", "");
+    setValue("uom_price", "");
+    setValue("brutto_weight", "");
+    setValue("netto_weight", "");
   };
-  const elements = [
-    { position: 6, mass: 12.011, symbol: "C", name: "Carbon" },
-    { position: 7, mass: 14.007, symbol: "N", name: "Nitrogen" },
-    { position: 39, mass: 88.906, symbol: "Y", name: "Yttrium" },
-    { position: 56, mass: 137.33, symbol: "Ba", name: "Barium" },
-    { position: 58, mass: 140.12, symbol: "Ce", name: "Cerium" },
-  ];
-  const rows = elements.map((element) => (
-    <tr key={element.name}>
-      <td>Американское Самоа</td>
+
+  const data_items = {};
+  const nextStep = () => {
+    // setActive((current) => (current > 0 ? current - 1 : current));
+    // scrollTo({ y: 0 });
+    console.log(state.products);
+
+    data_items = {
+      items: state.products,
+      declaration_id: get_declaration_id,
+    };
+    const data = {};
+    data = data_items;
+    console.log(data_items, "--gitmeli");
+    setState({ type: "SET_LOADING", payload: true });
+    dispatch(
+      post({
+        url: `user/declaration/create-items`,
+        data,
+        token,
+        action: (response) => {
+          if (response.success) {
+            setState({ type: "SET_LOADING", payload: false });
+            console.log(response?.data);
+            showNotification({
+              color: "green",
+              title: "Siz üstünlikli deklarasiýa goşdynyz!",
+              icon: <IconCheck />,
+            });
+            router.push("/profile/tickets");
+            // console.log(response);
+          } else {
+            console.log(response.data);
+            showNotification({
+              color: "red",
+              title: "Üstünlikli bolmady!",
+              // message: "",
+              icon: <IconX />,
+              autoClose: 5000,
+            });
+          }
+        },
+      })
+    );
+  };
+  // const elements = [
+  //   { position: 6, mass: 12.011, symbol: "C", name: "Carbon" },
+  //   { position: 7, mass: 14.007, symbol: "N", name: "Nitrogen" },
+  //   { position: 39, mass: 88.906, symbol: "Y", name: "Yttrium" },
+  //   { position: 56, mass: 137.33, symbol: "Ba", name: "Barium" },
+  //   { position: 58, mass: 140.12, symbol: "Ce", name: "Cerium" },
+  // ];
+  const rows = state?.products.map((element) => (
+    <tr key={element.code}>
       <td>{element.name}</td>
-      <td>{element.symbol}</td>
-      <td>{element.mass}</td>
-      <td>{element.mass}</td>
-      <td>{element.mass}</td>
-      <td>{element.mass}</td>
+      {/* <td>{element.code}</td> */}
+      <td>{data_yurt[parseInt(element.country_of_origin_code) - 1].label}</td>
+      <td>{element.brutto_weight}</td>
+      <td>{element.netto_weight}</td>
+      <td>{data_size[parseInt(element.uom_name) - 1].label}</td>
+      <td>{element.uom_quantity}</td>
+      <td>{element.uom_price}</td>
       <td>
         <Menu>
           <Menu.Target>
@@ -162,7 +247,7 @@ function StepAdd({ data, active, setActive }) {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="name"
+                    label="Name"
                     placeholder="Name"
                     error={errors?.name?.message}
                   />
@@ -264,14 +349,13 @@ function StepAdd({ data, active, setActive }) {
               className="w-full"
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 return (
-                  <Select
+                  <TextInput
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label={"uom_quantity"}
-                    placeholder="Select"
-                    data={["IM", "EX"]}
+                    label={"Uom_quantity"}
+                    placeholder="quantity"
                     error={errors?.uom_quantity?.message}
                   />
                 );
@@ -283,14 +367,13 @@ function StepAdd({ data, active, setActive }) {
               className="w-full"
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 return (
-                  <Select
+                  <TextInput
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label={"uom_price"}
-                    placeholder="Select"
-                    data={["IM", "EX"]}
+                    label={"Uom_price"}
+                    placeholder="price"
                     error={errors?.uom_price?.message}
                   />
                 );
@@ -298,31 +381,61 @@ function StepAdd({ data, active, setActive }) {
             />
           </SimpleGrid>
           <Center className="mt-10">
-            <Button className="bg-blue-500">Save</Button>
+            <Button
+              type="submit"
+              // loading={state.loading}
+              className="bg-blue-500"
+            >
+              Save
+            </Button>
           </Center>
         </form>
       </Modal>
-      <Table striped highlightOnHover withBorder>
-        <thead>
-          <tr>
-            {/* <th>#Id</th> */}
-            <th>Harydyn ady</th>
-            {/* <th>Code</th> */}
-            <th>Gelip cykan yurdy</th>
-            <th>Brutto agramy</th>
-            <th>Netto agramy</th>
-            {/* <th>Uom_code</th> */}
-            <th>Olcheg birligi</th>
-            <th>Mochberi</th>
-            <th>Bahasy</th>
-            <th>
-              Action
-              {/* <IconSettings /> */}
-            </th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
+      {state.products.length > 0 ? (
+        <>
+          <Table striped highlightOnHover withBorder>
+            <thead>
+              <tr>
+                {/* <th>#Id</th> */}
+                <th>Harydyn ady</th>
+                {/* <th>Code</th> */}
+                <th>Gelip cykan yurdy</th>
+                <th>Brutto</th>
+                <th>Netto</th>
+                {/* <th>Uom_code</th> */}
+                <th>Olcheg birligi</th>
+                <th>Mochberi</th>
+                <th>Bahasy</th>
+                <th>
+                  Action
+                  {/* <IconSettings /> */}
+                </th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </Table>
+          <Group position="center" mt="xl" className="mt-10">
+            <>
+              <div
+                onClick={prevStep}
+                className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
+              >
+                Back
+              </div>
+              <Button
+                type="submit"
+                onClick={nextStep}
+                loading={state.loading}
+                className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
+              >
+                Save
+              </Button>
+            </>
+          </Group>
+        </>
+      ) : (
+        <h1 className="text-center mt-5">No data</h1>
+      )}
     </div>
   );
 }

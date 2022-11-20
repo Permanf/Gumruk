@@ -49,6 +49,8 @@ const Register = () => {
   const schema = (legal) =>
     Yup.object().shape({
       email: Yup.string()
+        .min(5, "Минимум 5 значений")
+        .max(255, "Максимум 255 значений")
         .required("E-mail address yazmaly")
         .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
       first_name:
