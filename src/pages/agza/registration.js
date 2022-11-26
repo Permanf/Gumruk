@@ -73,7 +73,6 @@ const Register = () => {
       fathers_name:
         legal === "fiziki"
           ? Yup.string()
-              .required("Atanyzyn adyny yazmaly")
               .min(3, "minimum 3 simbol bolmaly")
               .max(35, "maxsimum 35 simbol bolmaly")
           : Yup.string().nullable(true),

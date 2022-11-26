@@ -1,39 +1,22 @@
 import { TextInput, Button, SimpleGrid, Select, Group } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { memo, useReducer } from "react";
+import { memo, useEffect, useReducer } from "react";
 import { post } from "../../../../store/middlewares/index";
 import { useDispatch, useSelector } from "react-redux";
-// import { useEffect, useState } from "react";
-// import { fetchData } from "../../../store/middlewares";
-// import { userData } from "../../../../store/actions/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { getImageIds, getToken } from "../../../../store/selectors/auth";
 import { setDeclarationId } from "../../../../store/actions/data";
-// import { IconLock, IconMail, IconCalendar } from "@tabler/icons";
+import { showNotification } from "@mantine/notifications";
+import { IconX, IconCheck } from "@tabler/icons";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    default:
-      return state;
-  }
-}
-
-const StepForm = ({ data, active, setActive }) => {
-  const [state, setState] = useReducer(reducer, {
-    loading: false,
-  });
+const StepForm = ({ active, setActive, state, setState }) => {
   const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
   const ids = useSelector(getImageIds);
   const token = useSelector(getToken);
-  if (ids.length == 0) {
+  if (ids.length == 0 && state.data_declaration?.id == "undefined") {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   }
@@ -47,29 +30,28 @@ const StepForm = ({ data, active, setActive }) => {
   const data_inco_terms = [];
   const data_check_points = [];
 
-  for (let i = 0; i < data?.countries?.length; i++) {
+  for (let i = 0; i < state.data_declaration?.countries?.length; i++) {
     data_yurt.push({
-      value: data?.countries[i]?.id,
-      label: data?.countries[i]?.name?.ru,
+      value: state.data_declaration?.countries[i]?.id,
+      label: state.data_declaration?.countries[i]?.name?.ru,
     });
     data_yurt_short.push({
-      value: data?.countries[i]?.id,
-      label: data?.countries[i]?.short_name,
+      value: state.data_declaration?.countries[i]?.id,
+      label: state.data_declaration?.countries[i]?.short_name,
     });
   }
-  for (let i = 0; i < data?.inco_terms?.length; i++) {
+  for (let i = 0; i < state.data_declaration?.inco_terms?.length; i++) {
     data_inco_terms.push({
-      value: data?.inco_terms[i]?.id,
-      label: data?.inco_terms[i]?.code,
+      value: state.data_declaration?.inco_terms[i]?.id,
+      label: state.data_declaration?.inco_terms[i]?.code,
     });
   }
-  for (let i = 0; i < data?.check_points?.length; i++) {
+  for (let i = 0; i < state.data_declaration?.check_points?.length; i++) {
     data_check_points.push({
-      value: data?.check_points[i]?.id,
-      label: data?.check_points[i]?.name?.ru,
+      value: state.data_declaration?.check_points[i]?.id,
+      label: state.data_declaration?.check_points[i]?.name?.ru,
     });
   }
-  // console.log(data_yurt);
   const schema = () =>
     Yup.object().shape({
       type_of_declaration: Yup.string().required(
@@ -128,6 +110,68 @@ const StepForm = ({ data, active, setActive }) => {
         "border_office_name hokman yazmaly"
       ),
     });
+  useEffect(() => {
+    if (state.update_data?.declaration?.id) {
+      setValue(
+        "type_of_declaration",
+        state.update_data?.declaration.type_of_declaration
+      );
+      setValue("exporter_name", state.update_data?.declaration.exporter_name);
+      setValue("exporter_code", state.update_data?.declaration.exporter_code);
+      setValue("consignee_name", state.update_data?.declaration.consignee_name);
+      setValue("consignee_code", state.update_data?.declaration.consignee_code);
+      setValue("financial_name", state.update_data?.declaration.financial_name);
+      setValue("financial_code", state.update_data?.declaration.financial_code);
+      setValue(
+        "trading_country",
+        state.update_data?.declaration.trading_country
+      );
+      setValue(
+        "export_country_name",
+        state.update_data?.declaration.export_country_name
+      );
+      setValue(
+        "destination_country_name",
+        state.update_data?.declaration.destination_country_name
+      );
+      setValue(
+        "country_of_origin_name",
+        state.update_data?.declaration.country_of_origin_name
+      );
+      setValue(
+        "departure_arrival_information_identity",
+        state.update_data?.declaration.departure_arrival_information_identity
+      );
+      setValue(
+        "departure_arrival_information_nationality",
+        state.update_data?.declaration.departure_arrival_information_nationality
+      );
+      setValue(
+        "border_information_identity",
+        state.update_data?.declaration.border_information_identity
+      );
+      setValue(
+        "border_information_nationality",
+        state.update_data?.declaration.border_information_nationality
+      );
+      setValue(
+        "delivery_terms_code",
+        state.update_data?.declaration.delivery_terms_code
+      );
+      setValue(
+        "delivery_terms_place",
+        state.update_data?.declaration.delivery_terms_place
+      );
+      setValue(
+        "delivery_terms_situation",
+        state.update_data?.declaration.delivery_terms_situation
+      );
+      setValue(
+        "border_office_name",
+        state.update_data?.declaration.border_office_name
+      );
+    }
+  }, [state.update_data?.declaration]);
   const {
     handleSubmit,
     formState: { errors },
@@ -145,34 +189,48 @@ const StepForm = ({ data, active, setActive }) => {
       destination_country_code: data?.destination_country_name,
       border_office_code: data?.border_office_name,
       representative_id: 1,
-      images_id: ids,
+      images_id: ids ? ids : [],
     };
-    console.log(data, "2 step data");
+    // console.log(data, "2 step data");
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
-        url: `user/declaration/create-declaration`,
+        url: state.update_data?.declaration?.id
+          ? `user/declaration/${state.update_data?.declaration?.id}/update-declaration`
+          : `user/declaration/create-declaration`,
         data,
         token,
         action: (response) => {
           // console.log(response?.data);
+          setState({ type: "SET_LOADING", payload: false });
           if (response.success) {
-            setState({ type: "SET_LOADING", payload: false });
-            console.log(response?.data?.data?.declaration_id);
-            dispatch(setDeclarationId(response?.data?.data?.declaration_id));
-            setActive((current) => (current < 3 ? current + 1 : current));
-            scrollTo({ y: 0 });
+            // console.log(response?.data?.data);
+
+            if (state.update_data?.declaration?.id) {
+              showNotification({
+                color: "green",
+                title: "Siz üstünlikli üýtgetdiňiz!",
+                icon: <IconCheck />,
+              });
+              setActive((current) => (current < 3 ? current + 1 : current));
+              scrollTo({ y: 0 });
+            } else {
+              dispatch(setDeclarationId(response?.data?.data?.declaration_id));
+              setActive((current) => (current < 3 ? current + 1 : current));
+              scrollTo({ y: 0 });
+            }
+
             // console.log(response);
           } else {
             console.log(response.data);
-            setState({ type: "SET_LOADING", payload: false });
           }
         },
       })
     );
-
     // export_country_code
   };
+
+  // console.log(state.update_data?.declaration, "---declaration");
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -194,7 +252,11 @@ const StepForm = ({ data, active, setActive }) => {
                   ref={ref}
                   label={"Type_of_declaration"}
                   placeholder={"Type_of_declaration"}
-                  data={["IM", "EX"]}
+                  data={
+                    state?.data_declaration?.typeOfDeclaration
+                      ? state?.data_declaration?.typeOfDeclaration
+                      : []
+                  }
                   error={errors?.type_of_declaration?.message}
                 />
               );
@@ -560,23 +622,6 @@ const StepForm = ({ data, active, setActive }) => {
               );
             }}
           />
-          {/* <Controller
-          control={control}
-          name="representative_id"
-          render={({ field: { onChange, onBlur, value, ref } }) => {
-            return (
-              <TextInput
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                ref={ref}
-                label="Representative_id"
-                placeholder="Representative_id"
-                error={errors?.representative_id?.message}
-              />
-            );
-          }}
-        /> */}
         </SimpleGrid>
         <Group position="center" mt="xl">
           <>

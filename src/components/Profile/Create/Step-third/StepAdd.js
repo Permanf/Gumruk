@@ -9,15 +9,16 @@ import {
   Modal,
   ActionIcon,
   Center,
+  Text,
 } from "@mantine/core";
 import { Plus } from "tabler-icons-react";
 import { useState, useReducer, useEffect } from "react";
 import { post } from "../../../../store/middlewares/index";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { useForm, Controller } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as Yup from "yup";
+// import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-
+import { openConfirmModal } from "@mantine/modals";
 import {
   IconSettings,
   IconDotsVertical,
@@ -29,28 +30,12 @@ import {
 import { getDeclarationId, getToken } from "../../../../store/selectors/auth";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
+import Lottie from "lottie-react";
+import notFound from "../../../../assets/Lottiefiles/not-found.json";
+import ModalForm from "./ModalForm";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    case "SET_PRODUCTS":
-      return {
-        ...state,
-        products: [...state.products, action.payload],
-      };
-    default:
-      return state;
-  }
-}
-function StepAdd({ data, active, setActive }) {
-  const [state, setState] = useReducer(reducer, {
-    loading: false,
-    products: [],
-  });
+function StepAdd({ active, setActive, state, setState }) {
+  // console.log(state.products);
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector(getToken);
@@ -67,68 +52,24 @@ function StepAdd({ data, active, setActive }) {
   };
   // console.log(data, "--dec");
   const data_yurt = [];
-  for (let i = 0; i < data?.countries?.length; i++) {
+  for (let i = 0; i < state.data_declaration?.countries?.length; i++) {
     data_yurt.push({
-      value: data?.countries[i]?.id,
-      label: data?.countries[i]?.short_name,
+      value: state.data_declaration?.countries[i]?.id,
+      label: state.data_declaration?.countries[i]?.short_name,
     });
   }
   const data_size = [];
-  for (let i = 0; i < data?.unit?.length; i++) {
+  for (let i = 0; i < state.data_declaration?.unit?.length; i++) {
     data_size.push({
-      value: data?.unit[i]?.id,
-      label: data?.unit[i]?.name?.ru,
+      value: state.data_declaration?.unit[i]?.id,
+      label: state.data_declaration?.unit[i]?.name?.ru,
     });
   }
-  const schema = () =>
-    Yup.object().shape({
-      name: Yup.string()
-        .required("Harydyn ady hokman yazmaly")
-        .min(3, "minimum 3 simbol bolmaly"),
-      code: Yup.number().required("code hokman yazmaly"),
-      country_of_origin_code: Yup.string().required(
-        "country_of_origin_code hokman yazmaly"
-      ),
-      uom_name: Yup.string().required("uom_name hokman yazmaly"),
-      uom_quantity: Yup.number().required("uom_quantity hokman yazmaly"),
-      uom_price: Yup.number().required("uom_price hokman yazmaly"),
-      brutto_weight: Yup.number().required("brutto_weight hokman yazmaly"),
-      netto_weight: Yup.number().required("netto_weight hokman yazmaly"),
-    });
-  const {
-    handleSubmit,
-    formState: { errors },
-    // setError,
-    setValue,
-    control,
-  } = useForm({
-    resolver: yupResolver(schema()),
-  });
-
-  const onSubmit = (data) => {
-    data = {
-      ...data,
-      uom_code: data?.uom_name,
-    };
-
-    console.log(data);
-    setState({ type: "SET_PRODUCTS", payload: data });
-    setOpened(false);
-    setValue("name", "");
-    setValue("code", "");
-    setValue("country_of_origin_code", "");
-    setValue("uom_name", "");
-    setValue("uom_quantity", "");
-    setValue("uom_price", "");
-    setValue("brutto_weight", "");
-    setValue("netto_weight", "");
-  };
 
   const data_items = {};
   const nextStep = () => {
     // setActive((current) => (current > 0 ? current - 1 : current));
     // scrollTo({ y: 0 });
-    console.log(state.products);
 
     data_items = {
       items: state.products,
@@ -136,7 +77,7 @@ function StepAdd({ data, active, setActive }) {
     };
     const data = {};
     data = data_items;
-    console.log(data_items, "--gitmeli");
+    // console.log(data_items, "--gitmeli");
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
@@ -146,7 +87,7 @@ function StepAdd({ data, active, setActive }) {
         action: (response) => {
           if (response.success) {
             setState({ type: "SET_LOADING", payload: false });
-            console.log(response?.data);
+            // console.log(response?.data);
             showNotification({
               color: "green",
               title: "Siz üstünlikli deklarasiýa goşdynyz!",
@@ -155,7 +96,7 @@ function StepAdd({ data, active, setActive }) {
             router.push("/profile/tickets");
             // console.log(response);
           } else {
-            console.log(response.data);
+            // console.log(response.data);
             showNotification({
               color: "red",
               title: "Üstünlikli bolmady!",
@@ -168,23 +109,76 @@ function StepAdd({ data, active, setActive }) {
       })
     );
   };
-  // const elements = [
-  //   { position: 6, mass: 12.011, symbol: "C", name: "Carbon" },
-  //   { position: 7, mass: 14.007, symbol: "N", name: "Nitrogen" },
-  //   { position: 39, mass: 88.906, symbol: "Y", name: "Yttrium" },
-  //   { position: 56, mass: 137.33, symbol: "Ba", name: "Barium" },
-  //   { position: 58, mass: 140.12, symbol: "Ce", name: "Cerium" },
-  // ];
-  const rows = state?.products.map((element) => (
-    <tr key={element.code}>
-      <td>{element.name}</td>
-      {/* <td>{element.code}</td> */}
-      <td>{data_yurt[parseInt(element.country_of_origin_code) - 1].label}</td>
-      <td>{element.brutto_weight}</td>
-      <td>{element.netto_weight}</td>
-      <td>{data_size[parseInt(element.uom_name) - 1].label}</td>
-      <td>{element.uom_quantity}</td>
-      <td>{element.uom_price}</td>
+  const openDeleteModal = (id) =>
+    openConfirmModal({
+      title: "Delete your product item",
+      centered: true,
+      children: (
+        <Text size="sm">Haryt elementiňizi pozmak isleýärsiňizmi?</Text>
+      ),
+      labels: { confirm: "Delete item", cancel: "Cancel" },
+      confirmProps: { className: "bg-red-600", color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        // console.log("Confirmed");
+        // console.log(id, "---");
+        // console.log(state.products, "---pp");
+        if (id && state.update_id) {
+          dispatch(
+            post({
+              url: `user/declaration/${id}/delete-one-item`,
+              token,
+              action: (response) => {
+                if (response.success) {
+                  // console.log(response?.data);
+                  setState({
+                    type: "SET_DELETE_ITEM",
+                    payload: id,
+                  });
+
+                  showNotification({
+                    color: "green",
+                    title: "Haryt elementiňiz pozuldy!",
+                    icon: <IconCheck />,
+                  });
+                  // console.log(response);
+                } else {
+                  // console.log(response.data);
+                  showNotification({
+                    color: "red",
+                    title: "Üstünlikli bolmady!",
+                    // message: "",
+                    icon: <IconX />,
+                    autoClose: 5000,
+                  });
+                }
+              },
+            })
+          );
+        } else {
+          setState({
+            type: "SET_DELETE_ITEM",
+            payload: id,
+          });
+          showNotification({
+            color: "green",
+            title: "Haryt elementiňiz pozuldy!",
+            icon: <IconCheck />,
+          });
+        }
+      },
+    });
+
+  // console.log(state.products, "---pp");
+  const rows = state?.products?.map((element) => (
+    <tr key={element?.code}>
+      <td>{element?.name}</td>
+      <td>{data_yurt[parseInt(element?.country_of_origin_code) - 1]?.label}</td>
+      <td>{element?.brutto_weight}</td>
+      <td>{element?.netto_weight}</td>
+      <td>{data_size[parseInt(element?.uom_name) - 1]?.label}</td>
+      <td>{element?.uom_quantity}</td>
+      <td>{element?.uom_price}</td>
       <td>
         <Menu>
           <Menu.Target>
@@ -194,13 +188,30 @@ function StepAdd({ data, active, setActive }) {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Item icon={<IconEdit size={16} />} className="px-6">
+            <Menu.Item
+              icon={<IconEdit size={16} />}
+              className="px-6"
+              onClick={() => {
+                setState({
+                  type: "SET_UPDATE_ITEM",
+                  payload: element,
+                });
+              }}
+            >
               Update
             </Menu.Item>
             <Menu.Item
               color="red"
               className="px-6"
               icon={<IconTrash size={15} />}
+              onClick={() => {
+                if (state.update_id) {
+                  openDeleteModal(element?.id);
+                } else {
+                  openDeleteModal(element?.name);
+                }
+              }}
+              // onClick={openDeleteModal}
             >
               Delete
             </Menu.Item>
@@ -216,200 +227,41 @@ function StepAdd({ data, active, setActive }) {
         <Button
           size="xs"
           className="bg-blue-500 mb-5"
-          onClick={() => setOpened(true)}
+          onClick={() => {
+            setState({
+              type: "SET_UPDATE_ITEM",
+              payload: {},
+            });
+            setOpened(true);
+          }}
         >
           <Plus size={18} />
         </Button>
       </Group>
-      <Modal
-        size="lg"
-        overlayOpacity={0.55}
-        overlayBlur={3}
+
+      <ModalForm
+        data_yurt={data_yurt}
+        data_size={data_size}
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Product create!"
-      >
-        {/* Modal content */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <SimpleGrid
-            cols={2}
-            className="text-sm"
-            spacing="lg"
-            breakpoints={[{ maxWidth: 755, cols: 1, spacing: "sm" }]}
-          >
-            <Controller
-              control={control}
-              name="name"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label="Name"
-                    placeholder="Name"
-                    error={errors?.name?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="code"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label="Code"
-                    placeholder="code"
-                    error={errors?.code?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="country_of_origin_code"
-              className="w-full"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <Select
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label={"Country_of_origin_code"}
-                    placeholder="Select"
-                    data={data_yurt}
-                    error={errors?.country_of_origin_code?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="brutto_weight"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label="Brutto_weight"
-                    placeholder="brutto_weight"
-                    error={errors?.brutto_weight?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="netto_weight"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label="Netto_weight"
-                    placeholder="netto_weight"
-                    error={errors?.netto_weight?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="uom_name"
-              className="w-full"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <Select
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label={"uom_name"}
-                    placeholder="Select"
-                    data={data_size}
-                    error={errors?.uom_name?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="uom_quantity"
-              className="w-full"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label={"Uom_quantity"}
-                    placeholder="quantity"
-                    error={errors?.uom_quantity?.message}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="uom_price"
-              className="w-full"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <TextInput
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    label={"Uom_price"}
-                    placeholder="price"
-                    error={errors?.uom_price?.message}
-                  />
-                );
-              }}
-            />
-          </SimpleGrid>
-          <Center className="mt-10">
-            <Button
-              type="submit"
-              // loading={state.loading}
-              className="bg-blue-500"
-            >
-              Save
-            </Button>
-          </Center>
-        </form>
-      </Modal>
-      {state.products.length > 0 ? (
+        setOpened={setOpened}
+        state={state}
+        setState={setState}
+      />
+
+      {state.products?.length > 0 ? (
         <>
-          <Table striped highlightOnHover withBorder>
+          <Table striped highlightOnHover>
             <thead>
               <tr>
-                {/* <th>#Id</th> */}
+                {/* <th>Id</th> */}
                 <th>Harydyn ady</th>
-                {/* <th>Code</th> */}
                 <th>Gelip cykan yurdy</th>
                 <th>Brutto</th>
                 <th>Netto</th>
-                {/* <th>Uom_code</th> */}
                 <th>Olcheg birligi</th>
                 <th>Mochberi</th>
                 <th>Bahasy</th>
-                <th>
-                  Action
-                  {/* <IconSettings /> */}
-                </th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>
@@ -422,31 +274,27 @@ function StepAdd({ data, active, setActive }) {
               >
                 Back
               </div>
-              <Button
-                type="submit"
-                onClick={nextStep}
-                loading={state.loading}
-                className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
-              >
-                Save
-              </Button>
+              {state.update_id ? null : (
+                <Button
+                  type="submit"
+                  onClick={nextStep}
+                  loading={state.loading}
+                  className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
+                >
+                  Save
+                </Button>
+              )}
             </>
           </Group>
         </>
       ) : (
-        <h1 className="text-center mt-5">No data</h1>
+        <div className="flex flex-col items-center">
+          <Lottie animationData={notFound} loop={true} className="h-52" />
+          <span>No data</span>
+        </div>
       )}
     </div>
   );
 }
 
 export default StepAdd;
-
-// data =[
-//   {
-//     email:"email nadogry",
-//   }
-//   {
-//     password:"password na"
-//   }
-// ]

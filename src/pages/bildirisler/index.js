@@ -137,8 +137,8 @@ const Notice = () => {
       {loading ? (
         <Skeletons />
       ) : data?.length ? (
-        data?.map((item) => {
-          return <Card item={item} />;
+        data?.map((item, index) => {
+          return <Card item={item} key={index} />;
         })
       ) : (
         <h1>Tapylmady</h1>

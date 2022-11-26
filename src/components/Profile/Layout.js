@@ -8,7 +8,7 @@ import Layout from "../Layouts/Layout";
 import { User, FileUpload, FilePencil, Logout } from "tabler-icons-react";
 import { useViewportSize } from "@mantine/hooks";
 import { Drawer, Button, Group, Burger } from "@mantine/core";
-import { userLoadFailed } from "../../store/actions/auth";
+// import { userLoadFailed } from "../../store/actions/auth";
 import { Logout1 } from "../../store/middlewares/auth";
 
 const LayoutProfile = ({ children, title }) => {

@@ -3,11 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Button, Group } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-
-// import { connect } from "react-redux";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import * as Yup from "yup";
-// import { useForm, Controller } from "react-hook-form";
 import Image from "./Image";
 import {
   setUploadFile,
@@ -25,12 +20,12 @@ import { size, toArray } from "lodash";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 
-const StepImage = ({ active, setActive }) => {
+const StepImage = ({ active, setActive, update_data }) => {
   const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
   const ids = useSelector(getImageIds);
   const nextStep = () => {
-    if (ids.length > 0) {
+    if (ids.length > 0 || update_data?.id > 0) {
       setActive((current) => (current < 3 ? current + 1 : current));
       scrollTo({ y: 0 });
     } else {
@@ -83,7 +78,6 @@ const StepImage = ({ active, setActive }) => {
             },
             withCredentials: false,
           }).then((res) => {
-            // console.log(res);
             if (res.status == 200) {
               // console.log(res.data);
               dispatch(imageIds(res.data.images_id));
@@ -96,13 +90,9 @@ const StepImage = ({ active, setActive }) => {
         }
       });
     }
-    // uploadFile(fileToUpload);
-    // setUploadFile(fileToUpload);
   }, [uploadedFileAmount]);
   return (
-    <div
-    // onSubmit={handleSubmit(onSubmit)}
-    >
+    <div>
       <div
         className={`w-full rounded-2xl border-4 border-dashed grid gird-cols-1 sm:grid-cols-2 gap-3 p-5 mt-1 mb-4`}
       >
@@ -137,25 +127,14 @@ const StepImage = ({ active, setActive }) => {
                   </p> */}
               </div>
             </div>
-            {/* <Controller
-              control={control}
-              name="file"
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return ( */}
             <input
               onChange={handleAttachFIle}
-              // onBlur={onBlur}
-              // value={value}
-              // ref={ref}
               accept="image/*"
               id="dropzone-file"
               type="file"
               className="hidden"
               multiple
             />
-            {/* );
-              }}
-            /> */}
           </label>
         </div>
         {uploadedFileAmount > 0
@@ -166,7 +145,6 @@ const StepImage = ({ active, setActive }) => {
             : null
           : null}
       </div>
-      {/* <span className="text-red-500 mt-3 text-sm">{errors?.file?.message}</span> */}
       <Group position="center" mt="xl">
         <>
           <div
@@ -178,7 +156,6 @@ const StepImage = ({ active, setActive }) => {
           <Button
             onClick={nextStep}
             type="submit"
-            // loading={state.loading}
             className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
           >
             Next step
@@ -190,31 +167,3 @@ const StepImage = ({ active, setActive }) => {
 };
 
 export default StepImage;
-{
-  /* <Group position="center" mt="xl">
-        <>
-          <div
-            // onClick={prevStep}
-            className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
-          >
-            Back
-          </div>
-          {active == 2 ? (
-            <Button
-              type="submit"
-              // loading={state.loading}
-              className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
-            >
-              Save
-            </Button>
-          ) : (
-            <div
-              // onClick={nextStep}
-              className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
-            >
-              Next step
-            </div>
-          )}
-        </>
-      </Group> */
-}

@@ -16,7 +16,12 @@ const Image = ({ key, file }) => {
               file?.status == 0 ? "line-through" : ""
             } `}
           >
-            {file?.file?.name}
+            {file?.file?.name.length > 20 ? (
+              <>{file?.file?.name.substring(0, 20)}...</>
+            ) : (
+              file?.file?.name
+            )}
+            {/* {(file?.file?.name).substring(0, 20)} */}
           </span>
           {file?.status == 0 || file?.progress == 100 ? null : (
             <Progress

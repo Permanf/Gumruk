@@ -8,6 +8,7 @@ import {
   FAILURE_UPLOAD_FILE,
   SET_IMAGE_IDS,
   SET_DECLARATON_ID,
+  SET_FILE_PROGRESS,
 } from "../actions/data";
 import { modifyFiles } from "../../utils/uploadFile";
 import { modifyImageIds } from "../../utils/imageIds";
@@ -38,7 +39,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         lang: action.payload.lang,
       };
-
+    // upload
+    case SET_FILE_PROGRESS:
+      return {
+        ...state,
+        fileProgress: action.payload,
+      };
     case SET_UPLOAD_FILE:
       return {
         ...state,

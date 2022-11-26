@@ -16,6 +16,11 @@ export const setHelperData = (data) => ({
 });
 
 // upload
+export const SET_FILE_PROGRESS = "SET_FILE_PROGRESS";
+export const setFileProgress = (data) => ({
+  type: SET_FILE_PROGRESS,
+  payload: data,
+});
 export const SET_UPLOAD_FILE = "SET_UPLOAD_FILE";
 export const setUploadFile = (data) => ({
   type: SET_UPLOAD_FILE,
