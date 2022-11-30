@@ -111,67 +111,59 @@ const StepForm = ({ active, setActive, state, setState }) => {
       ),
     });
   useEffect(() => {
-    if (state.update_data?.declaration?.id) {
-      setValue(
-        "type_of_declaration",
-        state.update_data?.declaration.type_of_declaration
-      );
-      setValue("exporter_name", state.update_data?.declaration.exporter_name);
-      setValue("exporter_code", state.update_data?.declaration.exporter_code);
-      setValue("consignee_name", state.update_data?.declaration.consignee_name);
-      setValue("consignee_code", state.update_data?.declaration.consignee_code);
-      setValue("financial_name", state.update_data?.declaration.financial_name);
-      setValue("financial_code", state.update_data?.declaration.financial_code);
-      setValue(
-        "trading_country",
-        state.update_data?.declaration.trading_country
-      );
+    if (state.update_2step?.id) {
+      setValue("type_of_declaration", state.update_2step.type_of_declaration);
+      setValue("exporter_name", state.update_2step.exporter_name);
+      setValue("exporter_code", state.update_2step.exporter_code);
+      setValue("consignee_name", state.update_2step.consignee_name);
+      setValue("consignee_code", state.update_2step.consignee_code);
+      setValue("financial_name", state.update_2step.financial_name);
+      setValue("financial_code", state.update_2step.financial_code);
+      setValue("trading_country", parseInt(state.update_2step.trading_country));
       setValue(
         "export_country_name",
-        state.update_data?.declaration.export_country_name
+        parseInt(state.update_2step.export_country_name)
       );
       setValue(
         "destination_country_name",
-        state.update_data?.declaration.destination_country_name
+        parseInt(state.update_2step.destination_country_name)
       );
       setValue(
         "country_of_origin_name",
-        state.update_data?.declaration.country_of_origin_name
+        parseInt(state.update_2step.country_of_origin_name)
       );
       setValue(
         "departure_arrival_information_identity",
-        state.update_data?.declaration.departure_arrival_information_identity
+        state.update_2step.departure_arrival_information_identity
       );
       setValue(
         "departure_arrival_information_nationality",
-        state.update_data?.declaration.departure_arrival_information_nationality
+        parseInt(state.update_2step.departure_arrival_information_nationality)
       );
       setValue(
         "border_information_identity",
-        state.update_data?.declaration.border_information_identity
+        state.update_2step.border_information_identity
       );
       setValue(
         "border_information_nationality",
-        state.update_data?.declaration.border_information_nationality
+        parseInt(state.update_2step.border_information_nationality)
       );
       setValue(
         "delivery_terms_code",
-        state.update_data?.declaration.delivery_terms_code
+        parseInt(state.update_2step.delivery_terms_code)
       );
-      setValue(
-        "delivery_terms_place",
-        state.update_data?.declaration.delivery_terms_place
-      );
+      setValue("delivery_terms_place", state.update_2step.delivery_terms_place);
       setValue(
         "delivery_terms_situation",
-        state.update_data?.declaration.delivery_terms_situation
+        parseInt(state.update_2step.delivery_terms_situation)
       );
       setValue(
         "border_office_name",
-        state.update_data?.declaration.border_office_name
+        parseInt(state.update_2step.border_office_name)
       );
     }
-  }, [state.update_data?.declaration]);
+  }, [state.update_2step]);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -190,13 +182,14 @@ const StepForm = ({ active, setActive, state, setState }) => {
       border_office_code: data?.border_office_name,
       representative_id: 1,
       images_id: ids ? ids : [],
+      id: state.update_2step.id,
     };
     // console.log(data, "2 step data");
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
-        url: state.update_data?.declaration?.id
-          ? `user/declaration/${state.update_data?.declaration?.id}/update-declaration`
+        url: state.update_2step?.id
+          ? `user/declaration/${state.update_2step?.id}/update-declaration`
           : `user/declaration/create-declaration`,
         data,
         token,
@@ -205,13 +198,16 @@ const StepForm = ({ active, setActive, state, setState }) => {
           setState({ type: "SET_LOADING", payload: false });
           if (response.success) {
             // console.log(response?.data?.data);
+            setState({ type: "SET_UPDATE_2STEP", payload: data });
+            if (state.update_2step?.id) {
+              if (!state.update_2step?.items) {
+                showNotification({
+                  color: "green",
+                  title: "Siz üstünlikli üýtgetdiňiz!",
+                  icon: <IconCheck />,
+                });
+              }
 
-            if (state.update_data?.declaration?.id) {
-              showNotification({
-                color: "green",
-                title: "Siz üstünlikli üýtgetdiňiz!",
-                icon: <IconCheck />,
-              });
               setActive((current) => (current < 3 ? current + 1 : current));
               scrollTo({ y: 0 });
             } else {
@@ -230,7 +226,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
     // export_country_code
   };
 
-  // console.log(state.update_data?.declaration, "---declaration");
+  // console.log(state.update_2step, "---declaration");
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -250,7 +246,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label={"Type_of_declaration"}
+                  label={"Deklarasiýanyň görnüşi"}
                   placeholder={"Type_of_declaration"}
                   data={
                     state?.data_declaration?.typeOfDeclaration
@@ -273,8 +269,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Exporter_name"
-                  placeholder="Exporter_name"
+                  label="Iberiji/Export ediji ady"
+                  placeholder="Iberiji/Export ediji ady"
                   error={errors?.exporter_name?.message}
                 />
               );
@@ -290,8 +286,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Exporter_code"
-                  placeholder="Exporter_code"
+                  label="Iberiji/Export ediji kody"
+                  placeholder="Iberiji/Export ediji kody"
                   error={errors?.exporter_code?.message}
                 />
               );
@@ -308,8 +304,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Consignee_name"
-                  placeholder="Consignee_name"
+                  label="Alyjy ady"
+                  placeholder="'Alyjy ady"
                   error={errors?.consignee_name?.message}
                 />
               );
@@ -325,8 +321,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Consignee_code"
-                  placeholder="Consignee_code"
+                  label="Alyjy kody"
+                  placeholder="Alyjy kody"
                   error={errors?.consignee_code?.message}
                 />
               );
@@ -343,8 +339,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Financial_name"
-                  placeholder="Financial_name"
+                  label="Maliye taydan duzgunleshdirmage jogapkar shahs ady"
+                  placeholder="Maliye taydan duzgunleshdirmage jogapkar shahs ady"
                   error={errors?.financial_name?.message}
                 />
               );
@@ -360,8 +356,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Financial_code"
-                  placeholder="Financial_code"
+                  label="Maliye taydan duzgunleshdirmage jogapkar shahs kody"
+                  placeholder="Maliye taydan duzgunleshdirmage jogapkar shahs kody"
                   error={errors?.financial_code?.message}
                 />
               );
@@ -378,7 +374,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Trading_country"
+                  label="Sowda edyan"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -400,7 +396,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Export_country_name"
+                  label="Iberish yurdun ady"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -422,7 +418,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Destination_country_name"
+                  label="Barmaly yurdun ady"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -445,7 +441,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Country_of_origin_name"
+                  label="Gelip chykan yurdy"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -466,7 +462,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="departure_arrival_information_identity"
+                  label="Bellige alnan yurdyn mashyn nomeri"
                   placeholder="departure_arrival_information_identity"
                   error={
                     errors?.departure_arrival_information_identity?.message
@@ -486,7 +482,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Departure_arrival_information_nationality"
+                  label="Bellige alnan yurdyn kody"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -511,7 +507,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="border_information_nationality"
+                  label="Serhetde bellige alan yurt"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -532,7 +528,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Border_information_identity"
+                  label="Serhetde bellige alnan yurdy mashyn nomeri"
                   placeholder="Border_information_identity"
                   error={errors?.border_information_identity?.message}
                 />
@@ -549,7 +545,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Delivery_terms_place"
+                  label="Ibermegin shertleri"
                   placeholder="Delivery_terms_place"
                   error={errors?.delivery_terms_place?.message}
                 />
@@ -567,7 +563,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Delivery_terms_code"
+                  label="Ibermegin shertleri"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -589,7 +585,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Delivery_terms_situation"
+                  label="Ibermegin shertleri"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -611,7 +607,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Border_office_name"
+                  label="Girish/chykysh erdarasy ady"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"

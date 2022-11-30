@@ -27,7 +27,7 @@ const Ticket = ({ nomer, element }) => {
                   {element?.support_id?.length > 0 ? (
                     element?.support_id
                   ) : (
-                    <>Unknown</>
+                    <span>Unknown</span>
                   )}
                 </p>
               </div>
@@ -41,7 +41,15 @@ const Ticket = ({ nomer, element }) => {
                   <Badge
                     variant="gradient"
                     className="mt-1 w-28"
-                    gradient={{ from: "yellow", to: "orange" }}
+                    gradient={{ from: "yellow.3", to: "yellow" }}
+                  >
+                    {element?.status}
+                  </Badge>
+                ) : element.status == "RETURNED" ? (
+                  <Badge
+                    variant="gradient"
+                    className="mt-1 w-28"
+                    gradient={{ from: "red.3", to: "red" }}
                   >
                     {element?.status}
                   </Badge>
@@ -49,19 +57,11 @@ const Ticket = ({ nomer, element }) => {
                   <Badge
                     variant="gradient"
                     className="mt-1 w-28"
-                    gradient={{ from: "red", to: "red" }}
+                    gradient={{ from: "green.3", to: "green" }}
                   >
-                    Error
+                    {element?.status}
                   </Badge>
                 )}
-
-                {/* <Badge
-                  variant="gradient"
-                  className="mt-1 w-28"
-                  gradient={{ from: "green", to: "teal" }}
-                >
-                  {element?.status}
-                </Badge> */}
               </div>
             </div>
 

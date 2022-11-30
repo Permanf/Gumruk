@@ -65,6 +65,19 @@ function StepAdd({ active, setActive, state, setState }) {
       label: state.data_declaration?.unit[i]?.name?.ru,
     });
   }
+  const routeTickets = () => {
+    if (state.products.length == 0) {
+      showNotification({
+        color: "red",
+        title: "Üstünlikli bolmady!",
+        message: "Iň bolmanda bir haryt bolmaly!",
+        icon: <IconX />,
+        autoClose: 5000,
+      });
+    } else {
+      router.push("/profile/tickets");
+    }
+  };
 
   const data_items = {};
   const nextStep = () => {
@@ -172,7 +185,11 @@ function StepAdd({ active, setActive, state, setState }) {
   // console.log(state.products, "---pp");
   const rows = state?.products?.map((element) => (
     <tr key={element?.code}>
-      <td>{element?.name}</td>
+      <td>
+        {element?.name?.length > 20
+          ? element?.name.slice(0, 20) + "..."
+          : element?.name}
+      </td>
       <td>{data_yurt[parseInt(element?.country_of_origin_code) - 1]?.label}</td>
       <td>{element?.brutto_weight}</td>
       <td>{element?.netto_weight}</td>
@@ -238,6 +255,11 @@ function StepAdd({ active, setActive, state, setState }) {
           <Plus size={18} />
         </Button>
       </Group>
+      {state.products?.length == 0 ? (
+        <div className="bg-red-100 w-full rounded-xl p-4">
+          <span className="text-red-500">Iň bolmanda bir haryt bolmaly!</span>
+        </div>
+      ) : null}
 
       <ModalForm
         data_yurt={data_yurt}
@@ -266,33 +288,41 @@ function StepAdd({ active, setActive, state, setState }) {
             </thead>
             <tbody>{rows}</tbody>
           </Table>
-          <Group position="center" mt="xl" className="mt-10">
-            <>
-              <div
-                onClick={prevStep}
-                className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
-              >
-                Back
-              </div>
-              {state.update_id ? null : (
-                <Button
-                  type="submit"
-                  onClick={nextStep}
-                  loading={state.loading}
-                  className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
-                >
-                  Save
-                </Button>
-              )}
-            </>
-          </Group>
         </>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center my-10">
           <Lottie animationData={notFound} loop={true} className="h-52" />
           <span>No data</span>
         </div>
       )}
+      <Group position="center" mt="xl" className="mt-10">
+        <>
+          <div
+            onClick={prevStep}
+            className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
+          >
+            Back
+          </div>
+          {state.update_id ? (
+            <Button
+              type="submit"
+              onClick={routeTickets}
+              className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
+            >
+              Tassyklamak
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              onClick={nextStep}
+              loading={state.loading}
+              className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
+            >
+              Save
+            </Button>
+          )}
+        </>
+      </Group>
     </div>
   );
 }

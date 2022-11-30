@@ -204,15 +204,15 @@ const Settings = () => {
                 label="Телефон"
                 placeholder="Телефон"
                 type="tel"
-                icon={
-                  <p
-                    className={`${
-                      errors?.phone ? "text-red-500" : "text-black"
-                    } font-normal mx-2`}
-                  >
-                    +993
-                  </p>
-                }
+                // icon={
+                //   <p
+                //     className={`${
+                //       errors?.phone ? "text-red-500" : "text-black"
+                //     } font-normal mx-2`}
+                //   >
+                //     +993
+                //   </p>
+                // }
                 error={errors?.phone?.message}
               />
             );

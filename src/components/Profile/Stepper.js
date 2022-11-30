@@ -13,6 +13,11 @@ function reducer(state, action) {
         ...state,
         loading: action.payload,
       };
+    case "SET_LOADING_NAME":
+      return {
+        ...state,
+        loading_name: action.payload,
+      };
     case "SET_DATA_DECLARATION":
       return {
         ...state,
@@ -22,6 +27,11 @@ function reducer(state, action) {
       return {
         ...state,
         update_data: action.payload,
+      };
+    case "SET_UPDATE_2STEP":
+      return {
+        ...state,
+        update_2step: action.payload,
       };
     case "SET_UPDATE_ID":
       return {
@@ -64,6 +74,16 @@ function reducer(state, action) {
           ? state.products.filter((item) => item.id !== action.payload)
           : state.products.filter((item) => item.name !== action.payload),
       };
+    case "SET_SEARCH_PRODUCTS":
+      return {
+        ...state,
+        search_products: action.payload,
+      };
+    case "SET_MODAL_BTN":
+      return {
+        ...state,
+        modal_btn: action.payload,
+      };
     default:
       return state;
   }
@@ -72,12 +92,16 @@ function reducer(state, action) {
 function Step({ update_id }) {
   const [state, setState] = useReducer(reducer, {
     loading: false,
+    loading_name: false,
     data_declaration: [],
     update_data: {},
+    update_2step: {},
     products: [],
     update_id: update_id > 0 ? update_id : null,
     product_status: true,
     update_item: {},
+    search_products: [],
+    modal_btn: false,
   });
   const [active, setActive] = useState(0);
   const dispatch = useDispatch();
@@ -121,6 +145,10 @@ function Step({ update_id }) {
                   payload: response?.data?.data,
                 });
                 setState({
+                  type: "SET_UPDATE_2STEP",
+                  payload: response?.data?.data.declaration,
+                });
+                setState({
                   type: "SET_PRODUCTS",
                   payload: response?.data?.data.declaration?.items,
                 });
@@ -135,9 +163,11 @@ function Step({ update_id }) {
   }, [token, update_id]);
   return (
     <>
-      {state.update_data?.notice?.[0]?.message?.length > 0 ? (
+      {state.update_data?.notice?.message?.length > 0 ? (
         <div className="bg-red-100 text-red-600 p-4 rounded-xl mb-10">
-          <span>{state.update_data?.notice?.[0]?.message}</span>
+          <span className="font-semibold">
+            {state.update_data?.notice?.message}
+          </span>
         </div>
       ) : null}
       <Stepper
