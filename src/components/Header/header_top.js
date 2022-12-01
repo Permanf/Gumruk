@@ -31,13 +31,16 @@ const HeaderTop = () => {
           <div className="flex">
             <div className="flex mr-10 items-center cursor-pointer">
               <IconMailForward size={20} />
-              <a className="pl-2 font-semibold" href="info@terminal@.gov.tm">
+              <a
+                className="pl-2 font-semibold"
+                href="mailto:info@terminal@.gov.tm"
+              >
                 info@terminal@.gov.tm
               </a>
             </div>
             <div className="flex items-center cursor-pointer">
               <IconPhoneCall size={20} />
-              <a className="pl-2 font-semibold" href="+99361181818">
+              <a className="pl-2 font-semibold" href="tel:+99361181818">
                 +993 61181818
               </a>
             </div>

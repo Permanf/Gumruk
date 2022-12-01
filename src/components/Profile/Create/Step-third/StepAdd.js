@@ -305,9 +305,10 @@ function StepAdd({ active, setActive, state, setState }) {
           </div>
           {state.update_id ? (
             <Button
+              disabled={state.products.length ? false : true}
               type="submit"
               onClick={routeTickets}
-              className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
+              className="bg-blue-600 hover:bg-blue-500 hover:text-white rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
             >
               Tassyklamak
             </Button>

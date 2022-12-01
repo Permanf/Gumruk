@@ -8,14 +8,16 @@ import {
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { setHelperData } from "../../store/actions/data";
-import { useLocalStorage } from "@mantine/hooks";
+// import { useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import ru from "../../assets/Lang/ru.png";
 import tm from "../../assets/Lang/tm.png";
+import en from "../../assets/Lang/en.png";
 
 const data = [
   { label: "Russian", image: ru.src },
   { label: "Turkmen", image: tm.src },
+  { label: "English", image: en.src },
 ];
 const useStyles = createStyles((theme, { opened }) => ({
   control: {
@@ -64,15 +66,26 @@ export function LanguagePicker() {
   // });
 
   const [opened, setOpened] = useState(false);
+  // const [selected, setSelected] = useState("");
   const { classes } = useStyles({ opened });
 
+  // useEffect(() => {
+  //   const lang = localStorage.getItem("lang");
+  //   console.log(data[0]);
+  //   if (lang === null) {
+  //     setSelected(data[0]);
+  //   } else {
+  //     setSelected(selected);
+  //   }
+  // }, [selected]);
+  // console.log(selected);
+
   const lang = localStorage.getItem("lang");
-  // console.log(lang, "-------lang");
+  // console.log(data[0].label, "-------lang");s
   const [selected, setSelected] = useState(
     lang == "undefined" ? "Russian" : data[0]
   );
   useEffect(() => {
-    // console.log(selected.label);
     if (lang == "undefined") {
       localStorage.setItem("lang", "Russian");
       dispatch(setHelperData({ lang: "Russian" }));
@@ -80,7 +93,6 @@ export function LanguagePicker() {
       localStorage.setItem("lang", JSON.stringify(selected.label));
       dispatch(setHelperData({ lang: selected.label }));
     }
-    // setValue((current) => (current === "Turkmen" ? "Russian" : "Turkmen"));
   }, [selected]);
 
   const items = data.map((item) => (

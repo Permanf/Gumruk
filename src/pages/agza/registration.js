@@ -72,9 +72,7 @@ const Register = () => {
           : Yup.string().nullable(true),
       fathers_name:
         legal === "fiziki"
-          ? Yup.string()
-              .min(3, "minimum 3 simbol bolmaly")
-              .max(35, "maxsimum 35 simbol bolmaly")
+          ? Yup.string().max(35, "maxsimum 35 simbol bolmaly")
           : Yup.string().nullable(true),
       phone: Yup.string()
         .required("Telefon nomer bolmaly")
@@ -110,7 +108,7 @@ const Register = () => {
   //   "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
 
   const onSubmit = (data) => {
-    if (data.password == data.password_confirmation) {
+    if (data.password === data.password_confirmation) {
       setState({ type: "SET_LOADING", payload: true });
       data = { ...data, legal_entity: legal == "fiziki" ? 0 : 1 };
       data.phone = `+993${data.phone}`;
@@ -129,12 +127,12 @@ const Register = () => {
           action: (response) => {
             console.log(response?.data);
             setState({ type: "SET_LOADING", payload: false });
-            if (response.success) {
+            if (response?.data?.success) {
               SetCookie("token", response?.data?.data?.token);
               dispatch(loginSuccess(response?.data?.data?.token));
               router.push("/");
             } else {
-              console.log(response);
+              console.log(response?.data);
             }
           },
         })
@@ -158,43 +156,6 @@ const Register = () => {
     setValue("password_confirmation", "");
     setValue("birthday", "");
   }, [legal]);
-
-  // const onSubmit = (data) => {
-  //   // setState({ type: "SET_LOADING", payload: true });
-  //   dispatch(
-  //     post({
-  //       url: `/api/register`,
-  //       data,
-  //       action: (response) => {
-  //         console.log(response);
-  //         // setState({ type: "SET_LOADING", payload: false });
-  //         // if (response.success) {
-  //         //   SetCookie("refresh_token", response.data.refresh_token);
-  //         //   dispatch(loginSuccess(response.data));
-  //         // } else {
-  //         //   console.log(response);
-  //         //   if (response.message) {
-  //         //     Object.keys(response.message)?.forEach((key) => {
-  //         //       setError(key, {
-  //         //         type: "manual",
-  //         //         message: response.message[key],
-  //         //       });
-  //         //     });
-  //         //   } else {
-  //         //     // toast.error('Operation Not successfull')
-  //         //   }
-  //         //   if (response?.message?.user?.length > 0) {
-  //         //     showNotification({
-  //         //       color: "red",
-  //         //       message: "User not founded",
-  //         //     });
-  //         //   }
-  //         // }
-  //       },
-  //       // token: "",
-  //     })
-  //   );
-  // };
 
   return (
     <Layout title="Registration" className="bg-gray-100">
@@ -300,7 +261,7 @@ const Register = () => {
                 render={({ field: { onChange, onBlur, value, ref } }) => {
                   return (
                     <TextInput
-                      className={`text-sm  `}
+                      className={`text-sm `}
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
@@ -312,7 +273,7 @@ const Register = () => {
                         <p
                           className={`${
                             errors?.phone ? "text-red-500" : "text-black"
-                          } font-normal mx-2`}
+                          } font-normal  text-sm mx-2`}
                         >
                           +993
                         </p>

@@ -2,7 +2,6 @@ import Layout from "../../components/Layouts/Layout";
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
   Anchor,
   Paper,
   Title,
@@ -21,6 +20,7 @@ import { useForm, Controller } from "react-hook-form";
 import { SetCookie } from "../../utils/cookie";
 import { loginSuccess } from "../../store/actions/auth";
 import { useRouter } from "next/router";
+import { getlang } from "../../store/selectors/auth";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -28,6 +28,11 @@ function reducer(state, action) {
       return {
         ...state,
         loading: action.payload,
+      };
+    case "SET_ERROR_MESSAGE":
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;
@@ -37,6 +42,7 @@ function reducer(state, action) {
 const Login = () => {
   const [state, setState] = useReducer(reducer, {
     loading: false,
+    error: {},
   });
   const {
     control,
@@ -49,6 +55,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { token } = useSelector((state) => state.auth);
+  const lang = useSelector(getlang);
+  // console.log(lang);
   // console.log(token);
   useEffect(() => {
     if (token) {
@@ -57,28 +65,36 @@ const Login = () => {
       router.push("/agza/login");
     }
   }, [token]);
-  // useEffect(() => {
-  //   fetch("http://192.168.21.72:9000/sanctum/csrf-cookie")
-  //     .then((response) => response)
-  //     .then((json) => console.log(json));
-  // }, []);
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
+    data.phone = `+993${data.phone}`;
     setState({ type: "SET_LOADING", payload: true });
+    setState({ type: "SET_ERROR_MESSAGE", payload: {} });
     dispatch(
       post({
         url: `login`,
         data,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
-          console.log(response);
-          if (response.success) {
+          console.log(response.data);
+          if (response?.data?.success) {
             SetCookie("token", response?.data?.data?.token);
             dispatch(loginSuccess(response?.data?.data?.token));
             router.push("/");
           } else {
-            console.log(response);
+            console.log(response?.data?.data?.message);
+
+            setState({
+              type: "SET_ERROR_MESSAGE",
+              payload: response?.data?.data?.message,
+            });
+            //   Object.keys(response.message)?.forEach(key =>{
+            //     setError(key, {
+            //         type: "manual",
+            //         message: response.message[key],
+            //     })
+            // });
           }
         },
       })
@@ -94,25 +110,40 @@ const Login = () => {
           </Text>
 
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            {state.error?.ru?.length ? (
+              <div className="bg-red-100 p-2 py-3 mb-4 rounded-md flex justify-center transition-all ease-out duration-1000">
+                <span className="text-red-500 text-sm">{state.error.ru}</span>
+              </div>
+            ) : null}
+
             <Controller
               control={control}
-              name="email"
+              name="phone"
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 return (
                   <TextInput
+                    className={`text-sm`}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Email"
-                    placeholder="you@something.dev"
-                    icon={<IconMail size={16} />}
-                    error={errors?.email?.message}
+                    label="Телефон"
+                    placeholder="Телефон"
+                    type="tel"
+                    icon={
+                      <p
+                        className={`${
+                          errors?.phone ? "text-red-500" : "text-black"
+                        } font-normal text-sm mx-2 mt-0.5`}
+                      >
+                        +993
+                      </p>
+                    }
+                    error={errors?.phone?.message}
                   />
                 );
               }}
             />
-
             <Controller
               control={control}
               name="password"
@@ -164,11 +195,19 @@ const Login = () => {
 };
 
 const schema = Yup.object().shape({
-  email: Yup.string()
-    .min(5, "Минимум 5 значений")
-    .max(255, "Максимум 255 значений")
-    .required("E-mail address yazmaly")
-    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
+  // email: Yup.string()
+  //   .min(5, "Минимум 5 значений")
+  //   .max(255, "Максимум 255 значений")
+  //   .required("E-mail address yazmaly")
+  //   .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
+  phone: Yup.string()
+    .required("Telefon nomer bolmaly")
+    .min(8, "minimum 8 simbol bolmaly")
+    .max(8, "mixsimum 8 simbol bolmaly")
+    .matches(
+      /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
+      "Dine san bolmaly!"
+    ),
   password: Yup.string()
     .min(5, "Минимум 5 значений")
     .max(50, "Максимум 50 значений")

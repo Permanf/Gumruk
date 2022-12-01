@@ -139,7 +139,7 @@ const Header = () => {
                 </Avatar>
               </Link>
             ) : (
-              <Link href="agza/login">
+              <Link href="/agza/login">
                 <IconUser
                   size={width > 500 ? 30 : 23}
                   className="cursor-pointer"
