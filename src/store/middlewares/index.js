@@ -67,6 +67,21 @@ export const deleteData =
     }
   };
 
+// export const upload =
+//   ({ url, token, action, formData }) =>
+//   async (dispatch) => {
+//     try {
+//       const response = await api.uploadPhoto({
+//         url,
+//         formData,
+//         withCredentials: false,
+//         token,
+//       });
+//       return action({ success: true, data: response.data });
+//     } catch (error) {
+//       return action({ success: false, message: error?.response });
+//     }
+//   };
 export const upload =
   ({ url, token, action, formData }) =>
   async (dispatch) => {

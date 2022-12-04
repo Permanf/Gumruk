@@ -19,12 +19,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import InputMask from "react-input-mask";
+// import InputMask from "react-input-mask";
 import { IconLock, IconMail, IconCalendar } from "@tabler/icons";
-import { useViewportSize } from "@mantine/hooks";
+// import { useViewportSize } from "@mantine/hooks";
 import { DatePicker } from "@mantine/dates";
 import { useState, useEffect, useReducer } from "react";
 import LayoutProfile from "../../components/Profile/Layout";
+import { getToken } from "../../store/selectors/auth";
+import { showNotification } from "@mantine/notifications";
+import { userData } from "../../store/actions/auth";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -46,6 +49,7 @@ const Settings = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useSelector((state) => state.auth);
+  const token = useSelector(getToken);
   // console.log(user);
   const schema = () =>
     Yup.object().shape({
@@ -62,8 +66,7 @@ const Settings = () => {
         .min(3, "minimum 3 simbol bolmaly")
         .max(35, "maxsimum 35 simbol bolmaly"),
       fathers_name: Yup.string()
-        .required("Atanyzyn adyny yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
+        .nullable()
         .max(35, "maxsimum 35 simbol bolmaly"),
       phone: Yup.string()
         .required("Telefon nomer bolmaly")
@@ -75,18 +78,17 @@ const Settings = () => {
         ),
       password: Yup.string()
         .min(6, "minimum 6 simbol bolmaly")
-        .max(50, "maxsimum 50 simbol bolmaly")
-        .required("acar soz yazmaly"),
+        .max(50, "maxsimum 50 simbol bolmaly"),
       birthday: Yup.string().required("Doglan senaniz bolmaly"),
-      passport_number: Yup.string()
-        .required("Seria nomer yazmaly")
-        .min(10, "minimum 10 simbol bolmaly")
-        .max(11, "maxsimum 11 simbol bolmaly"),
+      // passport_number: Yup.string()
+      //   .required("Seria nomer yazmaly")
+      //   .min(10, "minimum 10 simbol bolmaly")
+      //   .max(11, "maxsimum 11 simbol bolmaly"),
     });
   const {
     handleSubmit,
     formState: { errors },
-    // setError,
+    setError,
     setValue,
     control,
   } = useForm({
@@ -98,18 +100,53 @@ const Settings = () => {
       setValue("last_name", user?.last_name);
       setValue("fathers_name", user?.fathers_name);
       setValue("email", user?.email);
-      setValue("phone", user?.phone);
-      setValue("password", user?.password);
-      setValue("passport_number", user?.passport_number);
+      setValue(
+        "phone",
+        user?.phone?.length > 8 ? user?.phone?.substr(4, 10) : user?.phone
+      );
+      // setValue("password", user?.password);
+      // setValue("passport_number", user?.passport_number);
       setValue("birthday", user?.birthday);
-      // setValue("fathers_name", user?.fathers_name);
     }
   }, [user]);
-  // const sene =
-  //   "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
+    setState({ type: "SET_LOADING", payload: true });
+    function convert(str) {
+      var date = new Date(str),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("/");
+    }
+    data.birthday = convert(data.birthday);
+    dispatch(
+      post({
+        url: `user/update`,
+        data,
+        token,
+        action: (response) => {
+          // console.log(response, "---res");
+          setState({ type: "SET_LOADING", payload: false });
+          if (response?.data?.success) {
+            dispatch(userData(data));
+            showNotification({
+              color: "green",
+              title: "Siz üstünlikli üýtgetdiňiz!",
+              // message: "",
+            });
+          } else {
+            console.log(response?.data?.data, "---error");
+            Object.keys(response?.data?.data)?.forEach((key) => {
+              setError(key, {
+                type: "manual",
+                message: response?.data?.data[key][0],
+              });
+            });
+          }
+        },
+      })
+    );
   };
   return (
     <LayoutProfile title="Profile">
@@ -204,57 +241,16 @@ const Settings = () => {
                 label="Телефон"
                 placeholder="Телефон"
                 type="tel"
-                // icon={
-                //   <p
-                //     className={`${
-                //       errors?.phone ? "text-red-500" : "text-black"
-                //     } font-normal mx-2`}
-                //   >
-                //     +993
-                //   </p>
-                // }
+                icon={
+                  <p
+                    className={`${
+                      errors?.phone ? "text-red-500" : "text-black"
+                    } font-normal mx-2`}
+                  >
+                    +993
+                  </p>
+                }
                 error={errors?.phone?.message}
-              />
-            );
-          }}
-        />
-        <h1 className="mb-3 text-lg font-semibold my-5">Açar sözi uytgetmek</h1>
-
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, onBlur, value, ref } }) => {
-            return (
-              <PasswordInput
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                ref={ref}
-                label="Password"
-                placeholder="Your password"
-                icon={<IconLock size={16} />}
-                error={errors?.password?.message}
-              />
-            );
-          }}
-        />
-        <h1 className="mb-3 text-lg font-semibold my-5">
-          Passport maglumatlary
-        </h1>
-        <Controller
-          control={control}
-          name="passport_number"
-          render={({ field: { onChange, onBlur, value, ref } }) => {
-            return (
-              <TextInput
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value}
-                ref={ref}
-                label="Seria nomer"
-                placeholder="Seria nomer"
-                error={errors?.seria?.message}
-                className="my-2"
               />
             );
           }}
@@ -280,10 +276,52 @@ const Settings = () => {
             );
           }}
         />
+        <h1 className="mb-3 text-lg font-semibold my-5">Açar sözi uytgetmek</h1>
+
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value, ref } }) => {
+            return (
+              <PasswordInput
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                ref={ref}
+                label="Password"
+                placeholder="Your new password"
+                icon={<IconLock size={16} />}
+                error={errors?.password?.message}
+              />
+            );
+          }}
+        />
+        {/* <h1 className="mb-3 text-lg font-semibold my-5">
+          Passport maglumatlary
+        </h1> */}
+        {/* <Controller
+          control={control}
+          name="passport_number"
+          render={({ field: { onChange, onBlur, value, ref } }) => {
+            return (
+              <TextInput
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                ref={ref}
+                label="Seria nomer"
+                placeholder="Seria nomer"
+                error={errors?.seria?.message}
+                className="my-2"
+              />
+            );
+          }}
+        /> */}
+
         <Center>
           <Button
             type="submit"
-            // loading={state.loading}
+            loading={state.loading}
             className="bg-blue-600 mr-4 w-full sm:w-56 mt-5"
           >
             Update

@@ -98,8 +98,8 @@ const ModalForm = ({
           url: `user/wares/search?search=${searchValue}`,
           token,
           action: (response) => {
+            setState({ type: "SET_LOADING_NAME", payload: false });
             if (response.success) {
-              setState({ type: "SET_LOADING_NAME", payload: false });
               // console.log(searchValue, "--gitmeli");
               // console.log(response?.data);
               search_products = [];

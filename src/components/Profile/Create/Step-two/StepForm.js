@@ -305,7 +305,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   label="Alyjy ady"
-                  placeholder="'Alyjy ady"
+                  placeholder="Alyjy ady"
                   error={errors?.consignee_name?.message}
                 />
               );
@@ -563,7 +563,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Ibermegin shertleri"
+                  label="Ibermegin shertlerin kody"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -585,7 +585,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Ibermegin shertleri"
+                  label="Ibermegin shertlerin yagdayy"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"

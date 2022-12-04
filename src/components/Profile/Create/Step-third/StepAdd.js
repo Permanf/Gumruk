@@ -98,8 +98,8 @@ function StepAdd({ active, setActive, state, setState }) {
         data,
         token,
         action: (response) => {
+          setState({ type: "SET_LOADING", payload: false });
           if (response.success) {
-            setState({ type: "SET_LOADING", payload: false });
             // console.log(response?.data);
             showNotification({
               color: "green",

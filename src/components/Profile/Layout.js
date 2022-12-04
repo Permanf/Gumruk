@@ -10,6 +10,8 @@ import { useViewportSize } from "@mantine/hooks";
 import { Drawer, Button, Group, Burger } from "@mantine/core";
 // import { userLoadFailed } from "../../store/actions/auth";
 import { Logout1 } from "../../store/middlewares/auth";
+import { links } from "./Link";
+import { getlang } from "../../store/selectors/auth";
 
 const LayoutProfile = ({ children, title }) => {
   const { width } = useViewportSize();
@@ -17,6 +19,7 @@ const LayoutProfile = ({ children, title }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   // console.log(router);
+  const lang = useSelector(getlang);
   const { token } = useSelector((state) => state.auth);
   // console.log(token);
   // useEffect(() => {
@@ -36,47 +39,37 @@ const LayoutProfile = ({ children, title }) => {
             </h1>
             <div className="w-full flex my-10">
               <div
-                className={`w-1/4 flex-col bg-white py-5  rounded-2xl shadow-lg h-80 ${
+                className={`w-1/4 flex-col bg-white py-5  rounded-2xl shadow-lg h-96 ${
                   width > 1000 ? "flex" : "hidden"
                 }`}
               >
-                <Link href={`/profile`}>
-                  <a
-                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
-                  >
-                    <User size={22} className="cursor-pointer mr-2" />
-                    <span>Профиль</span>
-                  </a>
-                </Link>
-                <Link href={`/profile/tickets`}>
-                  <a
-                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
-                  >
-                    <FileUpload size={22} className="cursor-pointer mr-2" />
-                    <span>Tickets</span>
-                  </a>
-                </Link>
-                <Link href={`/profile/history`}>
-                  <a
-                    className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
-                  >
-                    <FilePencil size={22} className="cursor-pointer mr-2" />
-                    <span>История деклораций</span>
-                  </a>
-                </Link>
-                <hr className="my-5" />
-
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(Logout1());
-                    router.push("/");
-                  }}
-                  className={`font-normal py-3 text-base flex items-center mx-1 rounded-lg px-5 text-red-500 cursor-pointer hover:bg-blue-100`}
-                >
-                  <Logout size={22} className="cursor-pointer mr-2" />
-                  <span>Выйти</span>
-                </div>
+                {links(lang)?.map((item) => {
+                  return item.id != 5 ? (
+                    <Link href={`${item?.link}`} key={item.id}>
+                      <a
+                        className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
+                      >
+                        {item?.icon}
+                        <span>{item?.name}</span>
+                      </a>
+                    </Link>
+                  ) : (
+                    <>
+                      <hr className="my-5" />
+                      <div
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(Logout1());
+                          router.push("/");
+                        }}
+                        className={`font-normal py-3 text-base flex items-center mx-1 rounded-lg px-5 text-red-500 cursor-pointer hover:bg-red-100`}
+                      >
+                        {item?.icon}
+                        <span>{item?.name}</span>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
 
               {/* part2 */}
@@ -118,30 +111,35 @@ const LayoutProfile = ({ children, title }) => {
         >
           {/* Drawer content */}
           <div className="flex flex-col">
-            <Link href={`/profile`} onClick={() => setOpened(true)}>
-              <a className={`font-normal my-3 text-base flex items-center`}>
-                <User size={22} className="cursor-pointer mr-2" />
-                <span>Профиль</span>
-              </a>
-            </Link>
-            <Link href={`/profile/tickets`} onClick={() => setOpened(true)}>
-              <a className={`font-normal my-3 text-base flex items-center`}>
-                <FileUpload size={22} className="cursor-pointer mr-2" />
-                <span>Tickets</span>
-              </a>
-            </Link>
-            <Link href={`/profile/history`} onClick={() => setOpened(true)}>
-              <a className={`font-normal my-3 text-base flex items-center`}>
-                <FilePencil size={22} className="cursor-pointer mr-2" />
-                <span>История деклораций</span>
-              </a>
-            </Link>
-            <hr className="my-5" />
-
-            <div className={`font-normal my-3 text-base flex items-center`}>
-              <Logout size={22} className="cursor-pointer mr-2" />
-              <span>Выйти</span>
-            </div>
+            {links(lang)?.map((item) => {
+              return item.id != 5 ? (
+                <Link
+                  href={`${item?.link}`}
+                  key={item.id}
+                  onClick={() => setOpened(true)}
+                >
+                  <a className={`font-normal my-3 text-base flex items-center`}>
+                    {item?.icon}
+                    <span>{item?.name}</span>
+                  </a>
+                </Link>
+              ) : (
+                <>
+                  <hr className="my-5" />
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(Logout1());
+                      router.push("/");
+                    }}
+                    className={`font-normal my-3 text-base flex items-center text-red-500`}
+                  >
+                    {item?.icon}
+                    <span>{item?.name}</span>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </Drawer>
       </Layout>

@@ -83,18 +83,11 @@ const Login = () => {
             dispatch(loginSuccess(response?.data?.data?.token));
             router.push("/");
           } else {
-            console.log(response?.data?.data?.message);
-
+            // console.log(response?.data?.data?.message);
             setState({
               type: "SET_ERROR_MESSAGE",
               payload: response?.data?.data?.message,
             });
-            //   Object.keys(response.message)?.forEach(key =>{
-            //     setError(key, {
-            //         type: "manual",
-            //         message: response.message[key],
-            //     })
-            // });
           }
         },
       })

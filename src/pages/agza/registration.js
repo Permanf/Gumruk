@@ -98,7 +98,7 @@ const Register = () => {
   const {
     handleSubmit,
     formState: { errors },
-    // setError,
+    setError,
     setValue,
     control,
   } = useForm({
@@ -106,7 +106,7 @@ const Register = () => {
   });
   // const sene =
   //   "Wed Sep 21 2022 00:00:00 GMT+0500 (Узбекистан, стандартное время)";
-
+  const errorData = {};
   const onSubmit = (data) => {
     if (data.password === data.password_confirmation) {
       setState({ type: "SET_LOADING", payload: true });
@@ -119,20 +119,26 @@ const Register = () => {
         return [date.getFullYear(), mnth, day].join("/");
       }
       data.birthday = data.legal_entity == 1 ? "" : convert(data.birthday);
-      console.log(data);
+      // console.log(data);
       dispatch(
         post({
           url: `register`,
           data,
           action: (response) => {
-            console.log(response?.data);
+            // console.log(response, "---res");
             setState({ type: "SET_LOADING", payload: false });
             if (response?.data?.success) {
               SetCookie("token", response?.data?.data?.token);
               dispatch(loginSuccess(response?.data?.data?.token));
               router.push("/");
             } else {
-              console.log(response?.data);
+              // console.log(response?.data?.data, "---error");
+              Object.keys(response?.data?.data)?.forEach((key) => {
+                setError(key, {
+                  type: "manual",
+                  message: response?.data?.data[key][0],
+                });
+              });
             }
           },
         })
@@ -273,7 +279,7 @@ const Register = () => {
                         <p
                           className={`${
                             errors?.phone ? "text-red-500" : "text-black"
-                          } font-normal  text-sm mx-2`}
+                          } font-normal mt-0  text-sm mx-2`}
                         >
                           +993
                         </p>

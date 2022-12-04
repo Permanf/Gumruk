@@ -3,11 +3,6 @@ export const setCategory = (data) => ({
   type: SET_CATEGORY,
   payload: data,
 });
-export const SET_FILTER_ID = "SET_FILTER_ID";
-export const setFilters = (data) => ({
-  type: SET_FILTER_ID,
-  payload: data,
-});
 
 export const GET_HELPER_DATA = "GET_HELPER_DATA";
 export const setHelperData = (data) => ({
@@ -15,7 +10,7 @@ export const setHelperData = (data) => ({
   payload: data,
 });
 
-// upload
+// upload declaration...
 export const SET_FILE_PROGRESS = "SET_FILE_PROGRESS";
 export const setFileProgress = (data) => ({
   type: SET_FILE_PROGRESS,
@@ -57,4 +52,43 @@ export const SET_DECLARATON_ID = "SET_DECLARATON_ID";
 export const setDeclarationId = (id) => ({
   type: SET_DECLARATON_ID,
   payload: id,
+});
+
+// upload announcement image...
+export const SET_IMAGE_PROGRESS = "SET_IMAGE_PROGRESS";
+export const setImageProgress = (data) => ({
+  type: SET_IMAGE_PROGRESS,
+  payload: data,
+});
+export const SET_UPLOAD_IMAGE = "SET_UPLOAD_IMAGE";
+export const setUploadImage = (data) => ({
+  type: SET_UPLOAD_IMAGE,
+  payload: data,
+});
+
+export const SET_UPLOAD_IMAGE_PROGRESS = "SET_UPLOAD_IMAGE_PROGRESS";
+export const setUploadImageProgress = (id, progress) => ({
+  type: SET_UPLOAD_IMAGE_PROGRESS,
+  payload: {
+    id,
+    progress,
+  },
+});
+
+export const SUCCESS_UPLOAD_IMAGE = "SUCCESS_UPLOAD_IMAGE";
+export const successUploadImage = (id) => ({
+  type: SUCCESS_UPLOAD_IMAGE,
+  payload: id,
+});
+
+export const FAILURE_UPLOAD_IMAGE = "FAILURE_UPLOAD_IMAGE";
+export const failureUploadImage = (id) => ({
+  type: FAILURE_UPLOAD_IMAGE,
+  payload: id,
+});
+
+export const SET_ANNOUNCEMENT_IMAGE_IDS = "SET_ANNOUNCEMENT_IMAGE_IDS";
+export const announcementImageIds = (data) => ({
+  type: SET_ANNOUNCEMENT_IMAGE_IDS,
+  payload: data,
 });

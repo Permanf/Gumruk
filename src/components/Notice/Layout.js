@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Sidebar } from "./Sidebar";
 import { Filter } from "tabler-icons-react";
 
-function LayoutNotice({ children, title }) {
+function LayoutNotice({ children, title, size }) {
   const { width } = useViewportSize();
 
   return (
@@ -24,7 +24,7 @@ function LayoutNotice({ children, title }) {
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
                 <span className="font-semibold text-sm sm:text-base">
-                  Найдено всего 21 результата
+                  Найдено всего {size} результата
                 </span>
                 <div className="w-full sm:w-fit flex justify-between items-center ">
                   <span className="font-semibold flex sm:hidden">
