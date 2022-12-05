@@ -19,15 +19,55 @@ import loader from "../../assets/Lottiefiles/loader.json";
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_TRIGGER":
+      return {
+        ...state,
+        trigger: action.payload,
+      };
     case "SET_LOADING":
       return {
         ...state,
         loading: action.payload,
       };
+    case "SET_SIDEBAR_LOADING":
+      return {
+        ...state,
+        sidebar_loading: action.payload,
+      };
     case "SET_DATA":
       return {
         ...state,
         all_data: action.payload,
+      };
+    case "SET_SIDEBAR_DATA":
+      return {
+        ...state,
+        sidebar_data: action.payload,
+      };
+    case "SET_CATEGORY_ID":
+      return {
+        ...state,
+        category_id: action.payload,
+      };
+    case "SET_CREATED_AT":
+      return {
+        ...state,
+        created_at: action.payload,
+      };
+    case "SET_PRICE_SORT":
+      return {
+        ...state,
+        price_sort: action.payload,
+      };
+    case "SET_PRICE_MIN":
+      return {
+        ...state,
+        price_min: action.payload,
+      };
+    case "SET_PRICE_MAX":
+      return {
+        ...state,
+        price_max: action.payload,
       };
     default:
       return state;
@@ -36,18 +76,27 @@ function reducer(state, action) {
 
 const Notice = () => {
   const [state, setState] = useReducer(reducer, {
+    trigger: false,
     loading: false,
     all_data: {},
+    sidebar_loading: false,
+    sidebar_data: {},
+    category_id: 1,
+    created_at: "",
+    price_sort: "",
+    price_min: null,
+    price_max: null,
   });
   const dispatch = useDispatch();
-  const token = useSelector(getToken);
+  // const token = useSelector(getToken);
   const lang = useSelector(getlang);
   const router = useRouter();
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
+    console.log(state);
     dispatch(
       fetchData({
-        url: `user/announcements`,
+        url: `user/announcements?category_id=${state.category_id}&price=${state.price_sort}&created_at=${state.created_at}&price_min=${state.price_min}&price_max=${state.price_max}`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
           // console.log(response);
@@ -63,19 +112,10 @@ const Notice = () => {
         },
       })
     );
-    dispatch(
-      fetchData({
-        url: `user/announcement/filters`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
-        action: (response) => {
-          console.log(response, "--filter");
-        },
-      })
-    );
-  }, []);
+  }, [state.trigger]);
 
   return (
-    <LayoutNotice title="Bildirişler" size={state?.all_data?.data?.length}>
+    <LayoutNotice title="Bildirişler" state={state} setState={setState}>
       {state.loading ? (
         <Skeletons />
       ) : state?.all_data?.data?.length ? (

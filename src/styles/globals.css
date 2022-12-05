@@ -32,6 +32,9 @@ body{
 .blue1{
   background-color: #043375;
 }
+.z-index-header{
+  z-index: 1000;
+}
 .container_out{
     width: 1150px;
 }

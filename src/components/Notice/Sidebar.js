@@ -20,9 +20,15 @@ import {
 } from "@tabler/icons";
 import { LinksGroup } from "./NavbarLinksGroup";
 import { useViewportSize } from "@mantine/hooks";
+import SkeletonsSide from "./SkeletonsSide";
+import { RangePrice } from "./RangePrice";
 
 const mockdata = [
   { label: "Ulag serişdeleri", icon: IconGauge },
+  { label: "Ulag serişdeleri", icon: IconGauge },
+  { label: "Ulag serişdeleri", icon: IconGauge },
+  { label: "Ulag serişdeleri", icon: IconGauge },
+
   {
     label: "Ýük ulag",
     icon: IconNotes,
@@ -85,6 +91,7 @@ const useStyles = createStyles((theme) => ({
   linksInner: {
     paddingTop: theme.spacing.xl,
     paddingBottom: theme.spacing.xl,
+    // height: "900px",
   },
 
   footer: {
@@ -96,55 +103,71 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function Sidebar() {
+export function Sidebar({ state, setState }) {
+  // console.log(state.sidebar_data.categories, "-side");
   const { width } = useViewportSize();
   const { classes } = useStyles();
-  const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+  const links = state.sidebar_data.categories?.map((item) => (
+    <LinksGroup
+      category={item}
+      key={item.id}
+      state={state}
+      setState={setState}
+    />
   ));
 
   return (
     <Navbar
-      height={800}
+      height={1000}
       p="md"
       className={`${classes.navbar} ${
         width > 1000 ? "flex" : "hidden"
-      } w-1/4 flex-col rounded-xl shadow-lg sticky top-3`}
+      } w-1/4 flex-col rounded-xl shadow-lg sticky top-32`}
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">
-          {/* <Logo width={120} /> */}
-          {/* <Code sx={{ fontWeight: 700 }}></Code> */}
           <h1 className="text-xl font-semibold">Все категории</h1>
         </Group>
       </Navbar.Section>
 
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
-        <div className={classes.linksInner}>{links}</div>
+        {state.sidebar_loading ? (
+          <SkeletonsSide />
+        ) : (
+          <div className={`${classes.linksInner}`}>{links}</div>
+        )}
       </Navbar.Section>
       <h1 className="text-xl font-semibold my-3 pl-4">Регионы</h1>
       <hr />
-      <div className="mt-4 px-4 font-semibold">
-        <Checkbox label="Ashgabat" className="my-5" />
-        <Checkbox label="Ahal" className="my-5" />
-        <Checkbox label="Mary" className="my-5" />
-        <Checkbox label="Dasoguz" className="my-5" />
-        <Checkbox label="Lebap" className="my-5" />
-        <Checkbox label="Balkan" className="my-5" />
-      </div>
+      {state.sidebar_loading ? (
+        <SkeletonsSide />
+      ) : (
+        <div className="mt-4 px-4 font-semibold">
+          {state.sidebar_data.locations?.map((location) => {
+            return (
+              <Checkbox
+                key={location?.id}
+                label={location?.title}
+                className="my-5"
+              />
+            );
+          })}
+        </div>
+      )}
 
       <h1 className="text-xl font-semibold my-3 pl-4">Search</h1>
-      <hr />
-      <div className="mt-4 px-4 flex  items-center">
+      <hr className="mb-6" />
+      <div className="my-5">
+        <RangePrice state={state} setState={setState} />
+      </div>
+      {/* <div className="mt-4 px-4 flex  items-center">
         <Input placeholder="min" className="my-5 w-24 " />
         <span className="mx-2">-</span>
         <Input placeholder="max" className="my-5 w-24" />
         <Button className="bg-blue-600 ml-3">
           <IconSearch size={15} />
         </Button>
-      </div>
-
-      {/* <Navbar.Section className={classes.footer}></Navbar.Section> */}
+      </div> */}
     </Navbar>
   );
 }

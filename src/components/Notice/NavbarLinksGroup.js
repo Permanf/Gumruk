@@ -15,6 +15,7 @@ import {
   IconChevronRight,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
+import { useWindowScroll } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -22,17 +23,20 @@ const useStyles = createStyles((theme) => ({
     display: "block",
     width: "100%",
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+    color:
+      theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.black,
     fontSize: theme.fontSizes.sm,
 
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[7]
-          : theme.colors.blue[1],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-      borderLeft: "1px solid blue",
-      transition: "transform 500ms ease",
+          : // : theme.colors.blue[1],
+            null,
+      color: theme.colorScheme === "dark" ? theme.white : theme.colors.blue,
+      // borderLeft: "4px solid blue",
+
+      transition: "transform 600ms ease",
     },
   },
 
@@ -45,19 +49,15 @@ const useStyles = createStyles((theme) => ({
     marginLeft: 30,
     fontSize: theme.fontSizes.sm,
     color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[3]
-    }`,
+      theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.black,
 
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[7]
-          : theme.colors.blue[1],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
+          : // : theme.colors.blue[4],
+            null,
+      color: theme.colorScheme === "dark" ? theme.white : theme.colors.blue,
     },
   },
 
@@ -66,26 +66,28 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
+export function LinksGroup({ category, state, setState }) {
+  // console.log(category);
   const router = useRouter();
+  const [scroll, scrollTo] = useWindowScroll();
 
   const { classes, theme } = useStyles();
-  const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const hasLinks = Array.isArray(category?.links);
+  const [opened, setOpened] = useState(category?.initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
-  const items = (hasLinks ? links : []).map((link) => (
+  const items = (hasLinks ? category?.links : []).map((link) => (
     <Text
       component="a"
       className={`${classes.link} hover:border-l hover:border-blue-700`}
-      href={link.link}
-      key={link.label}
+      // href={link.link}
+      key={link?.label}
       onClick={(event) => {
         event.preventDefault();
-        console.log(link.link);
-        router.push(`/bildirisler?sub_category=${link.label}`);
+        console.log(link?.link);
+        // router.push(`/bildirisler?sub_category=${link.label}`);
       }}
     >
-      {link.label}
+      {link?.label}
     </Text>
   ));
 
@@ -94,18 +96,31 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
       <UnstyledButton
         onClick={(event) => {
           event.preventDefault();
-          console.log(label);
-          router.push(`/bildirisler?category=${label}`);
-          setOpened((o) => !o);
+          setState({ type: "SET_CATEGORY_ID", payload: category?.id });
+          setState({ type: "SET_TRIGGER", payload: !state.trigger });
+          router.push(`/bildirisler?category_id=${category?.id}`);
+          scrollTo({ y: 0 });
+
+          // console.log(category?.id);
+          // setOpened((o) => !o);
         }}
         className={`${classes.control}`}
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {/* <ThemeIcon variant="light" size={30}>
-              <Icon size={18} />
-            </ThemeIcon> */}
-            <Box ml="md">{label}</Box>
+            <ThemeIcon variant="light" size={30}>
+              {/* <Icon size={18} /> */}?
+            </ThemeIcon>
+            <Box
+              ml="md"
+              className={`${
+                state.category_id == category?.id
+                  ? "text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-indigo-400"
+                  : ""
+              }`}
+            >
+              {category?.name?.ru}
+            </Box>
           </Box>
           {hasLinks && (
             <ChevronIcon
@@ -125,29 +140,3 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
     </>
   );
 }
-
-// const mockdata = {
-//   label: "Releases",
-//   icon: IconCalendarStats,
-//   links: [
-//     { label: "Upcoming releases", link: "/" },
-//     { label: "Previous releases", link: "/" },
-//     { label: "Releases schedule", link: "/" },
-//   ],
-// };
-
-// export function NavbarLinksGroup() {
-//   return (
-//     <Box
-//       sx={(theme) => ({
-//         minHeight: 220,
-//         padding: theme.spacing.md,
-//         backgroundColor:
-//           theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-//       })}
-//       className="bg-red-300"
-//     >
-//       <LinksGroup {...mockdata} />
-//     </Box>
-//   );
-// }

@@ -56,11 +56,17 @@ const Header = () => {
       <HeaderTop />
 
       <div
-        className={`w-full flex justify-center ${
-          router.pathname == "/" ? "bannerHeader text-white" : "bg_gray"
+        className={`w-full flex justify-center sticky top-0 z-index-header  ${
+          router.pathname == "/"
+            ? "bannerHeader text-white"
+            : "bg_gray shadow-md"
         } `}
       >
-        <div className="container_out flex justify-between border-b-2 border-b-gray-300">
+        <div
+          className={`container_out flex justify-between ${
+            router.pathname == "/" ? "border-b-2" : ""
+          }  border-b-gray-300`}
+        >
           <div className="flex">
             <div className="sm:w-56 flex items-center py-5">
               {width <= 950 ? (

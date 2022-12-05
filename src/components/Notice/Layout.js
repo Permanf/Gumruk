@@ -1,12 +1,64 @@
 import { Center, Group, Select } from "@mantine/core";
 import Layout from "../Layouts/Layout";
 import { useViewportSize } from "@mantine/hooks";
-import Link from "next/link";
+// import Link from "next/link";
 import { Sidebar } from "./Sidebar";
 import { Filter } from "tabler-icons-react";
+import { useEffect, useReducer, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../../store/middlewares";
+import { getlang, getToken } from "../../store/selectors/auth";
 
-function LayoutNotice({ children, title, size }) {
+function LayoutNotice({ children, title, state, setState }) {
+  // console.log(state, "-ll");
+  const [value, setValue] = useState("");
   const { width } = useViewportSize();
+  const dispatch = useDispatch();
+  const lang = useSelector(getlang);
+  useEffect(() => {
+    setState({ type: "SET_SIDEBAR_LOADING", payload: true });
+    dispatch(
+      fetchData({
+        url: `user/announcement/filters`,
+        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        action: (response) => {
+          setState({ type: "SET_SIDEBAR_LOADING", payload: false });
+          if (response?.success) {
+            setState({
+              type: "SET_SIDEBAR_DATA",
+              payload: response?.data.data,
+            });
+          } else {
+            console.log(response);
+          }
+        },
+      })
+    );
+  }, []);
+  // console.log(value);
+  useEffect(() => {
+    if (value == "asc1") {
+      setState({ type: "SET_PRICE_SORT", payload: "asc" });
+      setState({ type: "SET_CREATED_AT", payload: "" });
+      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    } else if (value == "desc1") {
+      setState({ type: "SET_PRICE_SORT", payload: "desc" });
+      setState({ type: "SET_CREATED_AT", payload: "" });
+      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    } else if (value == "asc2") {
+      setState({ type: "SET_CREATED_AT", payload: "asc" });
+      setState({ type: "SET_PRICE_SORT", payload: "" });
+      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    } else if (value == "desc2") {
+      setState({ type: "SET_CREATED_AT", payload: "desc" });
+      setState({ type: "SET_PRICE_SORT", payload: "" });
+      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    } else {
+      setState({ type: "SET_CREATED_AT", payload: "" });
+      setState({ type: "SET_PRICE_SORT", payload: "" });
+      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    }
+  }, [value]);
 
   return (
     <Layout title={title}>
@@ -15,7 +67,7 @@ function LayoutNotice({ children, title, size }) {
           <h1 className="text-xl sm:text-3xl font-semibold">Oбъявление</h1>
 
           <div className="w-full flex my-10">
-            <Sidebar />
+            <Sidebar state={state} setState={setState} />
             {/* part2 */}
             <div
               className={`${
@@ -24,7 +76,7 @@ function LayoutNotice({ children, title, size }) {
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
                 <span className="font-semibold text-sm sm:text-base">
-                  Найдено всего {size} результата
+                  Найдено всего {state.all_data?.data?.length} результата
                 </span>
                 <div className="w-full sm:w-fit flex justify-between items-center ">
                   <span className="font-semibold flex sm:hidden">
@@ -34,12 +86,15 @@ function LayoutNotice({ children, title, size }) {
                   <Select
                     className="border border-gray-50 rounded-sm"
                     // label="Your favorite framework/library"
+                    value={value}
+                    onChange={setValue}
                     placeholder="Saylanmadyk"
                     data={[
-                      { value: "high", label: "По цене убывания" },
-                      { value: "loew", label: "По цене возрастания" },
-                      { value: "time1", label: "По дате убывания" },
-                      { value: "time2", label: "По дате возрастания" },
+                      { value: "", label: "По умолчанию" },
+                      { value: "asc1", label: "По цене убывания" },
+                      { value: "desc1", label: "По цене возрастания" },
+                      { value: "asc2", label: "По дате убывания" },
+                      { value: "desc2", label: "По дате возрастания" },
                     ]}
                   />
                 </div>
