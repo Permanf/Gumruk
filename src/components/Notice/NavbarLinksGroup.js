@@ -66,11 +66,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function LinksGroup({ category, state, setState }) {
+export function LinksGroup({ category, state, setState, query }) {
   // console.log(category);
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
-
+  const handleRoute = (elements) => {
+    // console.log('Elements -> ', elements, 'Query -> ',{ ...query, ...elements});
+    router.push({
+      pathname: "/bildirisler",
+      query: { ...query, ...elements },
+    });
+    scrollTo({ y: 0 });
+  };
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(category?.links);
   const [opened, setOpened] = useState(category?.initiallyOpened || false);
@@ -96,13 +103,9 @@ export function LinksGroup({ category, state, setState }) {
       <UnstyledButton
         onClick={(event) => {
           event.preventDefault();
-          setState({ type: "SET_CATEGORY_ID", payload: category?.id });
-          setState({ type: "SET_TRIGGER", payload: !state.trigger });
-          router.push(`/bildirisler?category_id=${category?.id}`);
-          scrollTo({ y: 0 });
-
-          // console.log(category?.id);
-          // setOpened((o) => !o);
+          handleRoute({
+            category: category.id,
+          });
         }}
         className={`${classes.control}`}
       >
@@ -114,7 +117,7 @@ export function LinksGroup({ category, state, setState }) {
             <Box
               ml="md"
               className={`${
-                state.category_id == category?.id
+                +query?.category == +category?.id
                   ? "text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-indigo-400"
                   : ""
               }`}

@@ -1,6 +1,6 @@
 import { Center, Group, Select } from "@mantine/core";
 import Layout from "../Layouts/Layout";
-import { useViewportSize } from "@mantine/hooks";
+import { useViewportSize, useWindowScroll } from "@mantine/hooks";
 // import Link from "next/link";
 import { Sidebar } from "./Sidebar";
 import { Filter } from "tabler-icons-react";
@@ -8,13 +8,36 @@ import { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/middlewares";
 import { getlang, getToken } from "../../store/selectors/auth";
+import { useRouter } from "next/router";
 
-function LayoutNotice({ children, title, state, setState }) {
+function LayoutNotice({ children, title, state, setState, query }) {
   // console.log(state, "-ll");
   const [value, setValue] = useState("");
   const { width } = useViewportSize();
   const dispatch = useDispatch();
   const lang = useSelector(getlang);
+  const [scroll, scrollTo] = useWindowScroll();
+  const router = useRouter();
+  useEffect(() => {
+    if (query?.price_sort == "asc") {
+      setValue("asc1");
+    } else if (query?.price_sort == "desc") {
+      setValue("desc1");
+    }
+    if (query?.created_at == "asc") {
+      setValue("asc2");
+    } else if (query?.created_at == "desc") {
+      setValue("desc2");
+    }
+  }, [query]);
+  const handleRoute = (elements) => {
+    // console.log('Elements -> ', elements, 'Query -> ',{ ...query, ...elements});
+    router.push({
+      pathname: "/bildirisler",
+      query: { ...query, ...elements },
+    });
+    scrollTo({ y: 0 });
+  };
   useEffect(() => {
     setState({ type: "SET_SIDEBAR_LOADING", payload: true });
     dispatch(
@@ -37,26 +60,33 @@ function LayoutNotice({ children, title, state, setState }) {
   }, []);
   // console.log(value);
   useEffect(() => {
-    if (value == "asc1") {
-      setState({ type: "SET_PRICE_SORT", payload: "asc" });
-      setState({ type: "SET_CREATED_AT", payload: "" });
-      setState({ type: "SET_TRIGGER", payload: !state.trigger });
-    } else if (value == "desc1") {
-      setState({ type: "SET_PRICE_SORT", payload: "desc" });
-      setState({ type: "SET_CREATED_AT", payload: "" });
-      setState({ type: "SET_TRIGGER", payload: !state.trigger });
-    } else if (value == "asc2") {
-      setState({ type: "SET_CREATED_AT", payload: "asc" });
-      setState({ type: "SET_PRICE_SORT", payload: "" });
-      setState({ type: "SET_TRIGGER", payload: !state.trigger });
-    } else if (value == "desc2") {
-      setState({ type: "SET_CREATED_AT", payload: "desc" });
-      setState({ type: "SET_PRICE_SORT", payload: "" });
-      setState({ type: "SET_TRIGGER", payload: !state.trigger });
-    } else {
-      setState({ type: "SET_CREATED_AT", payload: "" });
-      setState({ type: "SET_PRICE_SORT", payload: "" });
-      setState({ type: "SET_TRIGGER", payload: !state.trigger });
+    if (value) {
+      if (value == "asc1") {
+        handleRoute({
+          price_sort: "asc",
+          created_at: "",
+        });
+      } else if (value == "desc1") {
+        handleRoute({
+          price_sort: "desc",
+          created_at: "",
+        });
+      } else if (value == "asc2") {
+        handleRoute({
+          price_sort: "",
+          created_at: "asc",
+        });
+      } else if (value == "desc2") {
+        handleRoute({
+          price_sort: "",
+          created_at: "desc",
+        });
+      } else {
+        handleRoute({
+          price_sort: "",
+          created_at: "",
+        });
+      }
     }
   }, [value]);
 
@@ -67,7 +97,7 @@ function LayoutNotice({ children, title, state, setState }) {
           <h1 className="text-xl sm:text-3xl font-semibold">Oбъявление</h1>
 
           <div className="w-full flex my-10">
-            <Sidebar state={state} setState={setState} />
+            <Sidebar state={state} setState={setState} query={query} />
             {/* part2 */}
             <div
               className={`${

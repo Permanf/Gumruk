@@ -1,6 +1,7 @@
 import { createStyles, RangeSlider } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useDebouncedValue, useWindowScroll } from "@mantine/hooks";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -28,16 +29,35 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function RangePrice({ state, setState }) {
+export function RangePrice({ state, setState, query }) {
   const { classes } = useStyles();
   const [scroll, scrollTo] = useWindowScroll();
-  const [rangeValue, setRangeValue] = useState([20, 50000]);
+  const router = useRouter();
+
+  const handleRoute = (elements) => {
+    router.push({
+      pathname: "/bildirisler",
+      query: { ...query, ...elements },
+    });
+    scrollTo({ y: 0 });
+  };
+  const [rangeValue, setRangeValue] = useState([
+    query?.price_min ? query?.price_min : 0,
+    query?.price_max ? query?.price_max : 50000,
+  ]);
   const [debounced] = useDebouncedValue(rangeValue, 900);
   useEffect(() => {
-    setState({ type: "SET_PRICE_MIN", payload: debounced[0] });
-    setState({ type: "SET_PRICE_MAX", payload: debounced[1] });
-    setState({ type: "SET_TRIGGER", payload: !state.trigger });
-    scrollTo({ y: 0 });
+    if (query?.price_min || query?.price_max) {
+      handleRoute({
+        price_min: debounced[0],
+        price_max: debounced[1],
+      });
+    } else if (debounced[0] != 0 || debounced[1] != 50000) {
+      handleRoute({
+        price_min: debounced[0],
+        price_max: debounced[1],
+      });
+    }
   }, [debounced]);
   // console.log(debounced);
   return (

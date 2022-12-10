@@ -39,7 +39,7 @@ const Card = ({ item, type }) => {
         <h3 className="font-semibold my-2">+993 {item?.phone}</h3>
         <div className="flex items-center font-semibold my-2">
           <CurrentLocation size={20} className="mr-1" />
-          <span>{item?.location_id}</span>
+          <span>{item?.location}</span>
         </div>
 
         {/* <h3 className="font-semibold mb-2">{item?.email}</h3>` */}

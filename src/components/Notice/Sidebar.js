@@ -8,61 +8,22 @@ import {
   Input,
   Button,
 } from "@mantine/core";
-import {
-  IconNotes,
-  IconCalendarStats,
-  IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconSearch,
-} from "@tabler/icons";
+// import {
+//   IconNotes,
+//   IconCalendarStats,
+//   IconGauge,
+//   IconPresentationAnalytics,
+//   IconFileAnalytics,
+//   IconAdjustments,
+//   IconLock,
+//   IconSearch,
+// } from "@tabler/icons";
 import { LinksGroup } from "./NavbarLinksGroup";
 import { useViewportSize } from "@mantine/hooks";
 import SkeletonsSide from "./SkeletonsSide";
 import { RangePrice } from "./RangePrice";
-
-const mockdata = [
-  { label: "Ulag serişdeleri", icon: IconGauge },
-  { label: "Ulag serişdeleri", icon: IconGauge },
-  { label: "Ulag serişdeleri", icon: IconGauge },
-  { label: "Ulag serişdeleri", icon: IconGauge },
-
-  {
-    label: "Ýük ulag",
-    icon: IconNotes,
-    initiallyOpened: false,
-    links: [
-      { label: "Çage-sement-kerpiç daşayan", link: "/" },
-      { label: "Producta-material daşayan", link: "/" },
-    ],
-  },
-  { label: "Yorite tehnikalar", icon: IconGauge },
-  { label: "Ýolagçylar", icon: IconGauge },
-
-  // {
-  //   label: "Releases",
-  //   icon: IconCalendarStats,
-  //   links: [
-  //     { label: "Upcoming releases", link: "/" },
-  //     { label: "Previous releases", link: "/" },
-  //     { label: "Releases schedule", link: "/" },
-  //   ],
-  // },
-  // { label: "Analytics", icon: IconPresentationAnalytics },
-  // { label: "Contracts", icon: IconFileAnalytics },
-  // { label: "Settings", icon: IconAdjustments },
-  // {
-  //   label: "Security",
-  //   icon: IconLock,
-  //   links: [
-  //     { label: "Enable 2FA", link: "/" },
-  //     { label: "Change password", link: "/" },
-  //     { label: "Recovery codes", link: "/" },
-  //   ],
-  // },
-];
+import { useRouter } from "next/router";
+import { useWindowScroll } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -103,9 +64,19 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function Sidebar({ state, setState }) {
+export function Sidebar({ state, setState, query }) {
   // console.log(state.sidebar_data.categories, "-side");
   const { width } = useViewportSize();
+  const [scroll, scrollTo] = useWindowScroll();
+  const router = useRouter();
+  const handleRoute = (elements) => {
+    // console.log('Elements -> ', elements, 'Query -> ',{ ...query, ...elements});
+    router.push({
+      pathname: "/bildirisler",
+      query: { ...query, ...elements },
+    });
+    scrollTo({ y: 0 });
+  };
   const { classes } = useStyles();
   const links = state.sidebar_data.categories?.map((item) => (
     <LinksGroup
@@ -113,6 +84,7 @@ export function Sidebar({ state, setState }) {
       key={item.id}
       state={state}
       setState={setState}
+      query={query}
     />
   ));
 
@@ -146,6 +118,28 @@ export function Sidebar({ state, setState }) {
           {state.sidebar_data.locations?.map((location) => {
             return (
               <Checkbox
+                onChange={(event) => {
+                  event.preventDefault();
+                  let query_locations = query?.locations
+                    ? query?.locations
+                    : "";
+                  // console.log(location?.id);
+                  if (query.locations?.includes(location.id)) {
+                    handleRoute({
+                      locations: query_locations
+                        ?.split(",")
+                        ?.filter((item) => item != location?.id)
+                        ?.join(","),
+                    });
+                  } else {
+                    handleRoute({
+                      locations: query_locations + "," + location?.id,
+                    });
+                  }
+                }}
+                checked={
+                  query?.locations?.includes(location?.id) ? true : false
+                }
                 key={location?.id}
                 label={location?.title}
                 className="my-5"
@@ -158,7 +152,7 @@ export function Sidebar({ state, setState }) {
       <h1 className="text-xl font-semibold my-3 pl-4">Search</h1>
       <hr className="mb-6" />
       <div className="my-5">
-        <RangePrice state={state} setState={setState} />
+        <RangePrice state={state} setState={setState} query={query} />
       </div>
       {/* <div className="mt-4 px-4 flex  items-center">
         <Input placeholder="min" className="my-5 w-24 " />

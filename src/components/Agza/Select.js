@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SegmentedControl } from "@mantine/core";
 
 function Select({ legal, setLegal }) {

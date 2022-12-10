@@ -92,6 +92,7 @@ const NoticeAdd = () => {
         url: `user/announcement/create-select`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
+          console.log(response, "--select");
           if (response?.data?.success) {
             setState({
               type: "SET_SELECT_DATA",

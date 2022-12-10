@@ -50,13 +50,13 @@ const Header = () => {
     //   icon: <IconFileText size={18} />,
     // },
   ];
-
+  // sticky top-0 z-index-header
   return (
     <>
       <HeaderTop />
 
       <div
-        className={`w-full flex justify-center sticky top-0 z-index-header  ${
+        className={`w-full flex justify-center  ${
           router.pathname == "/"
             ? "bannerHeader text-white"
             : "bg_gray shadow-md"

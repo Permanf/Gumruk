@@ -1,24 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { LoadUser } from "../../store/middlewares/auth";
 import { Center } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "../Layouts/Layout";
-import { User, FileUpload, FilePencil, Logout } from "tabler-icons-react";
+// import { User, FileUpload, FilePencil, Logout } from "tabler-icons-react";
 import { useViewportSize } from "@mantine/hooks";
-import { Drawer, Button, Group, Burger } from "@mantine/core";
+import { Drawer, Burger, ThemeIcon } from "@mantine/core";
 // import { userLoadFailed } from "../../store/actions/auth";
 import { Logout1 } from "../../store/middlewares/auth";
 import { links } from "./Link";
 import { getlang } from "../../store/selectors/auth";
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_ACTIVE":
+      return {
+        ...state,
+        active: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
 const LayoutProfile = ({ children, title }) => {
+  const [state, setState] = useReducer(reducer, {
+    active: 1,
+  });
   const { width } = useViewportSize();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  // console.log(router);
   const lang = useSelector(getlang);
   const { token } = useSelector((state) => state.auth);
   // console.log(token);
@@ -47,10 +61,18 @@ const LayoutProfile = ({ children, title }) => {
                   return item.id != 5 ? (
                     <Link href={`${item?.link}`} key={item.id}>
                       <a
-                        className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:bg-blue-100`}
+                        className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:text-blue-500`}
                       >
-                        {item?.icon}
-                        <span>{item?.name}</span>
+                        <ThemeIcon variant="light" className="mr-2">
+                          {item?.icon}
+                        </ThemeIcon>
+                        <span
+                          className={`text-sm font-semibold ${
+                            router.asPath == item?.link ? "text-blue-500" : ""
+                          }`}
+                        >
+                          {item?.name}
+                        </span>
                       </a>
                     </Link>
                   ) : (
@@ -62,10 +84,14 @@ const LayoutProfile = ({ children, title }) => {
                           dispatch(Logout1());
                           router.push("/");
                         }}
-                        className={`font-normal py-3 text-base flex items-center mx-1 rounded-lg px-5 text-red-500 cursor-pointer hover:bg-red-100`}
+                        className={`font-normal py-3 text-base flex items-center mx-1 rounded-lg px-5 text-red-500 cursor-pointer hover:text-red-400`}
                       >
-                        {item?.icon}
-                        <span>{item?.name}</span>
+                        <ThemeIcon variant="light" color="red" className="mr-2">
+                          {item?.icon}
+                        </ThemeIcon>
+                        <span className="text-sm font-semibold">
+                          {item?.name}
+                        </span>
                       </div>
                     </>
                   );

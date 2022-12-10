@@ -6,7 +6,7 @@ import { Logout } from "../middlewares/auth";
 // const API_BASE_URL = process.env.REACT_APP_IS_PRODUCTION === 'production' ? process.env.REACT_APP_API_BASE_PRODUCTION_URL : process.env.REACT_APP_API_BASE_URL
 
 const axiosInstance = axios.create({
-  baseURL: "http://95.85.124.76:9000",
+  baseURL: "http://95.85.127.198",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
