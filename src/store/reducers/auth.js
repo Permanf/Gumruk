@@ -12,7 +12,7 @@ const initialState = {
   token: "",
   isLogged: false,
   isLoading: true,
-  categories: {},
+  // categories: {},
   user: {},
 };
 
@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
     case USER_DATA:
       return {
         ...state,
-        user: action.payload.data,
+        user: action.payload,
       };
     default:
       return state;

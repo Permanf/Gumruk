@@ -126,65 +126,71 @@ const Settings = () => {
     resolver: yupResolver(schema(user, tabs)),
   });
   useEffect(() => {
-    if (user?.id) {
-      setValue("first_name", user?.first_name);
-      setValue("last_name", user?.last_name);
-      setValue("fathers_name", user?.fathers_name);
-      setValue("email", user?.email);
-      setValue(
-        "phone",
-        user?.phone?.length > 8 ? user?.phone?.substr(4, 10) : user?.phone
-      );
-      setValue("birthday", user?.birthday);
-      setValue("old_password", "");
-      setValue("new_password", "");
-      setValue("new_password_confirmation", "");
-    }
+    setValue("first_name", user?.first_name);
+    setValue("last_name", user?.last_name);
+    setValue("fathers_name", user?.fathers_name);
+    setValue("email", user?.email);
+    setValue(
+      "phone",
+      user?.phone?.length > 8 ? user?.phone?.substr(4, 10) : user?.phone
+    );
+    setValue("birthday", user?.birthday);
+    setValue("old_password", "");
+    setValue("new_password", "");
+    setValue("new_password_confirmation", "");
   }, [user, tabs]);
 
   const onSubmit = (data) => {
-    console.log(data, "---");
-    setState({ type: "SET_LOADING", payload: true });
-    function convert(str) {
-      var date = new Date(str),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("/");
-    }
-    data.birthday = convert(data.birthday);
-    dispatch(
-      post({
-        url: `${tabs == "info" ? "user/update" : "user/reset-password"}`,
-        data,
-        token,
-        action: (response) => {
-          console.log(response, "---res");
-          setState({ type: "SET_LOADING", payload: false });
-          if (response?.data?.success) {
-            if (tabs == "info") {
-              dispatch(userData(data));
-            } else {
-              setValue("old_password", "");
-              setValue("new_password", "");
-              setValue("new_password_confirmation", "");
-            }
-            showNotification({
-              color: "green",
-              title: "Siz üstünlikli üýtgetdiňiz!",
-              // message: "",
-            });
-          } else {
-            console.log(response?.data?.data, "---error");
-            Object.keys(response?.data?.data)?.forEach((key) => {
-              setError(key, {
-                type: "manual",
-                message: response?.data?.data[key][0],
+    if (data.new_password == data.new_password_confirmation) {
+      console.log(data, "---");
+      setState({ type: "SET_LOADING", payload: true });
+      function convert(str) {
+        var date = new Date(str),
+          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+          day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("/");
+      }
+      data.birthday = convert(data.birthday);
+      dispatch(
+        post({
+          url: `${tabs == "info" ? "user/update" : "user/reset-password"}`,
+          data,
+          token,
+          action: (response) => {
+            // console.log(response, "---res");
+            setState({ type: "SET_LOADING", payload: false });
+            if (response?.data?.success) {
+              if (tabs == "info") {
+                dispatch(userData(response?.data?.data));
+                setValue("old_password", "");
+                setValue("new_password", "");
+                setValue("new_password_confirmation", "");
+              } else {
+                setValue("old_password", "");
+                setValue("new_password", "");
+                setValue("new_password_confirmation", "");
+              }
+              showNotification({
+                color: "green",
+                title: "Siz üstünlikli üýtgetdiňiz!",
+                // message: "",
               });
-            });
-          }
-        },
-      })
-    );
+            } else {
+              // console.log(response?.data?.data, "---error");
+              setError("old_password", {
+                type: "manual",
+                message: "Öňki açar sözüňiz gabat gelmeyar",
+              });
+            }
+          },
+        })
+      );
+    } else {
+      setError("new_password_confirmation", {
+        type: "manual",
+        message: "Taze açar sözüňiz gabat gelmeyar",
+      });
+    }
   };
   return (
     <LayoutProfile title="Profile">
