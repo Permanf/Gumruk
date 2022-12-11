@@ -75,21 +75,21 @@ const Card = ({ item, type }) => {
       </Group>
       <Group className="flex justify-end w-full absolute bottom-4 right-4 text-sm">
         {type == 1 ? (
-          item.status == "PENDING" ? (
+          item.moderation == 0 ? (
             <Badge
               variant="gradient"
               className="mt-1 w-28"
               gradient={{ from: "yellow.3", to: "yellow" }}
             >
-              {item?.status}
+              garaşylýar
             </Badge>
-          ) : item.status == "RETURNED" ? (
+          ) : item.moderation == 2 ? (
             <Badge
               variant="gradient"
               className="mt-1 w-28"
               gradient={{ from: "red.3", to: "red" }}
             >
-              {item?.status}
+              kabul edilmedi
             </Badge>
           ) : (
             <Badge
@@ -97,7 +97,7 @@ const Card = ({ item, type }) => {
               className="mt-1 w-28"
               gradient={{ from: "green.3", to: "green" }}
             >
-              success
+              kabul edildi
             </Badge>
           )
         ) : null}

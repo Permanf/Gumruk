@@ -102,6 +102,10 @@ const ModalForm = ({
             if (response.success) {
               // console.log(searchValue, "--gitmeli");
               // console.log(response?.data);
+              setState({
+                type: "SET_NAME_PRODUCTS",
+                payload: response?.data,
+              });
               search_products = [];
               for (let i = 0; i < response?.data.length; i++) {
                 search_products.push({
@@ -227,6 +231,20 @@ const ModalForm = ({
       });
     }
   };
+  useEffect(() => {
+    console.log(state.name_products);
+    if (state.name_products.length) {
+      for (let i = 0; i < state.name_products.length; i++) {
+        if (state.name_products[i].ware_name == valueName) {
+          setValue("code", state.name_products[i].ware_code);
+        }
+      }
+    } else {
+      // console.log("fo");
+      setValue("code", "");
+    }
+    // console.log(valueName);
+  }, [valueName]);
 
   return (
     <>

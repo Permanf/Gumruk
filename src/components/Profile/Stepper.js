@@ -74,6 +74,11 @@ function reducer(state, action) {
           ? state.products.filter((item) => item.id !== action.payload)
           : state.products.filter((item) => item.name !== action.payload),
       };
+    case "SET_NAME_PRODUCTS":
+      return {
+        ...state,
+        name_products: action.payload,
+      };
     case "SET_SEARCH_PRODUCTS":
       return {
         ...state,
@@ -100,10 +105,11 @@ function Step({ update_id }) {
     update_id: update_id > 0 ? update_id : null,
     product_status: true,
     update_item: {},
+    name_products: [],
     search_products: [],
     modal_btn: false,
   });
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
   const dispatch = useDispatch();
   const { lang, token } = useSelector((state) => state.auth);
   // console.log(token);
