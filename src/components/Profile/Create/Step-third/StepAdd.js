@@ -314,6 +314,7 @@ function StepAdd({ active, setActive, state, setState }) {
             </Button>
           ) : (
             <Button
+              disabled={state.products.length ? false : true}
               type="submit"
               onClick={nextStep}
               loading={state.loading}

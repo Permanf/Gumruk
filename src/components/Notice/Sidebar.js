@@ -94,7 +94,7 @@ export function Sidebar({ state, setState, query }) {
       p="md"
       className={`${classes.navbar} ${
         width > 1000 ? "flex" : "hidden"
-      } w-1/4 flex-col rounded-xl shadow-lg sticky top-32`}
+      } w-1/4 flex-col rounded-xl shadow-lg`}
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">
@@ -130,10 +130,12 @@ export function Sidebar({ state, setState, query }) {
                         ?.split(",")
                         ?.filter((item) => item != location?.id)
                         ?.join(","),
+                      page: 1,
                     });
                   } else {
                     handleRoute({
                       locations: query_locations + "," + location?.id,
+                      page: 1,
                     });
                   }
                 }}

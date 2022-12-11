@@ -1,8 +1,6 @@
 import Card from "../../components/Notice/Card";
 import LayoutNotice from "../../components/Notice/Layout";
 import Skeletons from "../../components/Notice/Skeletons";
-import { Button, Center } from "@mantine/core";
-import { IconRefresh } from "@tabler/icons";
 import { useEffect, useState, useReducer } from "react";
 import { useRouter } from "next/router";
 import { fetchData } from "../../store/middlewares";
@@ -10,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getlang, getToken } from "../../store/selectors/auth";
 import Lottie from "lottie-react";
 import notFound from "../../assets/Lottiefiles/not-found.json";
+import Pagination from "../../components/News/Pagination";
 // import loader from "../../assets/Lottiefiles/loader.json";
+import { useWindowScroll } from "@mantine/hooks";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -39,37 +39,12 @@ function reducer(state, action) {
         ...state,
         sidebar_data: action.payload,
       };
-    // case "SET_CATEGORY_ID":
-    //   return {
-    //     ...state,
-    //     category_id: action.payload,
-    //   };
     // case "SET_LOCATION_CHECK":
     //   return {
     //     ...state,
     //     location_check: state.location_check.includes(action.payload)
     //       ? state.location_check.filter((item) => item !== action.payload)
     //       : [...state.location_check, action.payload],
-    //   };
-    // case "SET_CREATED_AT":
-    //   return {
-    //     ...state,
-    //     created_at: action.payload,
-    //   };
-    // case "SET_PRICE_SORT":
-    //   return {
-    //     ...state,
-    //     price_sort: action.payload,
-    //   };
-    // case "SET_PRICE_MIN":
-    //   return {
-    //     ...state,
-    //     price_min: action.payload,
-    //   };
-    // case "SET_PRICE_MAX":
-    //   return {
-    //     ...state,
-    //     price_max: action.payload,
     //   };
     default:
       return state;
@@ -79,6 +54,8 @@ function reducer(state, action) {
 const Notice = () => {
   const dispatch = useDispatch();
   // const token = useSelector(getToken);
+  const [scroll, scrollTo] = useWindowScroll();
+
   const lang = useSelector(getlang);
   const router = useRouter();
   const { query } = router;
@@ -89,20 +66,18 @@ const Notice = () => {
     sidebar_loading: false,
     sidebar_data: {},
   });
-  // const handleRoute = (elements) => {
-  //   router.push({
-  //     pathname: "/bildirisler",
-  //     query: { ...query, ...elements },
-  //   });
-  // };
-  // useEffect(() => {
-  //   // url-de page sazlasan bolya galan zat dogry
-  // }, [query]);
+  const handleChangePage = (page) => {
+    if (+page !== +query.page) {
+      router.push({
+        pathname: "/bildirisler",
+        query: { ...query, page },
+      });
+      scrollTo({ y: 0 });
+    }
+  };
 
   useEffect(() => {
-    // console.log(router);
-    console.log(query, "---query");
-
+    // console.log(query, "---query");
     let location_array = "";
     if (query?.locations) {
       location_array = query?.locations
@@ -116,17 +91,16 @@ const Notice = () => {
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       fetchData({
-        url: `user/announcements?category_id=${
+        url: `user/announcements?page=${query.page}&category=${
           query.category ? query.category : ""
         }&location=${location_array}&price=${
           query.price_sort ? query.price_sort : ""
         }&created_at=${query.created_at ? query.created_at : ""}&price_min=${
           query.price_min ? query.price_min : ""
         }&price_max=${query.price_max ? query.price_max : ""}`,
-        // url: `user/announcements`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
-          // console.log(response.data, "-----data");
+          console.log(response.data, "-----gelen response");
           setState({ type: "SET_LOADING", payload: false });
           if (response?.success) {
             setState({
@@ -160,23 +134,17 @@ const Notice = () => {
           <span>No data</span>
         </div>
       )}
-      {/* {state?.all_data?.data?.length ? (
-        <Center>
-          <Button
-            className="bg-blue-500"
-            onChange={(event) => {
-              event.preventDefault();
-              let active_page = query?.page ? parseInt(query?.page) : 1;
-              handleRoute({
-                page: active_page + 1,
-              });
-            }}
-          >
-            <IconRefresh size={18} className="mr-2" />
-            show more
-          </Button>
-        </Center>
-      ) : null} */}
+      {Math.floor(state.all_data?.meta?.total / 15) + 1 > 1 ? (
+        <div className="bg-white mt-10 py-5 px-2 shadow-sm rounded-xl">
+          <Pagination
+            activePage={+query.page}
+            setPage={(value) => handleChangePage(value)}
+            total={Math.floor(state.all_data?.meta?.total / 15) + 1}
+            siblings={2}
+            boundaries={2}
+          />
+        </div>
+      ) : null}
     </LayoutNotice>
   );
 };

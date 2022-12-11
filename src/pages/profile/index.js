@@ -49,44 +49,72 @@ const Settings = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  // console.log(user);
   const token = useSelector(getToken);
   // console.log(user);
-  const schema = () =>
+  const schema = (user, tabs) =>
     Yup.object().shape({
-      email: Yup.string()
-        .required("E-mail address yazmaly")
-        .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
-      first_name: Yup.string()
-        .required("Adynyzy yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(35, "maxsimum 35 simbol bolmaly"),
+      email:
+        tabs == "info"
+          ? Yup.string()
+              .required("E-mail address yazmaly")
+              .matches(
+                /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                "E-mail address bolmaly"
+              )
+          : Yup.string().nullable(true),
+      first_name:
+        tabs == "info"
+          ? Yup.string()
+              .required("Adynyzy yazmaly")
+              .min(3, "minimum 3 simbol bolmaly")
+              .max(35, "maxsimum 35 simbol bolmaly")
+          : Yup.string().nullable(true),
 
-      last_name: Yup.string()
-        .required("Familyanyzy yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(35, "maxsimum 35 simbol bolmaly"),
-      fathers_name: Yup.string()
-        .nullable()
-        .max(35, "maxsimum 35 simbol bolmaly"),
-      phone: Yup.string()
-        .required("Telefon nomer bolmaly")
-        .min(8, "minimum 8 simbol bolmaly")
-        .max(8, "mixsimum 8 simbol bolmaly")
-        .matches(
-          /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
-          "Dine san bolmaly!"
-        ),
-      birthday: Yup.string().required("Doglan senaniz bolmaly"),
-      old_password: Yup.string()
-        .min(6, "minimum 6 simbol bolmaly")
-        .max(50, "maxsimum 50 simbol bolmaly"),
-      new_password: Yup.string()
-        .min(6, "minimum 6 simbol bolmaly")
-        .max(50, "maxsimum 50 simbol bolmaly"),
-      new_password_confirmation: Yup.string()
-        .min(6, "minimum 6 simbol bolmaly")
-        .max(50, "maxsimum 50 simbol bolmaly"),
+      last_name:
+        tabs == "info" && user?.last_name != null
+          ? Yup.string()
+              .required("Familyanyzy yazmaly")
+              .min(3, "minimum 3 simbol bolmaly")
+              .max(35, "maxsimum 35 simbol bolmaly")
+          : Yup.string().nullable(true),
+      fathers_name:
+        tabs == "info" && user?.last_name != null
+          ? Yup.string().nullable(true).max(35, "maxsimum 35 simbol bolmaly")
+          : Yup.string().nullable(true),
+      phone:
+        tabs == "info"
+          ? Yup.string()
+              .required("Telefon nomer bolmaly")
+              .min(8, "minimum 8 simbol bolmaly")
+              .max(8, "mixsimum 8 simbol bolmaly")
+              .matches(
+                /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
+                "Dine san bolmaly!"
+              )
+          : Yup.string().nullable(true),
+      birthday:
+        tabs == "info" && user?.last_name != null
+          ? Yup.string().required("Doglan senaniz bolmaly")
+          : Yup.string().nullable(true),
+      old_password:
+        tabs == "info"
+          ? Yup.string().nullable(true)
+          : Yup.string()
+              .min(6, "minimum 6 simbol bolmaly")
+              .max(50, "maxsimum 50 simbol bolmaly"),
+      new_password:
+        tabs == "info"
+          ? Yup.string().nullable(true)
+          : Yup.string()
+              .min(6, "minimum 6 simbol bolmaly")
+              .max(50, "maxsimum 50 simbol bolmaly"),
+      new_password_confirmation:
+        tabs == "info"
+          ? Yup.string().nullable(true)
+          : Yup.string()
+              .min(6, "minimum 6 simbol bolmaly")
+              .max(50, "maxsimum 50 simbol bolmaly"),
     });
   const {
     handleSubmit,
@@ -95,7 +123,7 @@ const Settings = () => {
     setValue,
     control,
   } = useForm({
-    resolver: yupResolver(schema()),
+    resolver: yupResolver(schema(user, tabs)),
   });
   useEffect(() => {
     if (user?.id) {
@@ -107,14 +135,15 @@ const Settings = () => {
         "phone",
         user?.phone?.length > 8 ? user?.phone?.substr(4, 10) : user?.phone
       );
-      // setValue("password", user?.password);
-      // setValue("passport_number", user?.passport_number);
       setValue("birthday", user?.birthday);
+      setValue("old_password", "");
+      setValue("new_password", "");
+      setValue("new_password_confirmation", "");
     }
-  }, [user]);
+  }, [user, tabs]);
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data, "---");
     setState({ type: "SET_LOADING", payload: true });
     function convert(str) {
       var date = new Date(str),
@@ -129,7 +158,7 @@ const Settings = () => {
         data,
         token,
         action: (response) => {
-          // console.log(response, "---res");
+          console.log(response, "---res");
           setState({ type: "SET_LOADING", payload: false });
           if (response?.data?.success) {
             if (tabs == "info") {
@@ -212,7 +241,7 @@ const Settings = () => {
                 );
               }}
             />
-            {user?.fathers_name == null ? null : (
+            {user?.last_name == null ? null : (
               <>
                 <Controller
                   control={control}
@@ -343,7 +372,7 @@ const Settings = () => {
                     label="Old Password"
                     placeholder="Old password"
                     icon={<IconLock size={16} />}
-                    error={errors?.password?.message}
+                    error={errors?.old_password?.message}
                   />
                 );
               }}
@@ -362,7 +391,7 @@ const Settings = () => {
                     label="New Password"
                     placeholder="New password"
                     icon={<IconLock size={16} />}
-                    error={errors?.password?.message}
+                    error={errors?.new_password?.message}
                   />
                 );
               }}
@@ -381,7 +410,7 @@ const Settings = () => {
                     label="New password corformation"
                     placeholder="New password confirmation"
                     icon={<IconLock size={16} />}
-                    error={errors?.password?.message}
+                    error={errors?.new_password_confirmation?.message}
                   />
                 );
               }}

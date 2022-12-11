@@ -15,7 +15,7 @@ export const categories = (lang) => [
   {
     id: 1,
     name: category[lang]?.notice,
-    link: "/bildirisler",
+    link: "/bildirisler?page=1",
   },
 
   {

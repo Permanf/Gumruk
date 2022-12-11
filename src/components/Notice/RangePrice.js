@@ -29,7 +29,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function RangePrice({ state, setState, query }) {
+export function RangePrice({ query }) {
   const { classes } = useStyles();
   const [scroll, scrollTo] = useWindowScroll();
   const router = useRouter();
@@ -51,11 +51,13 @@ export function RangePrice({ state, setState, query }) {
       handleRoute({
         price_min: debounced[0],
         price_max: debounced[1],
+        page: 1,
       });
     } else if (debounced[0] != 0 || debounced[1] != 50000) {
       handleRoute({
         price_min: debounced[0],
         price_max: debounced[1],
+        page: 1,
       });
     }
   }, [debounced]);

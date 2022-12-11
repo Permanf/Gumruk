@@ -103,7 +103,7 @@ function Step({ update_id }) {
     search_products: [],
     modal_btn: false,
   });
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(2);
   const dispatch = useDispatch();
   const { lang, token } = useSelector((state) => state.auth);
   // console.log(token);

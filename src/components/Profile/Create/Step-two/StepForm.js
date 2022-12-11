@@ -184,7 +184,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
       images_id: ids ? ids : [],
       id: state.update_2step.id,
     };
-    // console.log(data, "2 step data");
+    console.log(data, "2 step data");
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
@@ -194,7 +194,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
         data,
         token,
         action: (response) => {
-          // console.log(response?.data);
+          console.log(response?.data, "---2step");
           setState({ type: "SET_LOADING", payload: false });
           if (response.success) {
             // console.log(response?.data?.data);

@@ -66,7 +66,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function LinksGroup({ category, state, setState, query }) {
+export function LinksGroup({ category, query }) {
   // console.log(category);
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
@@ -105,6 +105,7 @@ export function LinksGroup({ category, state, setState, query }) {
           event.preventDefault();
           handleRoute({
             category: category.id,
+            page: 1,
           });
         }}
         className={`${classes.control}`}
@@ -112,7 +113,7 @@ export function LinksGroup({ category, state, setState, query }) {
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="light" size={30}>
-              {/* <Icon size={18} /> */}?
+              {/* <Icon size={18} /> */}
             </ThemeIcon>
             <Box
               ml="md"

@@ -53,7 +53,7 @@ const ModalForm = ({
   const {
     handleSubmit,
     formState: { errors },
-    // setError,
+    setError,
     setValue,
     control,
   } = useForm({
@@ -128,96 +128,103 @@ const ModalForm = ({
   }, [searchValue]);
 
   const onSubmit = (data) => {
-    setState({ type: "SET_MODAL_BTN", payload: true });
-    // console.log(searchValue, "--");
-    // console.log(state.modal_btn);
-    if (searchValue != "") {
-      data = {
-        ...data,
-        uom_code: data?.uom_name,
-        name: searchValue,
-      };
-      // console.log(data);
-      // console.log(state.update_id, "--up");
-      if (state.update_id > 0) {
-        setState({ type: "SET_LOADING", payload: true });
-        // console.log(data, "--gitmeli");
-        dispatch(
-          post({
-            url: state.update_item?.id
-              ? `user/declaration/${state.update_item?.id}/update-one-item`
-              : `user/declaration/${state.update_id}/create-one-item`,
-            data,
-            token,
-            action: (response) => {
-              setState({ type: "SET_LOADING", payload: false });
-              setOpened(false);
+    if (+data.brutto_weight > +data.netto_weight) {
+      setState({ type: "SET_MODAL_BTN", payload: true });
+      // console.log(searchValue, "--");
+      // console.log(state.modal_btn);
+      if (searchValue != "") {
+        data = {
+          ...data,
+          uom_code: data?.uom_name,
+          name: searchValue,
+        };
+        // console.log(data);
+        // console.log(state.update_id, "--up");
+        if (state.update_id > 0) {
+          setState({ type: "SET_LOADING", payload: true });
+          // console.log(data, "--gitmeli");
+          dispatch(
+            post({
+              url: state.update_item?.id
+                ? `user/declaration/${state.update_item?.id}/update-one-item`
+                : `user/declaration/${state.update_id}/create-one-item`,
+              data,
+              token,
+              action: (response) => {
+                setState({ type: "SET_LOADING", payload: false });
+                setOpened(false);
 
-              if (response.success) {
-                // console.log(response?.data.data);
-                if (state.update_item?.id) {
-                  setState({
-                    type: "SET_UPDATE_PRODUCT_ITEM",
-                    payload: response?.data?.data.data,
+                if (response.success) {
+                  // console.log(response?.data.data);
+                  if (state.update_item?.id) {
+                    setState({
+                      type: "SET_UPDATE_PRODUCT_ITEM",
+                      payload: response?.data?.data.data,
+                    });
+                  } else {
+                    setState({
+                      type: "SET_PRODUCTS",
+                      payload: response?.data?.data.data,
+                    });
+                  }
+                  showNotification({
+                    color: "green",
+                    title: state.update_item?.id
+                      ? "Siz üstünlikli üýtgetdiňiz!"
+                      : "Siz üstünlikli haryt goşdynyz!",
+                    icon: <IconCheck />,
                   });
+
+                  // console.log(response);
                 } else {
-                  setState({
-                    type: "SET_PRODUCTS",
-                    payload: response?.data?.data.data,
+                  // console.log(response.data);
+                  showNotification({
+                    color: "red",
+                    title: "Üstünlikli bolmady!",
+                    // message: "",
+                    icon: <IconX />,
+                    autoClose: 5000,
                   });
                 }
-                showNotification({
-                  color: "green",
-                  title: state.update_item?.id
-                    ? "Siz üstünlikli üýtgetdiňiz!"
-                    : "Siz üstünlikli haryt goşdynyz!",
-                  icon: <IconCheck />,
-                });
-
-                // console.log(response);
-              } else {
-                // console.log(response.data);
-                showNotification({
-                  color: "red",
-                  title: "Üstünlikli bolmady!",
-                  // message: "",
-                  icon: <IconX />,
-                  autoClose: 5000,
-                });
-              }
-            },
-          })
-        );
-        setState({
-          type: "SET_UPDATE_ITEM",
-          payload: {},
-        });
-      } else {
-        setOpened(false);
-
-        if (state.update_item.code) {
+              },
+            })
+          );
           setState({
-            type: "SET_UPDATE_PRODUCT_ITEM",
-            payload: data,
+            type: "SET_UPDATE_ITEM",
+            payload: {},
           });
         } else {
-          setState({ type: "SET_PRODUCTS", payload: data });
-        }
-      }
-      // console.log(state.update_id, "---iddd");
-      // console.log(state.product_status, "---status"); false added???
+          setOpened(false);
 
-      // console.log(data);
-      setState({ type: "SET_MODAL_BTN", payload: false });
-      setValueName("");
-      setValue("name", "");
-      setValue("code", "");
-      setValue("country_of_origin_code", "");
-      setValue("uom_name", "");
-      setValue("uom_quantity", "");
-      setValue("uom_price", "");
-      setValue("brutto_weight", "");
-      setValue("netto_weight", "");
+          if (state.update_item.code) {
+            setState({
+              type: "SET_UPDATE_PRODUCT_ITEM",
+              payload: data,
+            });
+          } else {
+            setState({ type: "SET_PRODUCTS", payload: data });
+          }
+        }
+        // console.log(state.update_id, "---iddd");
+        // console.log(state.product_status, "---status"); false added???
+
+        // console.log(data);
+        setState({ type: "SET_MODAL_BTN", payload: false });
+        setValueName("");
+        setValue("name", "");
+        setValue("code", "");
+        setValue("country_of_origin_code", "");
+        setValue("uom_name", "");
+        setValue("uom_quantity", "");
+        setValue("uom_price", "");
+        setValue("brutto_weight", "");
+        setValue("netto_weight", "");
+      }
+    } else {
+      setError("brutto_weight", {
+        type: "manual",
+        message: "Harydyň netto agramyndan uly bolmaly",
+      });
     }
   };
 

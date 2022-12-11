@@ -35,6 +35,7 @@ const LayoutProfile = ({ children, title }) => {
   const dispatch = useDispatch();
   const lang = useSelector(getlang);
   const { token } = useSelector((state) => state.auth);
+  // console.log(router);
   // console.log(token);
   // useEffect(() => {
   //   if (!token) {

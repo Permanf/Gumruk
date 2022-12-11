@@ -11,7 +11,6 @@ import { getlang, getToken } from "../../store/selectors/auth";
 import { useRouter } from "next/router";
 
 function LayoutNotice({ children, title, state, setState, query }) {
-  // console.log(state, "-ll");
   const [value, setValue] = useState("");
   const { width } = useViewportSize();
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ function LayoutNotice({ children, title, state, setState, query }) {
     }
   }, [query]);
   const handleRoute = (elements) => {
-    // console.log('Elements -> ', elements, 'Query -> ',{ ...query, ...elements});
     router.push({
       pathname: "/bildirisler",
       query: { ...query, ...elements },
@@ -65,26 +63,31 @@ function LayoutNotice({ children, title, state, setState, query }) {
         handleRoute({
           price_sort: "asc",
           created_at: "",
+          page: 1,
         });
       } else if (value == "desc1") {
         handleRoute({
           price_sort: "desc",
           created_at: "",
+          page: 1,
         });
       } else if (value == "asc2") {
         handleRoute({
           price_sort: "",
           created_at: "asc",
+          page: 1,
         });
       } else if (value == "desc2") {
         handleRoute({
           price_sort: "",
           created_at: "desc",
+          page: 1,
         });
-      } else {
+      } else if (value == "default") {
         handleRoute({
           price_sort: "",
           created_at: "",
+          page: 1,
         });
       }
     }
@@ -106,7 +109,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
                 <span className="font-semibold text-sm sm:text-base">
-                  Найдено всего {state.all_data?.data?.length} результата
+                  Найдено всего {state.all_data?.meta?.total} результата
                 </span>
                 <div className="w-full sm:w-fit flex justify-between items-center ">
                   <span className="font-semibold flex sm:hidden">
@@ -120,7 +123,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
                     onChange={setValue}
                     placeholder="Saylanmadyk"
                     data={[
-                      { value: "", label: "По умолчанию" },
+                      { value: "default", label: "По умолчанию" },
                       { value: "asc1", label: "По цене убывания" },
                       { value: "desc1", label: "По цене возрастания" },
                       { value: "asc2", label: "По дате убывания" },
