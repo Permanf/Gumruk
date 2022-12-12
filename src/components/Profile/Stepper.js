@@ -192,7 +192,9 @@ function Step({ update_id }) {
           <StepImage
             active={active}
             setActive={setActive}
-            update_data={state.update_data}
+            // update_data={state.update_data}
+            state={state}
+            setState={setState}
           />
         </Stepper.Step>
         <Stepper.Step

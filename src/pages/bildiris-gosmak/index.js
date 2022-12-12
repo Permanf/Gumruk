@@ -39,6 +39,11 @@ function reducer(state, action) {
         ...state,
         select_data: action.payload,
       };
+    case "SET_CAPACITY":
+      return {
+        ...state,
+        capacity: action.payload,
+      };
     default:
       return state;
   }
@@ -48,6 +53,7 @@ const NoticeAdd = () => {
   const [state, setState] = useReducer(reducer, {
     loading: false,
     select_data: {},
+    capacity: null,
   });
   const { width } = useViewportSize();
   const dispatch = useDispatch();
@@ -58,6 +64,7 @@ const NoticeAdd = () => {
   const schema = () =>
     Yup.object().shape({
       category_id: Yup.string().required("Category saylamaly"),
+      capacity: Yup.string().nullable(true),
       location_id: Yup.string().required("Location saylamaly"),
       title: Yup.string()
         .required("Title yazmaly")
@@ -82,6 +89,8 @@ const NoticeAdd = () => {
     formState: { errors },
     setError,
     setValue,
+    watch,
+    getValues,
     control,
   } = useForm({
     resolver: yupResolver(schema()),
@@ -92,7 +101,7 @@ const NoticeAdd = () => {
         url: `user/announcement/create-select`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
-          console.log(response, "--select");
+          // console.log(response, "--select");
           if (response?.data?.success) {
             setState({
               type: "SET_SELECT_DATA",
@@ -120,6 +129,17 @@ const NoticeAdd = () => {
       label: state.select_data?.locations[i]?.title,
     });
   }
+  useEffect(() => {
+    // console.log(getValues("category_id"));
+    if (getValues("category_id")) {
+      setState({
+        type: "SET_CAPACITY",
+        payload:
+          state.select_data.categories[getValues("category_id") - 1]
+            ?.capacity_value,
+      });
+    }
+  }, [watch("category_id")]);
   const onSubmit = (data) => {
     if (imageIds.length) {
       data = {
@@ -174,7 +194,6 @@ const NoticeAdd = () => {
           {/* <Text color="dimmed" size="sm" align="center" mt={5}>
             Для входа в кабинет, пожалуйста, зарегистрируйтесь
           </Text> */}
-
           <Paper
             withBorder
             shadow="md"
@@ -208,6 +227,28 @@ const NoticeAdd = () => {
                   );
                 }}
               />
+              {state.capacity != null ? (
+                <Controller
+                  control={control}
+                  name="capacity"
+                  render={({ field: { onChange, onBlur, value, ref } }) => {
+                    return (
+                      <TextInput
+                        className={`text-sm`}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        ref={ref}
+                        label="Capacity"
+                        placeholder={`${state.capacity} sany`}
+                        type="text"
+                        error={errors?.capacity?.message}
+                      />
+                    );
+                  }}
+                />
+              ) : null}
+
               <Controller
                 control={control}
                 name="location_id"

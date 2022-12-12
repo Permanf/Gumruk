@@ -117,14 +117,18 @@ const NoticeSlug = () => {
                   </span>
                 </div>
               </div>
-              {/* <div className="w-full flex py-5">
-                <div className="w-3/12">
-                  <span className="text-base font-semibold">Состояние</span>
+              {state.data.capacity != null ? (
+                <div className="w-full flex py-5">
+                  <div className="w-3/12">
+                    <span className="text-base font-semibold">Capacity</span>
+                  </div>
+                  <div className="w-3/4">
+                    <span className="text-base text-gray-500">
+                      {state.data.capacity}
+                    </span>
+                  </div>
                 </div>
-                <div className="w-3/4">
-                  <span className="text-base text-gray-500">Новoe</span>
-                </div>
-              </div> */}
+              ) : null}
             </div>
             <div className="w-3/12 h-40 py-5">
               <h1 className="font-bold text-2xl mb-5">

@@ -19,13 +19,14 @@ import {
 import { size, toArray } from "lodash";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
+import { fetchData } from "../../../../store/middlewares";
 
-const StepImage = ({ active, setActive, update_data }) => {
+const StepImage = ({ active, setActive, state, setState }) => {
   const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
   const ids = useSelector(getImageIds);
   const nextStep = () => {
-    if (ids.length > 0 || update_data?.id > 0) {
+    if (ids.length > 0 || state.update_data?.id > 0) {
       setActive((current) => (current < 3 ? current + 1 : current));
       scrollTo({ y: 0 });
     } else {
@@ -41,6 +42,25 @@ const StepImage = ({ active, setActive, update_data }) => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   };
+  // console.log(state.update_data.declaration?.id);
+  useEffect(() => {
+    if (state.update_data.declaration?.id) {
+      dispatch(
+        fetchData({
+          token,
+          url: `user/declaration/${state.update_data.declaration?.id}/images`,
+          action: (response) => {
+            console.log(response.data);
+            if (response.success) {
+              console.log(response.data.data, "--images");
+            } else {
+              console.log(response.message);
+            }
+          },
+        })
+      );
+    }
+  }, [state.update_data.declaration?.id]);
 
   const handleAttachFIle = (e) => {
     // console.log(e.target.files);
@@ -119,8 +139,8 @@ const StepImage = ({ active, setActive, update_data }) => {
               </svg>
               <div>
                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop (SVG, PNG, JPG)
+                  <span className="font-semibold">Click to upload</span>(SVG,
+                  PNG, JPG)
                 </p>
                 {/* <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG

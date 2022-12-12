@@ -64,7 +64,9 @@ const Header = () => {
       >
         <div
           className={`container_out flex justify-between ${
-            router.pathname == "/" ? "border-b-2" : "border-b-gray-300"
+            router.pathname == "/"
+              ? "border-b-2 border-b-gray-300"
+              : "border-b-2 border-b-gray-300"
           }  `}
         >
           <div className="flex">
