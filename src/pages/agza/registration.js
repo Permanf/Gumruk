@@ -90,10 +90,6 @@ const Register = () => {
         .min(6, "minimum 6 simbol bolmaly")
         .max(50, "maxsimum 50 simbol bolmaly")
         .required("acar soz yazmaly"),
-      birthday:
-        legal === "fiziki"
-          ? Yup.string().required("Doglan senaniz bolmaly")
-          : Yup.string().nullable(true),
     });
   const {
     handleSubmit,
@@ -110,15 +106,8 @@ const Register = () => {
   const onSubmit = (data) => {
     if (data.password === data.password_confirmation) {
       setState({ type: "SET_LOADING", payload: true });
-      data = { ...data, legal_entity: legal == "fiziki" ? 0 : 1 };
+      data = { ...data, legal_entity: legal == "fiziki" ? 1 : 0 };
       data.phone = `+993${data.phone}`;
-      function convert(str) {
-        var date = new Date(str),
-          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-          day = ("0" + date.getDate()).slice(-2);
-        return [date.getFullYear(), mnth, day].join("/");
-      }
-      data.birthday = data.legal_entity == 1 ? "" : convert(data.birthday);
       // console.log(data);
       dispatch(
         post({
@@ -160,7 +149,6 @@ const Register = () => {
     setValue("phone", "");
     setValue("password", "");
     setValue("password_confirmation", "");
-    setValue("birthday", "");
   }, [legal]);
 
   return (
@@ -291,29 +279,6 @@ const Register = () => {
                   );
                 }}
               />
-              {legal == "fiziki" ? (
-                <Controller
-                  control={control}
-                  name="birthday"
-                  render={({ field: { onChange, onBlur, value, ref } }) => {
-                    return (
-                      <DatePicker
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        placeholder="Birthday"
-                        label="Date"
-                        inputFormat="YYYY/MM/DD"
-                        // labelFormat="YYYY/MM"
-                        // defaultValue={new Date()}
-                        icon={<IconCalendar size={16} />}
-                        error={errors?.birthday?.message}
-                      />
-                    );
-                  }}
-                />
-              ) : null}
               <Controller
                 control={control}
                 name="password"
@@ -399,20 +364,5 @@ const Register = () => {
     </Layout>
   );
 };
-
-// const schema = Yup.object().shape({
-//   phone: Yup.string()
-//     .min(8, "Минимум 8 значений")
-//     .max(8, "Максимум 8 значений")
-//     .required("Номер телефона обязателен")
-//     .matches(
-//       /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
-//       "Должен быть номер телефона"
-//     ),
-//   password: Yup.string()
-//     .min(8, "Минимум 8 значений")
-//     .max(50, "Максимум 50 значений")
-//     .required("Пароль обязателен"),
-// });
 
 export default Register;

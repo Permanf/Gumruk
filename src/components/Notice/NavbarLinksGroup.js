@@ -13,9 +13,11 @@ import {
   IconCalendarStats,
   IconChevronLeft,
   IconChevronRight,
+  IconPhoto,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { useWindowScroll } from "@mantine/hooks";
+import Image from "next/image";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -67,7 +69,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function LinksGroup({ category, query }) {
-  // console.log(category);
+  console.log(category);
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const handleRoute = (elements) => {
@@ -112,9 +114,19 @@ export function LinksGroup({ category, query }) {
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon variant="light" size={30}>
-              {/* <Icon size={18} /> */}
-            </ThemeIcon>
+            {category?.icon != null ? (
+              <Image
+                src={`http://95.85.127.198/${category?.icon}`}
+                width={35}
+                height={35}
+                className="rounded-md"
+              />
+            ) : (
+              <ThemeIcon variant="light" size={30}>
+                <IconPhoto size={18} />
+              </ThemeIcon>
+            )}
+
             <Box
               ml="md"
               className={`${

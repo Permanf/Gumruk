@@ -100,7 +100,7 @@ const Notice = () => {
         }&price_max=${query.price_max ? query.price_max : ""}`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
-          console.log(response.data, "-----gelen response");
+          // console.log(response.data, "-----gelen response");
           setState({ type: "SET_LOADING", payload: false });
           if (response?.success) {
             setState({

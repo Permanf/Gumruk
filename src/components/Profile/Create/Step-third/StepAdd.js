@@ -228,7 +228,6 @@ function StepAdd({ active, setActive, state, setState }) {
                   openDeleteModal(element?.name);
                 }
               }}
-              // onClick={openDeleteModal}
             >
               Delete
             </Menu.Item>

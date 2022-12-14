@@ -89,6 +89,21 @@ function reducer(state, action) {
         ...state,
         modal_btn: action.payload,
       };
+    case "SET_IMAGES":
+      return {
+        ...state,
+        images: action.payload,
+      };
+    case "SET_LOADING_IMAGE":
+      return {
+        ...state,
+        loading_image: action.payload,
+      };
+    case "SET_DELETE_IMAGE_OLD":
+      return {
+        ...state,
+        images: state.images.filter((item) => item.id !== action.payload),
+      };
     default:
       return state;
   }
@@ -108,6 +123,8 @@ function Step({ update_id }) {
     name_products: [],
     search_products: [],
     modal_btn: false,
+    images: [],
+    loading_image: false,
   });
   const [active, setActive] = useState(0);
   const dispatch = useDispatch();

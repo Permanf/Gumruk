@@ -43,8 +43,10 @@ function LayoutNotice({ children, title, state, setState, query }) {
         url: `user/announcement/filters`,
         lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
         action: (response) => {
+          // console.log(response);
           setState({ type: "SET_SIDEBAR_LOADING", payload: false });
-          if (response?.success) {
+          if (response?.data?.success) {
+            console.log(response.data.data);
             setState({
               type: "SET_SIDEBAR_DATA",
               payload: response?.data.data,

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 const Ticket = ({ nomer, element }) => {
   // const { Canvas } = useQRCode();
+  // console.log(element);
 
   return (
     <Grid.Col sm={6} lg={6}>
@@ -24,8 +25,11 @@ const Ticket = ({ nomer, element }) => {
               <div className="my-1">
                 <span className="text-gray-400 text-xs">Support username</span>
                 <p className="font-semibold text-sm">
-                  {element?.support_id?.length > 0 ? (
-                    element?.support_id
+                  {element?.support_id?.id ? (
+                    <>
+                      {element?.support_id.first_name}{" "}
+                      {element?.support_id.last_name}
+                    </>
                   ) : (
                     <span>Unknown</span>
                   )}

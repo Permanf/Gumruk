@@ -93,10 +93,6 @@ const Settings = () => {
                 "Dine san bolmaly!"
               )
           : Yup.string().nullable(true),
-      birthday:
-        tabs == "info" && user?.last_name != null
-          ? Yup.string().required("Doglan senaniz bolmaly")
-          : Yup.string().nullable(true),
       old_password:
         tabs == "info"
           ? Yup.string().nullable(true)
@@ -134,7 +130,6 @@ const Settings = () => {
       "phone",
       user?.phone?.length > 8 ? user?.phone?.substr(4, 10) : user?.phone
     );
-    setValue("birthday", user?.birthday);
     setValue("old_password", "");
     setValue("new_password", "");
     setValue("new_password_confirmation", "");
@@ -144,13 +139,6 @@ const Settings = () => {
     if (data.new_password == data.new_password_confirmation) {
       console.log(data, "---");
       setState({ type: "SET_LOADING", payload: true });
-      function convert(str) {
-        var date = new Date(str),
-          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-          day = ("0" + date.getDate()).slice(-2);
-        return [date.getFullYear(), mnth, day].join("/");
-      }
-      data.birthday = convert(data.birthday);
       dispatch(
         post({
           url: `${tabs == "info" ? "user/update" : "user/reset-password"}`,
@@ -282,27 +270,6 @@ const Settings = () => {
                         placeholder="Отчество"
                         error={errors?.fathers_name?.message}
                         className="my-2"
-                      />
-                    );
-                  }}
-                />
-                <Controller
-                  control={control}
-                  name="birthday"
-                  render={({ field: { onChange, onBlur, value, ref } }) => {
-                    return (
-                      <DatePicker
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        placeholder="Birthday"
-                        label="Date"
-                        inputFormat="YYYY/MM/DD"
-                        // labelFormat="YYYY/MM"
-                        // defaultValue={new Date()}
-                        icon={<IconCalendar size={16} />}
-                        error={errors?.birthday?.message}
                       />
                     );
                   }}

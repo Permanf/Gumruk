@@ -143,7 +143,7 @@ export function Sidebar({ state, setState, query }) {
                   query?.locations?.includes(location?.id) ? true : false
                 }
                 key={location?.id}
-                label={location?.title}
+                label={location?.title?.ru}
                 className="my-5"
               />
             );

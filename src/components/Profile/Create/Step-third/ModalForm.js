@@ -419,6 +419,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
+                      searchable
+                      nothingFound="No options"
                       label={"Harydyň ölçeg birligi"}
                       placeholder="Select"
                       data={data_size}

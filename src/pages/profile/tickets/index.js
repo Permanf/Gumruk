@@ -85,7 +85,7 @@ const Tickets = () => {
           </div>
         ) : state.tickets?.length > 0 ? (
           <Grid gutter={30} className="w-full">
-            {state.tickets?.map((item, index) => {
+            {state?.tickets?.map((item, index) => {
               return <Ticket key={index} nomer={index + 1} element={item} />;
             })}
           </Grid>

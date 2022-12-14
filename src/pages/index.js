@@ -295,12 +295,16 @@ const Home = () => {
                   className="w-full bg-white rounded-lg my-5 p-4 md:p-10  cursor-pointer shadow-md"
                 >
                   <div className="w-full flex justify-between items-center py-3">
+                    <img
+                      src={item?.icon}
+                      width={width > 500 ? 45 : 26}
+                      height={width > 500 ? 45 : 26}
+                    />
                     {/* <Image
-                        src={item?.icon}
-                        alt="image"
-                        width={width > 500 ? 60 : 26}
-                        height={width > 500 ? 60 : 26}
-                      /> */}
+                      
+                      alt="image"
+                      
+                    /> */}
                     <p className="font-semibold text-xs sm:text-sm md:text-xl ml-2">
                       {item?.title}
                     </p>

@@ -20,6 +20,9 @@ import { size, toArray } from "lodash";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 import { fetchData } from "../../../../store/middlewares";
+import Lottie from "lottie-react";
+import loader from "../../../../assets/Lottiefiles/loader.json";
+import ImageOld from "./ImageOld";
 
 const StepImage = ({ active, setActive, state, setState }) => {
   const dispatch = useDispatch();
@@ -45,16 +48,22 @@ const StepImage = ({ active, setActive, state, setState }) => {
   // console.log(state.update_data.declaration?.id);
   useEffect(() => {
     if (state.update_data.declaration?.id) {
+      setState({ type: "SET_LOADING_IMAGE", payload: true });
+
       dispatch(
         fetchData({
           token,
           url: `user/declaration/${state.update_data.declaration?.id}/images`,
           action: (response) => {
             console.log(response.data);
-            if (response.success) {
-              console.log(response.data.data, "--images");
+            setState({ type: "SET_LOADING_IMAGE", payload: false });
+            if (response.data.success) {
+              setState({
+                type: "SET_IMAGES",
+                payload: response?.data?.data,
+              });
             } else {
-              console.log(response.message);
+              console.log(response.data);
             }
           },
         })
@@ -119,7 +128,7 @@ const StepImage = ({ active, setActive, state, setState }) => {
         <div className="flex justify-center items-center">
           <label
             htmlFor="dropzone-file"
-            className="p-1 flex flex-col justify-center items-center w-full h-30 bg-blue-50 rounded-xl shadow-md cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-blue-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            className="p-1 flex flex-col justify-center items-center w-full h-30 bg-blue-50 rounded-xl shadow-md cursor-pointer hover:bg-blue-100"
           >
             <div className="flex flex-col justify-center items-center py-2">
               <svg
@@ -157,6 +166,23 @@ const StepImage = ({ active, setActive, state, setState }) => {
             />
           </label>
         </div>
+        {state.loading_image ? (
+          <div className="flex flex-col items-center justify-center">
+            <Lottie animationData={loader} loop={true} className="h-14" />
+          </div>
+        ) : state.images ? (
+          state.images?.map((fileOld) => {
+            return (
+              <ImageOld
+                key={fileOld.id}
+                fileOld={fileOld}
+                state={state}
+                setState={setState}
+              />
+            );
+          })
+        ) : null}
+        {}
         {uploadedFileAmount > 0
           ? size(fileProgress)
             ? toArray(fileProgress)?.map((file) => {
