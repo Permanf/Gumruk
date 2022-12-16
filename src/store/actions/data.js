@@ -32,8 +32,13 @@ export const setUploadProgress = (id, progress) => ({
 });
 
 export const SUCCESS_UPLOAD_FILE = "SUCCESS_UPLOAD_FILE";
-export const successUploadFile = (id) => ({
+export const successUploadFile = (data) => ({
   type: SUCCESS_UPLOAD_FILE,
+  payload: data,
+});
+export const SET_DELETE_FILE = "SET_DELETE_FILE";
+export const setDeleteFile = (id) => ({
+  type: SET_DELETE_FILE,
   payload: id,
 });
 
@@ -47,6 +52,11 @@ export const SET_IMAGE_IDS = "SET_IMAGE_IDS";
 export const imageIds = (data) => ({
   type: SET_IMAGE_IDS,
   payload: data,
+});
+export const SET_DELETE_IMAGE = "SET_DELETE_IMAGE";
+export const deleteImage = (id) => ({
+  type: SET_DELETE_IMAGE,
+  payload: id,
 });
 export const SET_DECLARATON_ID = "SET_DECLARATON_ID";
 export const setDeclarationId = (id) => ({

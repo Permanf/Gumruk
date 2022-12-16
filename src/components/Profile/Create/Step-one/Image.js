@@ -1,12 +1,67 @@
-import { Progress, Group, Badge } from "@mantine/core";
-import { IconTrash, IconCheck, IconPhoto, IconX } from "@tabler/icons";
+import { Progress, Group, Badge, Text } from "@mantine/core";
 import ImageNext from "next/image";
+import { IconTrash, IconCheck, IconX } from "@tabler/icons";
+import { openConfirmModal } from "@mantine/modals";
+import { useSelector, useDispatch } from "react-redux";
+import { getToken } from "../../../../store/selectors/auth";
+import { showNotification } from "@mantine/notifications";
+import { post } from "../../../../store/middlewares";
+import { deleteImage, setDeleteFile } from "../../../../store/actions/data";
 
 const Image = ({ key, file }) => {
   // console.log(file, "----");
   // const url = URL.createObjectURL(file.file);
   // console.log(url);
   // URL.createObjectURL(e.target.files[i])}
+  const token = useSelector(getToken);
+  const dispatch = useDispatch();
+  const openDeleteModal = (id) =>
+    openConfirmModal({
+      title: "Delete image",
+      centered: true,
+      children: <Text size="sm">Surat pozmak isleýärsiňizmi?</Text>,
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { className: "bg-red-600", color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        console.log(id);
+        console.log("Confirmed");
+        const data = {
+          image_id: id,
+        };
+        dispatch(
+          post({
+            url: `user/image-delete`,
+            token,
+            data,
+            action: (response) => {
+              //   console.log(response.data, "----u");
+              if (response?.data?.success) {
+                // console.log(response?.data);
+                // setState({
+                //   type: "SET_DELETE_IMAGE_OLD",
+                //   payload: id,
+                // });
+                dispatch(setDeleteFile(id));
+                dispatch(deleteImage(id));
+                showNotification({
+                  color: "green",
+                  title: "Surat pozuldy!",
+                  icon: <IconCheck />,
+                });
+              } else {
+                showNotification({
+                  color: "red",
+                  title: "Üstünlikli bolmady!",
+                  icon: <IconX />,
+                  autoClose: 5000,
+                });
+              }
+            },
+          })
+        );
+      },
+    });
   return (
     <div
       key={key ? key : null}
@@ -46,7 +101,13 @@ const Image = ({ key, file }) => {
               <IconCheck size={20} className="ml-3 text-green-600" />
             </>
           ) : null}
-          <IconTrash size={20} className="ml-3 text-red-600 cursor-pointer" />
+          <IconTrash
+            onClick={() => {
+              openDeleteModal(file?.image_id);
+            }}
+            size={20}
+            className="ml-3 text-red-600 cursor-pointer"
+          />
         </div>
       </div>
       <div className="w-full px-1">

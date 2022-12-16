@@ -12,10 +12,13 @@ import {
   FAILURE_UPLOAD_IMAGE,
   SET_ANNOUNCEMENT_IMAGE_IDS,
   SET_IMAGE_PROGRESS,
+  SET_DELETE_IMAGE,
   SET_DECLARATON_ID,
+  SET_DELETE_FILE,
 } from "../actions/data";
 import { modifyFiles } from "../../utils/uploadFile";
 import { modifyImageIds } from "../../utils/imageIds";
+import { size, toArray } from "lodash";
 
 const initialState = {
   lang: "",
@@ -63,11 +66,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         fileProgress: {
           ...state.fileProgress,
-          [action.payload]: {
-            ...state.fileProgress[action.payload],
+          [action.payload.id]: {
+            ...state.fileProgress[action.payload.id],
             status: 1,
+            image_id: action.payload.image_id,
           },
         },
+      };
+    case SET_DELETE_FILE:
+      return {
+        ...state,
+        fileProgress: toArray(state.fileProgress).filter(
+          (item) => item.image_id !== action.payload
+        ),
       };
 
     case FAILURE_UPLOAD_FILE:
@@ -86,6 +97,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         imageIds: [...modifyImageIds(state.imageIds, action.payload)],
+      };
+    case SET_DELETE_IMAGE:
+      return {
+        ...state,
+        imageIds: state.imageIds.filter((item) => item !== action.payload),
       };
     case SET_DECLARATON_ID:
       return {

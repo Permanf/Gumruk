@@ -7,7 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { getImageIds, getToken } from "../../../../store/selectors/auth";
-import { setDeclarationId } from "../../../../store/actions/data";
+import {
+  setDeclarationId,
+  setFileProgress,
+} from "../../../../store/actions/data";
 import { showNotification } from "@mantine/notifications";
 import { IconX, IconCheck } from "@tabler/icons";
 
@@ -112,6 +115,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
     });
   useEffect(() => {
     if (state.update_2step?.id) {
+      dispatch(setFileProgress({}));
       setValue("type_of_declaration", state.update_2step.type_of_declaration);
       setValue("exporter_name", state.update_2step.exporter_name);
       setValue("exporter_code", state.update_2step.exporter_code);

@@ -69,7 +69,6 @@ const ImageOld = ({ key, fileOld, state, setState }) => {
           alt="image"
           width={300}
           height={200}
-          priority
         />
         <div className="w-full flex justify-end mx-2">
           <IconCheck size={20} className="ml-3 text-green-600" />

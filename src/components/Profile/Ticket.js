@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Ticket = ({ nomer, element }) => {
   // const { Canvas } = useQRCode();
-  // console.log(element);
+  console.log(element);
 
   return (
     <Grid.Col sm={6} lg={6}>
@@ -12,7 +12,7 @@ const Ticket = ({ nomer, element }) => {
         <div className="rounded-2xl shadow-md hover:-translate-y-1 hover:scale-100 overflow-hidden cursor-pointer">
           <div className="w-full justify-between h-12 font-semibold bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500 flex items-center text-white p-4">
             <h1>Tickets</h1>
-            <span>№ {nomer}</span>
+            <span>№ {element?.id}</span>
           </div>
           <div className="flex justify-between items-start p-2">
             <div className="p-2">

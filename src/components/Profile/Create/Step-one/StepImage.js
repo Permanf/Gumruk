@@ -93,7 +93,9 @@ const StepImage = ({ active, setActive, state, setState }) => {
         try {
           await axios({
             baseURL: "http://95.85.127.198",
-            url: "/api/user/image-store",
+            url: state.update_id
+              ? `/api/user/declaration/${state.update_id}/add/images`
+              : "/api/user/image-store",
             method: "post",
             data: formPayload,
             onUploadProgress: (progress) => {
@@ -108,9 +110,14 @@ const StepImage = ({ active, setActive, state, setState }) => {
             withCredentials: false,
           }).then((res) => {
             if (res.status == 200) {
-              // console.log(res.data);
-              dispatch(imageIds(res.data.images_id));
-              dispatch(successUploadFile(file.id));
+              console.log(res.data);
+              dispatch(imageIds(res.data.data.images_id));
+              dispatch(
+                successUploadFile({
+                  id: file.id,
+                  image_id: res.data.data.images_id,
+                })
+              );
             }
           });
         } catch (error) {
