@@ -11,7 +11,6 @@ import { post } from "../../../../store/middlewares";
 const ImageOld = ({ key, fileOld, state, setState }) => {
   const token = useSelector(getToken);
   const dispatch = useDispatch();
-  //   console.log(fileOld.image);
   const openDeleteModal = (id) =>
     openConfirmModal({
       title: "Delete image",
@@ -21,8 +20,6 @@ const ImageOld = ({ key, fileOld, state, setState }) => {
       confirmProps: { className: "bg-red-600", color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {
-        // console.log(id);
-        // console.log("Confirmed");
         const data = {
           image_id: id,
         };
@@ -32,9 +29,7 @@ const ImageOld = ({ key, fileOld, state, setState }) => {
             token,
             data,
             action: (response) => {
-              //   console.log(response.data, "----u");
               if (response?.data?.success) {
-                // console.log(response?.data);
                 setState({
                   type: "SET_DELETE_IMAGE_OLD",
                   payload: id,

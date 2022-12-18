@@ -126,11 +126,12 @@ const NoticeAdd = () => {
   for (let i = 0; i < state.select_data?.locations?.length; i++) {
     locations.push({
       value: state.select_data?.locations[i]?.id,
-      label: state.select_data?.locations[i]?.title,
+      label: state.select_data?.locations[i]?.title.ru,
     });
   }
   useEffect(() => {
-    // console.log(getValues("category_id"));
+    console.log(getValues("category_id"));
+    console.log(state.select_data.categories);
     if (getValues("category_id")) {
       setState({
         type: "SET_CAPACITY",

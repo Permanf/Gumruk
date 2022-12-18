@@ -9,10 +9,6 @@ import { post } from "../../../../store/middlewares";
 import { deleteImage, setDeleteFile } from "../../../../store/actions/data";
 
 const Image = ({ key, file }) => {
-  // console.log(file, "----");
-  // const url = URL.createObjectURL(file.file);
-  // console.log(url);
-  // URL.createObjectURL(e.target.files[i])}
   const token = useSelector(getToken);
   const dispatch = useDispatch();
   const openDeleteModal = (id) =>
@@ -24,8 +20,6 @@ const Image = ({ key, file }) => {
       confirmProps: { className: "bg-red-600", color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {
-        console.log(id);
-        console.log("Confirmed");
         const data = {
           image_id: id,
         };
@@ -35,13 +29,7 @@ const Image = ({ key, file }) => {
             token,
             data,
             action: (response) => {
-              //   console.log(response.data, "----u");
               if (response?.data?.success) {
-                // console.log(response?.data);
-                // setState({
-                //   type: "SET_DELETE_IMAGE_OLD",
-                //   payload: id,
-                // });
                 dispatch(setDeleteFile(id));
                 dispatch(deleteImage(id));
                 showNotification({
@@ -68,8 +56,6 @@ const Image = ({ key, file }) => {
       className="rounded-xl p-3 border shadow-md flex flex-col items-center"
     >
       <div className="w-full flex items-center">
-        {/* <IconPhoto size={50} className="text-blue-500" /> */}
-        {/* <img src={`./${file.file.name}`} /> */}
         <ImageNext
           className="rounded-md"
           src={`${URL.createObjectURL(file.file)}`}

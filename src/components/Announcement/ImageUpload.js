@@ -49,7 +49,7 @@ const ImageUpload = () => {
           }).then((res) => {
             if (res.status == 200) {
               console.log(res.data);
-              dispatch(announcementImageIds(res.data.images_id));
+              dispatch(announcementImageIds(res.data.data.images_id));
               dispatch(successUploadImage(file.id));
             }
           });

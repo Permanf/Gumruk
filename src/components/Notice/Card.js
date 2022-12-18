@@ -1,10 +1,18 @@
 import { Group, Badge, ThemeIcon } from "@mantine/core";
-import { IconCalendar, IconEye, IconTrash, IconEdit } from "@tabler/icons";
+import {
+  IconCalendar,
+  IconEye,
+  IconTrash,
+  IconEdit,
+  IconPhoto,
+} from "@tabler/icons";
 import { CurrentLocation } from "tabler-icons-react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Card = ({ item, type }) => {
   const router = useRouter();
+  // console.log(item.images);
 
   return (
     <div
@@ -18,17 +26,21 @@ const Card = ({ item, type }) => {
         type == 1 ? "border bg-none shadow-none" : ""
       }`}
     >
-      <div
-        // style={`background-image: url(${item?.image})`}
-        // style={{
-        //   backgroundImage: `url(${item?.image.src})`,
-        //   backgroundSize: "cover",
-        //   backgroundRepeat: "no-repeat",
-        //   backgroundPosition: "center",
-        // }}
-        className={`w-full sm:w-1/3 h-60 sm:h-52 bg-gray-200 rounded-2xl flex justify-center items-center`}
-      >
-        {/* <Image src={item.image} className="w-full h-full" /> */}
+      <div className={`sm:w-1/3 w-full h-60 sm:h-52`}>
+        {item?.images[0] ? (
+          <div className="w-full h-full relative">
+            <Image
+              src={`${item?.images[0]}`}
+              layout="fill"
+              className="rounded-2xl"
+              // objectFit="cover"
+            />
+          </div>
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex justify-center items-center rounded-2xl">
+            <IconPhoto size={40} className="text-blue-500" />
+          </div>
+        )}
       </div>
       <div className="ml-5 flex flex-col w-full sm:w-2/3">
         <h1 className="text-xl font-semibold pt-5">{item?.title}</h1>
@@ -46,10 +58,6 @@ const Card = ({ item, type }) => {
         <span className="text-sm my-5">{item?.description}</span>
       </div>
       <Group className="flex justify-end w-full absolute top-4 right-4 text-sm">
-        {/* <span className="flex items-center bg-blue-600 px-3 py-1 sm:px-0 sm:py-0 sm:bg-white rounded-full text-white sm:text-black">
-          <IconEye size={20} className="mr-1" />
-          {item?.eye}
-        </span> */}
         <span className="flex items-center bg-blue-600 px-3 py-1 sm:px-0 sm:py-0 sm:bg-white rounded-full text-white sm:text-black">
           <IconCalendar size={20} className="mr-1" />
           {item?.created_at}
@@ -61,14 +69,14 @@ const Card = ({ item, type }) => {
               variant="gradient"
               gradient={{ from: "pink", to: "red" }}
             >
-              <IconTrash size={20} />
+              <IconTrash size={18} />
             </ThemeIcon>
             <ThemeIcon
               size="lg"
               variant="gradient"
               gradient={{ from: "indigo", to: "violet" }}
             >
-              <IconEdit size={20} />
+              <IconEdit size={18} />
             </ThemeIcon>
           </>
         ) : null}

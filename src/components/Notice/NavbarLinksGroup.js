@@ -69,7 +69,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function LinksGroup({ category, query }) {
-  console.log(category);
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const handleRoute = (elements) => {
