@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getlang } from "../../store/selectors/auth";
 import { useState, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
+import Slider from "../../components/Notice/slug/Slider";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -67,7 +68,7 @@ const NoticeSlug = () => {
         },
       })
     );
-  }, []);
+  }, [router.query.slug]);
   console.log(state.data);
   return (
     <Layout title={"Bildiriş detail"}>
@@ -78,15 +79,9 @@ const NoticeSlug = () => {
               <h1 className="font-semibold text-2xl mb-5">
                 {state.data.title}
               </h1>
-              <div
-                className="w-full h-96 rounded-2xl bg-gray-100"
-                // style={{
-                //   backgroundImage: `url(${data?.image?.src})`,
-                //   backgroundSize: "cover",
-                //   backgroundRepeat: "no-repeat",
-                //   backgroundPosition: "center",
-                // }}
-              ></div>
+              <div className="w-full h-96 rounded-xl bg-gray-100 flex justify-center items-center">
+                <Slider data={state.data} />
+              </div>
               <div className="w-full flex py-5">
                 <div className="w-3/12">
                   <span className="text-base font-semibold">Description</span>
@@ -117,7 +112,7 @@ const NoticeSlug = () => {
                   </span>
                 </div>
               </div>
-              {state.data.capacity != null ? (
+              {state.data.capacity != " " ? (
                 <div className="w-full flex py-5">
                   <div className="w-3/12">
                     <span className="text-base font-semibold">Capacity</span>
