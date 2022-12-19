@@ -74,7 +74,7 @@ export function Banner() {
             <Button
               size="md"
               mt="xl"
-              className="bg-blue-700 w-36 text-sm sm:text-lg"
+              className="bg-blue-700 w-44 text-sm sm:text-lg"
             >
               {translation[lang]?.banner_button}
             </Button>

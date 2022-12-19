@@ -98,7 +98,7 @@ const Notice = () => {
         }&created_at=${query.created_at ? query.created_at : ""}&price_min=${
           query.price_min ? query.price_min : ""
         }&price_max=${query.price_max ? query.price_max : ""}`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           // console.log(response.data, "-----gelen response");
           setState({ type: "SET_LOADING", payload: false });
@@ -113,7 +113,7 @@ const Notice = () => {
         },
       })
     );
-  }, [query]);
+  }, [query, lang]);
 
   return (
     <LayoutNotice

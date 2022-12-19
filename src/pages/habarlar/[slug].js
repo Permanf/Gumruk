@@ -43,11 +43,11 @@ const News = () => {
     dispatch(
       fetchData({
         url: `news`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA", payload: response?.data?.data });
-          console.log(response, "-news");
+          // console.log(response, "-news");
         },
       })
     );

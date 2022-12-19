@@ -12,6 +12,7 @@ import { fetchData, post } from "../../store/middlewares/index";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeletons from "../../components/News/Skeletons";
+import { translation } from "../../components/News/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -69,7 +70,7 @@ const News = () => {
             ? `news?page=${activePage}`
             : `news/${state.category}?page=${activePage}`
         }`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA", payload: response?.data?.data });
@@ -84,71 +85,12 @@ const News = () => {
   }, [lang, activePage, state.category]);
 
   const banner = {
-    title: "Новости",
-    description:
-      "Услуги предоставляемые Центральным Таможенным терминалом своим клиентам",
+    title: translation[lang]?.banner_title,
+    description: translation[lang]?.banner_description,
     image: image,
     with: "500px",
     height: "280px",
   };
-  const news = [
-    {
-      id: 0,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 1,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 2,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 3,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 4,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 5,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 6,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-    {
-      id: 7,
-      title: "Новости компании",
-      description:
-        "В Ашхабаде рассмотрели необходимость соблюдения трудовых норм в частном секторе",
-      date: "05.06.2022",
-    },
-  ];
   return (
     <Layout title="Habarlar" className="bg_gray">
       <BannerHero banner={banner} />
@@ -161,30 +103,35 @@ const News = () => {
                 className="text-xs sm:text-lg"
                 onClick={() => {
                   setState({ type: "SET_CATEGORY", payload: "" });
+                  setPage(1);
                   // setState({ type: "SET_TRIGGER", payload: true });
                 }}
               >
-                Главное
+                {translation[lang]?.category1}
               </Tabs.Tab>
               <Tabs.Tab
                 value="second"
                 className="text-xs sm:text-lg"
                 onClick={() => {
                   setState({ type: "SET_CATEGORY", payload: "company" });
+                  setPage(1);
+
                   // setState({ type: "SET_TRIGGER", payload: true });
                 }}
               >
-                Новости компании
+                {translation[lang]?.category2}
               </Tabs.Tab>
               <Tabs.Tab
                 value="third"
                 className="text-xs sm:text-lg"
                 onClick={() => {
                   setState({ type: "SET_CATEGORY", payload: "event" });
+                  setPage(1);
+
                   // setState({ type: "SET_TRIGGER", payload: true });
                 }}
               >
-                Мероприятия
+                {translation[lang]?.category3}
               </Tabs.Tab>
             </Tabs.List>
           </Tabs>
@@ -192,10 +139,10 @@ const News = () => {
         <div className="container_out my-10">
           <h1 className="font-bold text-2xl sm:text-4xl mb-4">
             {state.category == ""
-              ? "Главное"
+              ? translation[lang]?.category1
               : state.category == "company"
-              ? "Новости компании"
-              : "Мероприятия"}
+              ? translation[lang]?.category2
+              : translation[lang]?.category3}
           </h1>
           <hr />
         </div>

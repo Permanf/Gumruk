@@ -54,7 +54,7 @@ const BizBarada = () => {
     dispatch(
       fetchData({
         url: `about`,
-        lang: lang == "Russian" ? "ru" : lang == "Turkmen" ? "tm" : "en",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA", payload: response.data.data });
@@ -67,8 +67,6 @@ const BizBarada = () => {
   const banner = {
     title: state.data.title,
     description: state.data.description,
-    // description:"Была создана дирекция управления Хозяйством при Государственной таможенной службы Туркменистана по обработке грузоперевозок в международном торговом деле и по услугам их хранении.",
-    // button: "Подробнее",
     image: image,
     with: "500px",
     height: "280px",
@@ -101,6 +99,7 @@ const BizBarada = () => {
         "Дирекция предлагает всем заинтересованным лицам свои услуги в сфере обработки и хранения грузов в складах временного хранения и на таможенных складах.Если у Вас возникли какие-либо вопросы по деятельности Дирекции или есть предложения, по дальнейшему совершенствованию деятельности сухих портов, Вы можете связаться с нами удобным для Вас способом.",
     },
   ];
+
   return (
     <Layout title="Biz-barada" className="bg_gray">
       <BannerHero banner={banner} />

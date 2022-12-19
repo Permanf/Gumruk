@@ -1,0 +1,47 @@
+export const translation = {
+  Russian: {
+    banner_title: "Сухие порты",
+    banner_description:
+      "Имеется в наличии 4 сухих портов принадлежащих дирекцию управления хозяйства. Предоставляем подробную информацию о спецификациях этих портов.",
+    description1: "Открытая площадка общей площадью",
+    description2: "Стоянка для легковых автотранспортных средств",
+    description3: "Стоянка для грузовых автотранспортных средств",
+    phone: "телефон",
+    email: "э-почта",
+    question1: "не нашли ответа?",
+    question2: "Задайте ворпрос службе поддержки",
+    question3: "Нажимая Отправить, вы принимаете",
+    question4: "политику конфиденциальности",
+    send: "Отправить",
+  },
+  Turkmen: {
+    banner_title: "Gury port",
+    banner_description:
+      "Ykdysadyýet dolandyryşyna degişli 4 sany gury port bar. Bu portlaryň aýratynlyklary barada jikme-jik maglumat berýäris.",
+    description1: "Umumy meýdany bolan açyk meýdan",
+    description2: "Passengerolagçy ulaglary üçin duralga",
+    description3: "Ýük awtoulaglary üçin duralga",
+    phone: "telefon nomer",
+    email: "elektron salgysy",
+    question1: "jogap tapmadyňmy?",
+    question2: "Goldaw soragyny beriň",
+    question3: "Ibermek düwmesine basyp kabul edýärsiňiz",
+    question4: "gizlinlik syýasaty",
+    send: "Ibermek",
+  },
+  English: {
+    banner_title: "Dry ports",
+    banner_description:
+      "There are 4 dry ports belonging to the Directorate of the management of the economy. We provide detailed information about the specifications of these ports",
+    description1: "Outdoor area with a total area of",
+    description2: "Parking for passenger vehicles",
+    description3: "Parking for cargo vehicles",
+    phone: "phone number",
+    email: "email address",
+    question1: "didn't find an answer?",
+    question2: "Ask a question to the support service",
+    question3: "By clicking Send, you accept",
+    question4: "privacy policy",
+    send: "Send",
+  },
+};

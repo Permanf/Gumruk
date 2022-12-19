@@ -8,8 +8,6 @@ import {
   TextInput,
   Textarea,
   Button,
-  Checkbox,
-  Code,
   Text,
   Anchor,
 } from "@mantine/core";
@@ -19,6 +17,7 @@ import { fetchData, post } from "../../store/middlewares/index";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeletons from "../../components/Contact/Skeletons";
+import { translation } from "../../components/Ports/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -58,7 +57,7 @@ const Habarlasmak = () => {
     dispatch(
       fetchData({
         url: `contact`,
-        lang: lang == "Russian" ? "ru" : lang == "Turkmen" ? "tm" : "en",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_DATA", payload: response.data.data });
 
@@ -69,12 +68,12 @@ const Habarlasmak = () => {
     dispatch(
       fetchData({
         url: `ports`,
-        lang: lang == "Russian" ? "ru" : lang == "Turkmen" ? "tm" : "en",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA_PORTS", payload: response.data.data });
 
-          console.log(response.data.data, "-ports");
+          // console.log(response.data.data, "-ports");
         },
       })
     );
@@ -83,45 +82,10 @@ const Habarlasmak = () => {
   const banner = {
     title: state.data.title,
     description: state.data.description,
-    // description:
-    //   "Подавайте декларации и оплачивайте таможенные платежи онлайн — экономьте время и сокращайте расходы",
     image: image,
     with: "500px",
     height: "300px",
   };
-  const data = [
-    {
-      id: 0,
-      title: "Служба поддержки",
-      description: "",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 1,
-      title: "Центральный таможенный терминал",
-      description:
-        "744205, Туркменистан, Ахалский велаят, этрап Ак бугдай, 3000 м на север от Каракумского канала, восточная сторона кольцевой дороги Анау-Дашогуз",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 2,
-      title: "Сухой порт «Сарахс»",
-      description:
-        "Стоянка Сарахс – расположен вблизи Сарахского автодорожного таможенного поста Таможни Ахалского велаята",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 3,
-      title: "Сухой порт «Фарап»",
-      description:
-        "Стоянка Фарап – расположен вблизи Фарапского автодорожного таможенного поста Таможни Лебапского велаята",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-  ];
   return (
     <Layout title="Habarlasmak" className="bg_gray">
       <BannerHero banner={banner} />
@@ -149,11 +113,15 @@ const Habarlasmak = () => {
                       <p className="font-medium text-sm sm:text-lg">
                         {item.email}
                       </p>
-                      <span className="text-gray-300 text-sm">э-почта</span>
+                      <span className="text-gray-300 text-sm">
+                        {translation[lang]?.email}
+                      </span>
                       <p className="font-medium text-sm sm:text-lg">
                         {item.phone}
                       </p>
-                      <span className="text-gray-300 text-sm">телефон</span>
+                      <span className="text-gray-300 text-sm">
+                        {translation[lang]?.phone}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -167,10 +135,10 @@ const Habarlasmak = () => {
       <div className="flex justify-center container my-5">
         <div className="container_md flex flex-col">
           <p className="text-blue-500 mb-4 ml-5 text-sm sm:text-base">
-            не нашли ответа?
+            {translation[lang]?.question1}
           </p>
           <h1 className="text-xl sm:text-3xl font-medium ml-5">
-            Задайте ворпрос службе <br /> поддержки
+            {translation[lang]?.question2}
           </h1>
           <form>
             <Grid grow className="my-5 px-1">
@@ -196,15 +164,18 @@ const Habarlasmak = () => {
               </Grid.Col>
             </Grid>
             <div className="flex flex-col sm:flex-row justify-between px-1">
-              <Button className="bg-blue-700 mb-3 sm:mb-0">Отправить</Button>
+              <Button className="bg-blue-700 mb-3 sm:mb-0">
+                {" "}
+                {translation[lang]?.send}
+              </Button>
               <Text color="dimmed" size="sm">
-                Нажимая Отправить, вы принимаете{" "}
+                {translation[lang]?.question3}{" "}
                 <Anchor
                   href="#"
                   size="sm"
                   // onClick={(event) => event.preventDefault()}
                 >
-                  политику конфиденциальности
+                  {translation[lang]?.question4}
                 </Anchor>
               </Text>
             </div>

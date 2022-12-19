@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+// import { Container } from "@mantine/core";
 import { Banner } from "../../components/Banner/Banner";
 import { BannerHero } from "../../components/Banner/BannerHerro";
 import Layout from "../../components/Layouts/Layout";
@@ -7,6 +7,7 @@ import { fetchData, post } from "../../store/middlewares/index";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeletons from "../../components/Ports/Skeletons";
+import { translation } from "../../components/Ports/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -39,68 +40,37 @@ const Portlar = () => {
     dispatch(
       fetchData({
         url: `ports`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA", payload: response.data.data });
-          console.log(response.data.data, "-portlar");
+          // console.log(response.data.data, "-portlar");
         },
       })
     );
   }, [lang]);
 
   const banner = {
-    title: "Сухие порты",
-    description:
-      "Имеется в наличии 4 сухих портов принадлежащих дирекцию управления хозяйства. Предоставляем подробную информацию о спецификациях этих портов.",
+    title: translation[lang]?.banner_title,
+    description: translation[lang]?.banner_description,
     info: [
       {
         qty: 57000,
-        description: "Открытая площадка общей площадью",
+        description: translation[lang]?.description1,
       },
       {
         qty: 300,
-        description: "Стоянка для легковых автотранспортных средств",
+        description: translation[lang]?.description2,
       },
       {
         qty: 600,
-        description: "Стоянка для грузовых автотранспортных средств",
+        description: translation[lang]?.description3,
       },
     ],
     image: image,
     with: "600px",
     height: "250px",
   };
-  const data = [
-    {
-      id: 0,
-      title: "Центральный таможенный терминал",
-      region: "Ашхабад, Туркменистан",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 1,
-      title: "Центральный таможенный терминал",
-      region: "Лебапский велаят",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 2,
-      title: "Сухой порт «Сарахс»",
-      region: "Ахалский велаят",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-    {
-      id: 3,
-      title: "Сухой порт «Фарап»",
-      region: "Лебапский велаят",
-      email: "info@terminal@.gov.tm",
-      phone: "+993 12 57-49-50",
-    },
-  ];
   return (
     <Layout title="Portlar" className="bg_gray">
       <BannerHero banner={banner} />
@@ -127,7 +97,7 @@ const Portlar = () => {
                         {item.phone}
                       </p>
                       <span className="text-gray-300 text-xs sm:text-sm">
-                        телефон
+                        {translation[lang]?.phone}
                       </span>
                     </div>
                     <div>
@@ -135,7 +105,7 @@ const Portlar = () => {
                         {item.email}
                       </p>
                       <span className="text-gray-300 text-xs sm:text-sm">
-                        э-почта
+                        {translation[lang]?.email}
                       </span>
                     </div>
                   </div>
