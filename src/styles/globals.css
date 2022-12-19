@@ -94,6 +94,9 @@ body{
     height: 100px;
     position: absolute;
   } */
+  .mantine-Carousel-indicator{
+    background-color: white;
+  }
  
   .mantine-Select-input{
     border: none;

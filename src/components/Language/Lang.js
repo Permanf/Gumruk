@@ -66,7 +66,6 @@ export function LanguagePicker() {
   // });
 
   const [opened, setOpened] = useState(false);
-  // const [selected, setSelected] = useState("");
   const { classes } = useStyles({ opened });
 
   // useEffect(() => {
@@ -81,27 +80,35 @@ export function LanguagePicker() {
   // console.log(selected);
 
   const lang = localStorage.getItem("lang");
-  // console.log(data[0].label, "-------lang");s
-  const [selected, setSelected] = useState(
-    lang == "undefined" ? "Russian" : data[0]
-  );
   useEffect(() => {
-    if (lang == "undefined") {
+    // console.log(lang, "-------lang");
+    if (lang == null) {
+      // console.log("1");
       localStorage.setItem("lang", "Russian");
       dispatch(setHelperData({ lang: "Russian" }));
     } else {
-      localStorage.setItem("lang", JSON.stringify(selected.label));
-      dispatch(setHelperData({ lang: selected.label }));
+      console.log(1);
+      dispatch(setHelperData({ lang: lang }));
     }
-  }, [selected]);
+  }, []);
+
+  const [selected, setSelected] = useState(
+    lang == "Turkmen" ? data[1] : lang == "English" ? data[2] : data[0]
+  );
+  // console.log(selected);
 
   const items = data.map((item) => (
     <Menu.Item
-      icon={<Image src={item.image} alt="image" width={18} height={13} />}
-      onClick={() => setSelected(item)}
-      key={item.label}
+      icon={<Image src={item?.image} alt="image" width={18} height={13} />}
+      onClick={() => {
+        console.log(item.label);
+        setSelected(item);
+        localStorage.setItem("lang", item.label);
+        dispatch(setHelperData({ lang: item.label }));
+      }}
+      key={item?.label}
     >
-      {item.label}
+      {item?.label}
     </Menu.Item>
   ));
 
@@ -116,8 +123,8 @@ export function LanguagePicker() {
       <Menu.Target>
         <UnstyledButton className={classes.control}>
           <Group spacing="xs">
-            <Image src={selected.image} alt="image" width={22} height={15} />
-            <span className={classes.label}>{selected.label}</span>
+            <Image src={selected?.image} alt="image" width={22} height={15} />
+            <span className={classes.label}>{selected?.label}</span>
           </Group>
           <IconChevronDown size={16} className={classes.icon} stroke={1.5} />
         </UnstyledButton>

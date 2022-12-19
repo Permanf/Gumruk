@@ -20,8 +20,8 @@ const Slider = ({ data }) => {
         indicator: {
           width: 12,
           height: 4,
-          color: "white",
           transition: "width 250ms ease",
+          position: "relative",
 
           "&[data-active]": {
             width: 40,

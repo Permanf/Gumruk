@@ -23,10 +23,10 @@ function SliderHome({ data, withControls }) {
       loop
       align="start"
       nextControlIcon={
-        <Icon size={20} icon={arrowRight2} className="text-white font-bold" />
+        <Icon size={15} icon={arrowRight2} className="text-white font-bold" />
       }
       previousControlIcon={
-        <Icon size={20} icon={arrowLeft2} className="text-white font-bold" />
+        <Icon size={15} icon={arrowLeft2} className="text-white font-bold" />
       }
     >
       {data?.length ? (
