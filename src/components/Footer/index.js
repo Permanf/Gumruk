@@ -1,16 +1,16 @@
 import { Grid } from "@mantine/core";
-import { IconPhoto } from "@tabler/icons";
-import { ThemeIcon } from "@mantine/core";
 import Image from "next/image";
 import logo_white from "../../assets/Logo/logo_white.svg";
 import { categories } from "../Header/categories";
 import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
 import { useSelector } from "react-redux";
+import { getlang } from "../../store/selectors/auth";
+import { translation } from "./translation";
 
 const Footer = () => {
   const { width } = useViewportSize();
-  const { lang } = useSelector((state) => state.data);
+  const lang = useSelector(getlang);
 
   return (
     <>
@@ -42,12 +42,12 @@ const Footer = () => {
               >
                 <IconPhoto size={30} />
               </ThemeIcon> */}
-                <h1 className="text-sm font-medium ml-3">
-                  ДИРЕКЦИЯ ХОЗЯЙСТВЕННОГО УПРАВЛЕНИЯ
+                <h1 className="text-sm font-medium ml-3 uppercase">
+                  {translation[lang]?.company_name}
                 </h1>
               </div>
               <h6 className="font-normal text-sm sm:text-base mt-3">
-                Тex поддержка
+                {translation[lang]?.support}
               </h6>
               <h1 className="text-lg sm:text-2xl font-semibold mt-3">
                 +993 (12) 12-34-56
@@ -63,12 +63,14 @@ const Footer = () => {
               lg={3}
               className="flex flex-col leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
-              <h1 className="text-lg sm:text-2xl font-medium mb-3">Услуги</h1>
-              <p className="my-0 sm:my-2">Грузовые операции</p>
-              <p className="my-0 sm:my-2">Гостиница</p>
-              <p className="my-0 sm:my-2">Тамаженный склад</p>
-              <p className="my-0 sm:my-2">Временное хранение</p>
-              <p className="my-0 sm:my-2">Стоянки</p>
+              <h1 className="text-lg sm:text-2xl font-medium mb-3">
+                {translation[lang]?.part1_title}
+              </h1>
+              <p className="my-0 sm:my-2">{translation[lang]?.part1_1}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part1_2}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part1_3}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part1_4}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part1_5}</p>
             </Grid.Col>
             <Grid.Col
               sm={6}
@@ -76,7 +78,9 @@ const Footer = () => {
               lg={3}
               className="flex flex-col  leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
-              <h1 className="text-lg sm:text-2xl font-medium mb-3">Помощь</h1>
+              <h1 className="text-lg sm:text-2xl font-medium mb-3">
+                {translation[lang]?.part2_title}
+              </h1>
 
               {categories(lang)?.map((item, index) => {
                 return (
@@ -97,11 +101,11 @@ const Footer = () => {
               className="flex flex-col  leading-9 text-white mt-5 mb-1 md:mt-14 md:mb-5 text-sm sm:text-base"
             >
               <h1 className="text-lg sm:text-2xl font-medium mb-3">
-                Партнерам
+                {translation[lang]?.part3_title}
               </h1>
-              <p className="my-0 sm:my-2">Банкам</p>
-              <p className="my-0 sm:my-2">Электронный документооборот</p>
-              <p className="my-0 sm:my-2">Агентам</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part3_1}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part3_2}</p>
+              <p className="my-0 sm:my-2">{translation[lang]?.part3_3}</p>
             </Grid.Col>
           </Grid>
           {/* </div> */}
@@ -110,7 +114,7 @@ const Footer = () => {
       <div className="w-full py-4 bg-gray-100 flex justify-center items-center text-sm">
         <div className="container_out">
           <p className="font-semibold text-xs sm:text-base">
-            © 2022. Дирекция хозяйственного управления. Все правы защищены.
+            {translation[lang]?.footer_last}
           </p>
         </div>
       </div>

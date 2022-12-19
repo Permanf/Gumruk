@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Grid, Anchor, ThemeIcon, Tabs, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 
 import Layout from "../components/Layouts/Layout";
 import { BannerHero } from "../components/Banner/BannerHerro";
@@ -8,10 +8,10 @@ import { Banner } from "../components/Banner/Banner";
 import section1 from "../assets/Home/banner.svg";
 import section2 from "../assets/Home/section2.svg";
 import section3 from "../assets/Home/section3.svg";
-import icon1 from "../assets/Home/icon1.svg";
-import icon2 from "../assets/Home/icon2.svg";
-import icon3 from "../assets/Home/icon3.svg";
-import icon4 from "../assets/Home/icon4.svg";
+// import icon1 from "../assets/Home/icon1.svg";
+// import icon2 from "../assets/Home/icon2.svg";
+// import icon3 from "../assets/Home/icon3.svg";
+// import icon4 from "../assets/Home/icon4.svg";
 import { Icon } from "react-icons-kit";
 import { arrowRight2 } from "react-icons-kit/icomoon/arrowRight2";
 import SliderHome from "../components/Sliders/SliderHome";
@@ -21,6 +21,7 @@ import { fetchData, post } from "../store/middlewares/index";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeletons from "../components/Home/Skeletons";
+import { translation } from "../components/Header/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -60,18 +61,16 @@ const Home = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.data);
-  // console.log(lang);
 
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       fetchData({
         url: `news`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
           setState({ type: "SET_DATA", payload: response?.data?.data });
-          // console.log(response, "-news");
         },
       })
     );
@@ -81,21 +80,19 @@ const Home = () => {
     dispatch(
       fetchData({
         url: `services`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING2", payload: false });
           setState({ type: "SET_DATA_SERVICE", payload: response?.data?.data });
-          // console.log(response, "-service");
         },
       })
     );
   }, [lang]);
 
   const banner = {
-    title: "Единая система для таможенного оформления",
-    description:
-      "Подавайте декларации и оплачивайте таможенные платежи онлайн — экономьте время и сокращайте расходы",
-    button: "Подробнее",
+    title: translation[lang]?.banner_title,
+    description: translation[lang]?.banner_description,
+    button: translation[lang]?.banner_button,
     // image: section1,
   };
 
@@ -112,15 +109,12 @@ const Home = () => {
 
       <div className="w-ful flex justify-center bg_blue text-white py-10">
         <div className="container_md flex flex-col">
-          <p className="mb-4 ml-5">Онлай сервис</p>
+          <p className="mb-4 ml-5">{translation[lang]?.section1_1}</p>
           <h1 className="text-2xl md:text-4xl font-bold ml-5">
-            Предварительное таможенное <br /> декларирование
+            {translation[lang]?.section1_2}
           </h1>
           <span className="text-sm sm:w-96 mt-3 p-4 sm:p-0">
-            Мы создаем инновационные, стабильно работающие цифровые решения,
-            которые упрощают операции для участников ВЭД. Наши продукты подойдут
-            для бизнеса любого размера: от предпринимателей до глобальных
-            корпораций.
+            {translation[lang]?.section1_3}
           </span>
           <Button
             variant="outline"
@@ -145,18 +139,13 @@ const Home = () => {
       <div className="w-full bg_gray flex justify-center">
         <div className="container_out flex flex-col -mt-14 sm:-mt-20">
           {state.data_service ? (
-            state.data_service?.map((item, index) => {
+            state.data_service?.map((item) => {
               return (
                 <div
                   key={item.id}
                   className="w-full bg-white rounded-lg my-5 p-4 md:p-10  cursor-pointer shadow-md"
                 >
                   <div className="w-full flex justify-between items-center py-3">
-                    {/* <img
-                      src={item?.icon}
-                      width={width > 500 ? 45 : 26}
-                      height={width > 500 ? 45 : 26}
-                    /> */}
                     <Image
                       src={item?.icon}
                       width={width > 500 ? 45 : 26}
@@ -198,7 +187,7 @@ const Home = () => {
       <div className="flex flex-col items-center py-10 bg_gray">
         <div className="container_out flex justify-between mb-4">
           <h1 className="font-bold text-2xl sm:text-4xl mb-4 text-blue-600">
-            Новости
+            {translation[lang]?.news}
           </h1>
           <Button
             variant="outline"
@@ -209,7 +198,7 @@ const Home = () => {
               router.push(`/habarlar`);
             }}
           >
-            Все новости
+            {translation[lang]?.all_news}
           </Button>
         </div>
         <div className="container_out py-2">

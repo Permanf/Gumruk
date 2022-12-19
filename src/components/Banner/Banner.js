@@ -7,7 +7,10 @@ import {
   Button,
   SimpleGrid,
 } from "@mantine/core";
+import { useSelector } from "react-redux";
 import image from "../../assets/Banner/Group.svg";
+import { getlang } from "../../store/selectors/auth";
+import { translation } from "../Header/translation";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -47,6 +50,7 @@ const useStyles = createStyles((theme) => ({
 
 export function Banner() {
   const { classes } = useStyles();
+  const lang = useSelector(getlang);
 
   return (
     <div className="w-full flex justify-center bg_gray">
@@ -60,19 +64,19 @@ export function Banner() {
           {/* <Image src={image} alt="image" className={classes.mobileImage} /> */}
           <div className="flex flex-col justify-center ">
             <Title
-              className={`${classes.title} text-white text-xl sm:text-3xl`}
+              className={`${classes.title} text-white text-xl sm:text-3xl uppercase`}
             >
-              ГОСУДАРСТВЕННАЯ ТАМОЖЕННАЯ СЛУЖБА ТУРКМЕНИСТАНА
+              {translation[lang]?.banner2_title}
             </Title>
             <Text color="dimmed" size="lg" className="text-sm sm:text-lg">
-              Посмотрите на новую систему декларирования поближе
+              {translation[lang]?.banner2_description}
             </Text>
             <Button
               size="md"
               mt="xl"
               className="bg-blue-700 w-36 text-sm sm:text-lg"
             >
-              Подробнее
+              {translation[lang]?.banner_button}
             </Button>
           </div>
           <div>

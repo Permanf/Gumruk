@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Drawer, Button, Group, Burger, Avatar } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { useSelector } from "react-redux";
+import { translation } from "./translation";
 
 const Header = () => {
   const router = useRouter();
@@ -85,24 +86,24 @@ const Header = () => {
                 <Image
                   src={logo_white}
                   alt="image"
-                  width={width > 600 ? 100 : 45}
-                  height={width > 600 ? 100 : 45}
+                  width={width > 600 ? 90 : 45}
+                  height={width > 600 ? 90 : 45}
                 />
               ) : (
                 <Image
                   src={logo_blue}
                   alt="image"
-                  width={width > 600 ? 100 : 45}
-                  height={width > 600 ? 100 : 45}
+                  width={width > 600 ? 90 : 45}
+                  height={width > 600 ? 90 : 45}
                 />
               )}
               <Link href="/">
                 <a
                   className={`${
                     width > 600 ? "text-sm " : "text-xs"
-                  }  font-semibold ml-3 cursor-pointer`}
+                  }  font-semibold ml-3 cursor-pointer uppercase`}
                 >
-                  ДИРЕКЦИЯ ХОЗЯЙСТВЕННОГО УПРАВЛЕНИЯ
+                  {translation[lang]?.company_name}
                 </a>
               </Link>
             </div>

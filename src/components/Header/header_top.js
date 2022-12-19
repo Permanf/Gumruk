@@ -1,18 +1,12 @@
-import {
-  IconPhoneCall,
-  IconWorld,
-  IconChevronDown,
-  IconChevronUp,
-  IconMailForward,
-  IconPlus,
-} from "@tabler/icons";
+import { IconPhoneCall, IconMailForward, IconPlus } from "@tabler/icons";
 import { Button } from "@mantine/core";
 // import { ThemeIcon } from "@mantine/core";
 import { LanguagePicker } from "../Language/Lang";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
+import { translation } from "./translation";
 
 const HeaderTop = () => {
   const { lang } = useSelector((state) => state.data);
@@ -20,10 +14,10 @@ const HeaderTop = () => {
   const { width } = useViewportSize();
 
   return (
-    <div className="w-full flex justify-center bg-blue-50">
+    <div className="w-full flex justify-center bg-blue-50 sticky top-0 z-50">
       <div className="container_out flex justify-between items-center py-2 text-sm">
         <div>
-          <span>Sene:</span>
+          <span>{translation[lang]?.date}:</span>
           <span className="mx-2">{moment().format("HH:mm")}</span>
           <span>{moment().format("DD.MM.YYYY")}</span>
         </div>
@@ -54,7 +48,7 @@ const HeaderTop = () => {
               // leftIcon={}
             >
               <IconPlus size={14} className="mr-2" />
-              Добавить объявление
+              {translation[lang]?.create}
             </Button>
           </Link>
           {width > 750 ? <LanguagePicker /> : null}

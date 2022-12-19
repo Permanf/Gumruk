@@ -54,13 +54,14 @@ axiosInstance.interceptors.response.use(
 const api = {
   getApi: async ({ url, token, withCredentials, contentType, lang }) => {
     // console.log(contentType);
-    // console.log(lang, "lang");
+    console.log(lang, "get lang");
     const config = {
       headers: {
         "Content-Type": contentType ? contentType : "application/json",
         accept: "application/json",
         Authorization: `Bearer ${token}`,
-        "Accept-Language": "ru",
+        "Accept-Language":
+          lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
       },
       timeout: contentType ? 100000 : 20000,
       withCredentials: withCredentials,
