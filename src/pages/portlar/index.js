@@ -30,9 +30,9 @@ const Portlar = () => {
     loading: false,
     data: [],
   });
+  const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.data);
   console.log(lang);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });

@@ -29,9 +29,9 @@ const Slider = ({ data }) => {
         },
       }}
     >
-      {data?.images?.map((item) => {
+      {data?.images?.map((item, index) => {
         return (
-          <Carousel.Slide className=" h-96">
+          <Carousel.Slide key={index} className=" h-96">
             <div className="w-full h-full relative">
               <Image
                 src={`${item}`}
