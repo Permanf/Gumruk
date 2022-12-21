@@ -12,16 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-// import InputMask from "react-input-mask";
-import {
-  IconLock,
-  IconMail,
-  IconCalendar,
-  // IconLock,
-  IconUser,
-} from "@tabler/icons";
-// import { useViewportSize } from "@mantine/hooks";
-import { DatePicker } from "@mantine/dates";
+import { IconLock, IconMail, IconCalendar, IconUser } from "@tabler/icons";
 import { useEffect, useReducer, useState } from "react";
 import LayoutProfile from "../../components/Profile/Layout";
 import { getToken } from "../../store/selectors/auth";
