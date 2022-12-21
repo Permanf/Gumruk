@@ -8,16 +8,12 @@ import {
   UnstyledButton,
   createStyles,
 } from "@mantine/core";
-import {
-  TablerIcon,
-  IconCalendarStats,
-  IconChevronLeft,
-  IconChevronRight,
-  IconPhoto,
-} from "@tabler/icons";
+import { IconChevronLeft, IconChevronRight, IconPhoto } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { useWindowScroll } from "@mantine/hooks";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { getlang } from "../../store/selectors/auth";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -69,6 +65,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function LinksGroup({ category, query }) {
+  const lang = useSelector(getlang);
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const handleRoute = (elements) => {
@@ -134,7 +131,11 @@ export function LinksGroup({ category, query }) {
                   : ""
               }`}
             >
-              {category?.name?.ru}
+              {lang == "English"
+                ? category?.name?.en
+                : lang == "Turkmen"
+                ? category?.name?.tm
+                : category?.name?.ru}
             </Box>
           </Box>
           {hasLinks && (

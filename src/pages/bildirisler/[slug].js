@@ -4,10 +4,11 @@ import image1 from "../../assets/Notice/truck3.webp";
 import { IconPhone } from "@tabler/icons";
 import { fetchData } from "../../store/middlewares";
 import { useDispatch, useSelector } from "react-redux";
-import { getlang } from "../../store/selectors/auth";
+import { getIsLoading, getlang } from "../../store/selectors/auth";
 import { useState, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import Slider from "../../components/Notice/slug/Slider";
+import { translation } from "../../components/Notice/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -32,7 +33,6 @@ const NoticeSlug = () => {
     data: {},
   });
   const router = useRouter();
-  console.log(router.query.slug);
 
   const data = {
     id: 0,
@@ -53,7 +53,7 @@ const NoticeSlug = () => {
     dispatch(
       fetchData({
         url: `user/announcement/${router.query.slug}/fetch`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           console.log(response);
           setState({ type: "SET_LOADING", payload: false });
@@ -69,7 +69,6 @@ const NoticeSlug = () => {
       })
     );
   }, [router.query.slug]);
-  console.log(state.data);
   return (
     <Layout title={"Bildiriş detail"}>
       <div className="bg_gray">
@@ -84,7 +83,9 @@ const NoticeSlug = () => {
               </div>
               <div className="w-full flex py-5">
                 <div className="w-3/12">
-                  <span className="text-base font-semibold">Description</span>
+                  <span className="text-base font-semibold">
+                    {translation[lang]?.description}
+                  </span>
                 </div>
                 <div className="w-3/4">
                   <span className="text-base text-gray-500">
@@ -94,7 +95,9 @@ const NoticeSlug = () => {
               </div>
               <div className="w-full flex py-5">
                 <div className="w-3/12">
-                  <span className="text-base font-semibold">Created at</span>
+                  <span className="text-base font-semibold">
+                    {translation[lang]?.created_at}
+                  </span>
                 </div>
                 <div className="w-3/4">
                   <span className="text-base text-gray-500">
@@ -104,7 +107,9 @@ const NoticeSlug = () => {
               </div>
               <div className="w-full flex py-5">
                 <div className="w-3/12">
-                  <span className="text-base font-semibold">Категория</span>
+                  <span className="text-base font-semibold">
+                    {translation[lang]?.category}
+                  </span>
                 </div>
                 <div className="w-3/4">
                   <span className="text-base text-gray-500">
@@ -115,7 +120,9 @@ const NoticeSlug = () => {
               {state.data.capacity != " " ? (
                 <div className="w-full flex py-5">
                   <div className="w-3/12">
-                    <span className="text-base font-semibold">Capacity</span>
+                    <span className="text-base font-semibold">
+                      {translation[lang]?.capacity}
+                    </span>
                   </div>
                   <div className="w-3/4">
                     <span className="text-base text-gray-500">
@@ -135,7 +142,7 @@ const NoticeSlug = () => {
               </Button>
               <div className="flex text-sm items-center py-3">
                 <span className="font-semibold text-base mr-3">
-                  Пользователь:{" "}
+                  {translation[lang]?.user}:{" "}
                 </span>
                 <span className="text-gray-500">
                   {state.data.user?.first_name}

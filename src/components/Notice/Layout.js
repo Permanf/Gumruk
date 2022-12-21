@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/middlewares";
 import { getlang, getToken } from "../../store/selectors/auth";
 import { useRouter } from "next/router";
+import { translation } from "./translation";
 
 function LayoutNotice({ children, title, state, setState, query }) {
   const [value, setValue] = useState("");
@@ -41,7 +42,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
     dispatch(
       fetchData({
         url: `user/announcement/filters`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           // console.log(response);
           setState({ type: "SET_SIDEBAR_LOADING", payload: false });
@@ -99,7 +100,9 @@ function LayoutNotice({ children, title, state, setState, query }) {
     <Layout title={title}>
       <Center className="bg_gray">
         <div className="container_out py-10 px-1">
-          <h1 className="text-xl sm:text-3xl font-semibold">Oбъявление</h1>
+          <h1 className="text-xl sm:text-3xl font-semibold">
+            {translation[lang]?.announcement}
+          </h1>
 
           <div className="w-full flex my-10">
             <Sidebar state={state} setState={setState} query={query} />
@@ -111,25 +114,25 @@ function LayoutNotice({ children, title, state, setState, query }) {
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
                 <span className="font-semibold text-sm sm:text-base">
-                  Найдено всего {state.all_data?.meta?.total} результата
+                  {translation[lang]?.found} {state.all_data?.meta?.total}
                 </span>
                 <div className="w-full sm:w-fit flex justify-between items-center ">
                   <span className="font-semibold flex sm:hidden">
                     <Filter />
-                    Filter
+                    {translation[lang]?.filter}
                   </span>
                   <Select
                     className="border border-gray-50 rounded-sm"
                     // label="Your favorite framework/library"
                     value={value}
                     onChange={setValue}
-                    placeholder="Saylanmadyk"
+                    placeholder={translation[lang]?.default}
                     data={[
-                      { value: "default", label: "По умолчанию" },
-                      { value: "asc1", label: "По цене убывания" },
-                      { value: "desc1", label: "По цене возрастания" },
-                      { value: "asc2", label: "По дате убывания" },
-                      { value: "desc2", label: "По дате возрастания" },
+                      { value: "default", label: translation[lang]?.default },
+                      { value: "asc1", label: translation[lang]?.min_price },
+                      { value: "desc1", label: translation[lang]?.max_price },
+                      { value: "asc2", label: translation[lang]?.min_date },
+                      { value: "desc2", label: translation[lang]?.max_date },
                     ]}
                   />
                 </div>

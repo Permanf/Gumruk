@@ -24,6 +24,9 @@ import SkeletonsSide from "./SkeletonsSide";
 import { RangePrice } from "./RangePrice";
 import { useRouter } from "next/router";
 import { useWindowScroll } from "@mantine/hooks";
+import { useSelector } from "react-redux";
+import { getlang } from "../../store/selectors/auth";
+import { translation } from "./translation";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -66,6 +69,7 @@ const useStyles = createStyles((theme) => ({
 
 export function Sidebar({ state, setState, query }) {
   // console.log(state.sidebar_data.categories, "-side");
+  const lang = useSelector(getlang);
   const { width } = useViewportSize();
   const [scroll, scrollTo] = useWindowScroll();
   const router = useRouter();
@@ -98,7 +102,9 @@ export function Sidebar({ state, setState, query }) {
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">
-          <h1 className="text-xl font-semibold">Все категории</h1>
+          <h1 className="text-xl font-semibold">
+            {translation[lang]?.all_category}
+          </h1>
         </Group>
       </Navbar.Section>
 
@@ -109,7 +115,9 @@ export function Sidebar({ state, setState, query }) {
           <div className={`${classes.linksInner}`}>{links}</div>
         )}
       </Navbar.Section>
-      <h1 className="text-xl font-semibold my-3 pl-4">Регионы</h1>
+      <h1 className="text-xl font-semibold my-3 pl-4">
+        {translation[lang]?.region}
+      </h1>
       <hr />
       {state.sidebar_loading ? (
         <SkeletonsSide />
@@ -143,7 +151,13 @@ export function Sidebar({ state, setState, query }) {
                   query?.locations?.includes(location?.id) ? true : false
                 }
                 key={location?.id}
-                label={location?.title?.ru}
+                label={
+                  lang == "English"
+                    ? location?.title?.en
+                    : lang == "Turkmen"
+                    ? location?.title?.tm
+                    : location?.title?.ru
+                }
                 className="my-5"
               />
             );
@@ -151,19 +165,13 @@ export function Sidebar({ state, setState, query }) {
         </div>
       )}
 
-      <h1 className="text-xl font-semibold my-3 pl-4">Search</h1>
+      <h1 className="text-xl font-semibold my-3 pl-4">
+        {translation[lang]?.search}
+      </h1>
       <hr className="mb-6" />
       <div className="my-5">
         <RangePrice state={state} setState={setState} query={query} />
       </div>
-      {/* <div className="mt-4 px-4 flex  items-center">
-        <Input placeholder="min" className="my-5 w-24 " />
-        <span className="mx-2">-</span>
-        <Input placeholder="max" className="my-5 w-24" />
-        <Button className="bg-blue-600 ml-3">
-          <IconSearch size={15} />
-        </Button>
-      </div> */}
     </Navbar>
   );
 }

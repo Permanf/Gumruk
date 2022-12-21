@@ -54,7 +54,7 @@ axiosInstance.interceptors.response.use(
 const api = {
   getApi: async ({ url, token, withCredentials, contentType, lang }) => {
     // console.log(contentType);
-    console.log(lang, "get lang");
+    // console.log(lang, "get lang");
     const config = {
       headers: {
         "Content-Type": contentType ? contentType : "application/json",
