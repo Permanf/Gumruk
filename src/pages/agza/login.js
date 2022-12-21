@@ -21,6 +21,7 @@ import { SetCookie } from "../../utils/cookie";
 import { loginSuccess } from "../../store/actions/auth";
 import { useRouter } from "next/router";
 import { getlang } from "../../store/selectors/auth";
+import { translation } from "../../components/Agza/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -44,18 +45,19 @@ const Login = () => {
     loading: false,
     error: {},
   });
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { token } = useSelector((state) => state.auth);
+  const lang = useSelector(getlang);
   const {
     control,
     handleSubmit,
     formState: { errors },
     setError,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema(lang)),
   });
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { token } = useSelector((state) => state.auth);
-  const lang = useSelector(getlang);
+
   // console.log(lang);
   // console.log(token);
   useEffect(() => {
@@ -97,15 +99,21 @@ const Login = () => {
     <Layout title="Login" className="bg-gray-100">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container size={420} py={60}>
-          <Title align="center">Личный кабинет</Title>
+          <Title align="center">{translation[lang]?.personal_account}</Title>
           <Text color="dimmed" size="sm" align="center" mt={5}>
-            Для входа в кабинет, пожалуйста, авторизуйтесь
+            {translation[lang]?.please}
           </Text>
 
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
             {state.error?.ru?.length ? (
               <div className="bg-red-100 p-2 py-3 mb-4 rounded-md flex justify-center transition-all ease-out duration-1000">
-                <span className="text-red-500 text-sm">{state.error.ru}</span>
+                <span className="text-red-500 text-sm">
+                  {lang == "English"
+                    ? state?.error?.en
+                    : lang == "Turkmen"
+                    ? state?.error?.tm
+                    : state?.error?.ru}
+                </span>
               </div>
             ) : null}
 
@@ -120,8 +128,8 @@ const Login = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Телефон"
-                    placeholder="Телефон"
+                    label={translation[lang]?.phone}
+                    placeholder={translation[lang]?.phone_last}
                     type="tel"
                     icon={
                       <p
@@ -147,8 +155,8 @@ const Login = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Password"
-                    placeholder="Your password"
+                    label={translation[lang]?.password}
+                    placeholder={translation[lang]?.password}
                     icon={<IconLock size={16} />}
                     mt="md"
                     error={errors?.password?.message}
@@ -164,12 +172,12 @@ const Login = () => {
               mt="xl"
               loading={state.loading}
             >
-              Войти в систему
+              {translation[lang]?.log_in}
             </Button>
             <Group position="center" mt="md" className="flex flex-col">
               {/* Do not have an account yet?{" "} */}
               <Anchor href="/agza/registration" size="sm">
-                Регистрация
+                {translation[lang]?.registration}
               </Anchor>
 
               <Anchor
@@ -177,7 +185,7 @@ const Login = () => {
                 // onClick={(event) => event.preventDefault()}
                 size="sm"
               >
-                Забыли пароль?
+                {translation[lang]?.forgot}
               </Anchor>
             </Group>
           </Paper>
@@ -187,23 +195,19 @@ const Login = () => {
   );
 };
 
-const schema = Yup.object().shape({
-  // email: Yup.string()
-  //   .min(5, "Минимум 5 значений")
-  //   .max(255, "Максимум 255 значений")
-  //   .required("E-mail address yazmaly")
-  //   .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "E-mail address bolmaly"),
-  phone: Yup.string()
-    .required("Telefon nomer bolmaly")
-    .min(8, "minimum 8 simbol bolmaly")
-    .max(8, "mixsimum 8 simbol bolmaly")
-    .matches(
-      /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
-      "Dine san bolmaly!"
-    ),
-  password: Yup.string()
-    .min(5, "Минимум 5 значений")
-    .max(50, "Максимум 50 значений")
-    .required("Пароль обязателен"),
-});
+const schema = (lang) =>
+  Yup.object().shape({
+    phone: Yup.string()
+      .required(translation[lang]?.required_phone)
+      .min(8, translation[lang]?.min_phone)
+      .max(8, translation[lang]?.max_phone)
+      .matches(
+        /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
+        translation[lang]?.only_number
+      ),
+    password: Yup.string()
+      .min(5, translation[lang]?.min_password)
+      .max(50, translation[lang]?.max_password)
+      .required(translation[lang]?.required_password),
+  });
 export default Login;

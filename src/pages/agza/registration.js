@@ -25,6 +25,8 @@ import { SetCookie } from "../../utils/cookie";
 import { loginSuccess } from "../../store/actions/auth";
 import { useRouter } from "next/router";
 import { showNotification } from "@mantine/notifications";
+import { translation } from "../../components/Agza/translation";
+import { getlang } from "../../store/selectors/auth";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -42,6 +44,7 @@ const Register = () => {
   const [state, setState] = useReducer(reducer, {
     loading: false,
   });
+  const lang = useSelector(getlang);
   const { width } = useViewportSize();
   const [legal, setLegal] = useState("fiziki");
   const dispatch = useDispatch();
@@ -136,7 +139,7 @@ const Register = () => {
       // console.log("den dal");
       showNotification({
         color: "red",
-        title: "Açar sözüňiz den däl!",
+        title: translation[lang]?.not_password,
         // message: "",
       });
     }
@@ -155,9 +158,9 @@ const Register = () => {
     <Layout title="Registration" className="bg-gray-100">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container size={820} py={60} className="transition-all duration-300">
-          <Title align="center">Регистрация</Title>
+          <Title align="center">{translation[lang]?.registration}</Title>
           <Text color="dimmed" size="sm" align="center" mt={5}>
-            Для входа в кабинет, пожалуйста, зарегистрируйтесь
+            {translation[lang]?.please_registration}
           </Text>
 
           <Paper
@@ -183,8 +186,16 @@ const Register = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label={legal == "fiziki" ? "Имя" : "Edara"}
-                      placeholder={legal == "fiziki" ? "Имя" : "Edaranyn ady"}
+                      label={
+                        legal == "fiziki"
+                          ? translation[lang]?.name
+                          : translation[lang]?.company_name
+                      }
+                      placeholder={
+                        legal == "fiziki"
+                          ? translation[lang]?.name
+                          : translation[lang]?.company_name
+                      }
                       error={errors?.first_name?.message}
                     />
                   );
@@ -203,8 +214,8 @@ const Register = () => {
                           onBlur={onBlur}
                           value={value}
                           ref={ref}
-                          label="Фамилия"
-                          placeholder="Фамилия"
+                          label={translation[lang]?.last_name}
+                          placeholder={translation[lang]?.last_name}
                           error={errors?.last_name?.message}
                         />
                       );
@@ -221,8 +232,8 @@ const Register = () => {
                           onBlur={onBlur}
                           value={value}
                           ref={ref}
-                          label="Отчество"
-                          placeholder="Отчество"
+                          label={translation[lang]?.fathers_name}
+                          placeholder={translation[lang]?.fathers_name}
                           error={errors?.fathers_name?.message}
                         />
                       );
@@ -241,8 +252,8 @@ const Register = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Email"
-                      placeholder="you@something.dev"
+                      label={translation[lang]?.email}
+                      placeholder="some@someone.dev"
                       icon={<IconMail size={16} />}
                       error={errors?.email?.message}
                     />
@@ -260,8 +271,8 @@ const Register = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Телефон"
-                      placeholder="Телефон"
+                      label={translation[lang]?.phone}
+                      placeholder={translation[lang]?.phone_last}
                       type="tel"
                       icon={
                         <p
@@ -289,8 +300,8 @@ const Register = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Password"
-                      placeholder="Your password"
+                      label={translation[lang]?.password}
+                      placeholder={translation[lang]?.password}
                       icon={<IconLock size={16} />}
                       error={errors?.password?.message}
                     />
@@ -307,8 +318,8 @@ const Register = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Password confirmation"
-                      placeholder="Repeat password"
+                      label={translation[lang]?.repeat_password}
+                      placeholder={translation[lang]?.repeat_password}
                       icon={<IconLock size={16} />}
                       error={errors?.password_confirmation?.message}
                     />
@@ -323,37 +334,39 @@ const Register = () => {
                   loading={state.loading}
                   className="bg-blue-600 mr-4 w-full sm:w-56"
                 >
-                  Создать аккаунт
+                  {translation[lang]?.create_account}
                 </Button>
                 <Text color="dimmed" size="sm" className="mt-4 sm:mt-0">
-                  Есть аккаунт?
+                  {translation[lang]?.have_account}
+
                   <Anchor
                     href="login"
                     size="sm"
                     // onClick={(event) => event.preventDefault()}
                   >
-                    Войти!
+                    {translation[lang]?.log_in}
                   </Anchor>
                 </Text>
               </div>
               <div>
                 <Text color="dimmed" size="sm">
-                  Нажимая Создать аккаунт, вы даете согласие на обработку данных
-                  в соответствии с
+                  {translation[lang]?.some_text1}
+
                   <Anchor
                     href="#"
                     size="sm"
                     // onClick={(event) => event.preventDefault()}
                   >
-                    Политикой обработки информации
+                    {translation[lang]?.some_text2}
                   </Anchor>
-                  и принимаете
+                  {translation[lang]?.some_text3}
+
                   <Anchor
                     href="#"
                     size="sm"
                     // onClick={(event) => event.preventDefault()}
                   >
-                    Правила оказания услуг
+                    {translation[lang]?.some_text4}
                   </Anchor>
                 </Text>
               </div>
