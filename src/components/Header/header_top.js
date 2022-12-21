@@ -14,7 +14,7 @@ const HeaderTop = () => {
   const { width } = useViewportSize();
 
   return (
-    <div className="w-full flex justify-center bg-blue-50 sticky top-0 z-50">
+    <div className="w-full flex justify-center bg-blue-50">
       <div className="container_out flex justify-between items-center py-2 text-sm">
         <div>
           <span>{translation[lang]?.date}:</span>
