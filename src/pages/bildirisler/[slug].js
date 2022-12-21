@@ -33,19 +33,6 @@ const NoticeSlug = () => {
     data: {},
   });
   const router = useRouter();
-
-  const data = {
-    id: 0,
-    title: "Yuk mashyn",
-    description:
-      "hello hello hello hello hello hellohello hello hello hello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hellohello hello hello hello hello hello hello hello hellohello hello hello",
-    phone: "+99361 87654321",
-    email: "hello@gmail.com",
-    created_at: "25.10.2022",
-    eye: 65,
-    image: image1,
-    price: 34359,
-  };
   const dispatch = useDispatch();
   const lang = useSelector(getlang);
   useEffect(() => {

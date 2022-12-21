@@ -26,6 +26,7 @@ import {
   announcementImageIds,
   setImageProgress,
 } from "../../store/actions/data";
+import { announcement_create } from "../../components/Notice/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -99,7 +100,7 @@ const NoticeAdd = () => {
     dispatch(
       fetchData({
         url: `user/announcement/create-select`,
-        lang: lang == "English" ? "en" : lang == "Turkmen" ? "tm" : "ru",
+        lang: lang,
         action: (response) => {
           // console.log(response, "--select");
           if (response?.data?.success) {
@@ -119,14 +120,24 @@ const NoticeAdd = () => {
   for (let i = 0; i < state.select_data?.categories?.length; i++) {
     categories.push({
       value: state.select_data?.categories[i]?.id,
-      label: state.select_data?.categories[i]?.name?.ru,
+      label:
+        lang == "English"
+          ? state.select_data?.categories[i]?.name?.en
+          : lang == "Turkmen"
+          ? state.select_data?.categories[i]?.name?.tm
+          : state.select_data?.categories[i]?.name?.ru,
     });
   }
   const locations = [];
   for (let i = 0; i < state.select_data?.locations?.length; i++) {
     locations.push({
       value: state.select_data?.locations[i]?.id,
-      label: state.select_data?.locations[i]?.title.ru,
+      label:
+        lang == "English"
+          ? state.select_data?.locations[i]?.title.en
+          : lang == "Turkmen"
+          ? state.select_data?.locations[i]?.title.tm
+          : state.select_data?.locations[i]?.title.ru,
     });
   }
   useEffect(() => {
@@ -191,7 +202,10 @@ const NoticeAdd = () => {
     <Layout title="Bildiriş goşmak">
       <form onSubmit={handleSubmit(onSubmit)} className="bg_gray">
         <Container size={820} py={60} className="transition-all duration-300">
-          <Title align="center">Добавить объявление</Title>
+          <Title align="center">
+            {" "}
+            {announcement_create[lang]?.add_announcement}
+          </Title>
           {/* <Text color="dimmed" size="sm" align="center" mt={5}>
             Для входа в кабинет, пожалуйста, зарегистрируйтесь
           </Text> */}
@@ -218,10 +232,10 @@ const NoticeAdd = () => {
                       value={value}
                       ref={ref}
                       className="text-sm"
-                      label="Category"
-                      placeholder="Pick one"
+                      label={announcement_create[lang]?.category}
+                      placeholder={announcement_create[lang]?.category}
                       searchable
-                      nothingFound="No options"
+                      nothingFound={announcement_create[lang]?.found}
                       data={categories}
                       error={errors?.category_id?.message}
                     />
@@ -240,8 +254,8 @@ const NoticeAdd = () => {
                         onBlur={onBlur}
                         value={value}
                         ref={ref}
-                        label="Capacity"
-                        placeholder={`${state.capacity} sany`}
+                        label={announcement_create[lang]?.capacity}
+                        placeholder={`${state.capacity}`}
                         type="text"
                         error={errors?.capacity?.message}
                       />
@@ -260,11 +274,11 @@ const NoticeAdd = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Location"
+                      label={announcement_create[lang]?.region}
                       className="text-sm"
-                      placeholder="Location"
+                      placeholder={announcement_create[lang]?.region}
                       searchable
-                      nothingFound="No options"
+                      nothingFound={announcement_create[lang]?.found}
                       // maxDropdownHeight={280}
                       data={locations}
                       error={errors?.location_id?.message}
@@ -283,8 +297,8 @@ const NoticeAdd = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Телефон"
-                      placeholder="Телефон"
+                      label={announcement_create[lang]?.phone}
+                      placeholder={announcement_create[lang]?.phone}
                       type="tel"
                       icon={
                         <p
@@ -311,8 +325,8 @@ const NoticeAdd = () => {
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Цена"
-                      placeholder="Цена"
+                      label={announcement_create[lang]?.price}
+                      placeholder={announcement_create[lang]?.price}
                       type="text"
                       error={errors?.price?.message}
                     />
@@ -331,8 +345,8 @@ const NoticeAdd = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Title"
-                    placeholder="Title"
+                    label={announcement_create[lang]?.title}
+                    placeholder={announcement_create[lang]?.title}
                     type="text"
                     error={errors?.title?.message}
                   />
@@ -349,17 +363,20 @@ const NoticeAdd = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    placeholder="Description..."
+                    placeholder={`${announcement_create[lang]?.description} ...`}
                     className={`text-sm my-5`}
                     autosize
                     minRows={6}
-                    label={"Description"}
+                    label={announcement_create[lang]?.description}
                     error={errors?.description?.message}
                   />
                 );
               }}
             />
-            <span className="my-3 text-sm">Image</span>
+            <span className="my-3 text-sm">
+              {" "}
+              {announcement_create[lang]?.image}
+            </span>
             <ImageUpload />
 
             <div className="w-full flex justify-center mt-5">
@@ -368,7 +385,7 @@ const NoticeAdd = () => {
                 loading={state.loading}
                 className="bg-blue-600 mr-4 w-full sm:w-56"
               >
-                Добавить
+                {announcement_create[lang]?.add}
               </Button>
             </div>
           </Paper>
