@@ -27,16 +27,24 @@ const StepForm = ({ active, setActive, state, setState }) => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   };
-  // console.log(data, "---step1");
+  console.log(state, "---step1");
+  const type_of_declaration = [];
+  const data_yurt_different = [];
   const data_yurt = [];
   const data_yurt_short = [];
   const data_inco_terms = [];
   const data_check_points = [];
+  for (let i = 0; i < state.data_declaration?.typeOfDeclaration?.length; i++) {
+    type_of_declaration.push({
+      value: state.data_declaration?.typeOfDeclaration[i]?.id,
+      label: state.data_declaration?.typeOfDeclaration[i]?.description?.tm,
+    });
+  }
 
   for (let i = 0; i < state.data_declaration?.countries?.length; i++) {
     data_yurt.push({
       value: state.data_declaration?.countries[i]?.id,
-      label: state.data_declaration?.countries[i]?.name?.ru,
+      label: state.data_declaration?.countries[i]?.name?.tm,
     });
     data_yurt_short.push({
       value: state.data_declaration?.countries[i]?.id,
@@ -52,13 +60,18 @@ const StepForm = ({ active, setActive, state, setState }) => {
   for (let i = 0; i < state.data_declaration?.check_points?.length; i++) {
     data_check_points.push({
       value: state.data_declaration?.check_points[i]?.id,
-      label: state.data_declaration?.check_points[i]?.name?.ru,
+      label: state.data_declaration?.check_points[i]?.name?.tm,
     });
   }
+  data_yurt_different = data_yurt;
+  data_yurt_different.push({
+    value: state.data_declaration?.different?.id,
+    label: state.data_declaration?.different?.name?.tm,
+  });
   const schema = () =>
     Yup.object().shape({
-      type_of_declaration: Yup.string().required(
-        "type_of_declaration hokman yazmaly"
+      type_declaration_id: Yup.string().required(
+        "type_declaration_id hokman yazmaly"
       ),
       exporter_name: Yup.string()
         .required("exporter_name hokman yazmaly")
@@ -116,7 +129,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
   useEffect(() => {
     if (state.update_2step?.id) {
       dispatch(setFileProgress({}));
-      setValue("type_of_declaration", state.update_2step.type_of_declaration);
+      setValue("type_declaration_id", state.update_2step.type_declaration_id);
       setValue("exporter_name", state.update_2step.exporter_name);
       setValue("exporter_code", state.update_2step.exporter_code);
       setValue("consignee_name", state.update_2step.consignee_name);
@@ -242,7 +255,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
         >
           <Controller
             control={control}
-            name="type_of_declaration"
+            name="type_declaration_id"
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <Select
@@ -252,12 +265,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   ref={ref}
                   label={"Deklarasiýanyň görnüşi"}
                   placeholder={"Type_of_declaration"}
-                  data={
-                    state?.data_declaration?.typeOfDeclaration
-                      ? state?.data_declaration?.typeOfDeclaration
-                      : []
-                  }
-                  error={errors?.type_of_declaration?.message}
+                  data={type_of_declaration}
+                  error={errors?.type_declaration_id?.message}
                 />
               );
             }}
@@ -450,7 +459,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   searchable
                   nothingFound="No options"
                   maxDropdownHeight={280}
-                  data={data_yurt}
+                  data={data_yurt_different}
                   error={errors?.country_of_origin_name?.message}
                 />
               );

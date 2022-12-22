@@ -15,13 +15,13 @@ export const links = (lang) => [
   },
   {
     id: 2,
-    name: "Деклораций",
+    name: "Деклорации",
     link: "/profile/tickets",
     icon: <FileUpload size={18} className="cursor-pointer" />,
   },
   {
     id: 3,
-    name: "История деклораций",
+    name: "История деклорации",
     link: "/profile/history",
     icon: <FileCheck size={18} className="cursor-pointer" />,
   },
