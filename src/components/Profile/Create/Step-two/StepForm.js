@@ -27,7 +27,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   };
-  console.log(state, "---step1");
+  // console.log(state, "---step1");
   const type_of_declaration = [];
   const data_yurt_different = [];
   const data_yurt = [];
@@ -37,7 +37,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
   for (let i = 0; i < state.data_declaration?.typeOfDeclaration?.length; i++) {
     type_of_declaration.push({
       value: state.data_declaration?.typeOfDeclaration[i]?.id,
-      label: state.data_declaration?.typeOfDeclaration[i]?.description?.tm,
+      label: `${state.data_declaration?.typeOfDeclaration[i]?.code} | ${state.data_declaration?.typeOfDeclaration[i]?.name?.tm} | ${state.data_declaration?.typeOfDeclaration[i]?.description?.tm}`,
     });
   }
 
@@ -63,11 +63,11 @@ const StepForm = ({ active, setActive, state, setState }) => {
       label: state.data_declaration?.check_points[i]?.name?.tm,
     });
   }
-  data_yurt_different = data_yurt;
   data_yurt_different.push({
     value: state.data_declaration?.different?.id,
     label: state.data_declaration?.different?.name?.tm,
   });
+  data_yurt_different = data_yurt_different.concat(data_yurt);
   const schema = () =>
     Yup.object().shape({
       type_declaration_id: Yup.string().required(
@@ -201,7 +201,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
       images_id: ids ? ids : [],
       id: state.update_2step.id,
     };
-    console.log(data, "2 step data");
+    // console.log(data, "2 step data");
     setState({ type: "SET_LOADING", payload: true });
     dispatch(
       post({
@@ -263,7 +263,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label={"Deklarasiýanyň görnüşi"}
+                  label={"Deklarasiýanyň görnüşi (1-nji öýjük)"}
                   placeholder={"Type_of_declaration"}
                   data={type_of_declaration}
                   error={errors?.type_declaration_id?.message}
@@ -282,7 +282,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Iberiji/Export ediji ady"
+                  label="Iberiji/Export ediji ady (2-nji öýjük)"
                   placeholder="Iberiji/Export ediji ady"
                   error={errors?.exporter_name?.message}
                 />
@@ -317,7 +317,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Alyjy ady"
+                  label="Alyjy ady (8-nji öýjük)"
                   placeholder="Alyjy ady"
                   error={errors?.consignee_name?.message}
                 />
@@ -352,7 +352,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Maliye taydan duzgunleshdirmage jogapkar shahs ady"
+                  label="Maliye taydan duzgunleshdirmage jogapkar shahs ady (9-nji öýjük)"
                   placeholder="Maliye taydan duzgunleshdirmage jogapkar shahs ady"
                   error={errors?.financial_name?.message}
                 />
@@ -387,7 +387,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Sowda edyan"
+                  label="Sowda edyan (11-nji öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -409,7 +409,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Iberish yurdun ady"
+                  label="Iberish yurdun ady (15-nji öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -431,7 +431,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Barmaly yurdun ady"
+                  label="Barmaly yurdun ady (10-njy öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -454,7 +454,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Gelip chykan yurdy"
+                  label="Gelip chykan yurdy (16-nji öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -475,7 +475,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Bellige alnan yurdyn mashyn nomeri"
+                  label="Bellige alnan yurdyn mashyn nomeri (18-nji öýjük)"
                   placeholder="departure_arrival_information_identity"
                   error={
                     errors?.departure_arrival_information_identity?.message
@@ -495,7 +495,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Bellige alnan yurdyn kody"
+                  label="Bellige alnan yurdyn kody (21-nji öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -520,7 +520,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Serhetde bellige alan yurt"
+                  label="Serhetde bellige alan yurt (25-nji öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -558,7 +558,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Ibermegin shertleri"
+                  label="Ibermegin shertleri (20-nji öýjük)"
                   placeholder="Delivery_terms_place"
                   error={errors?.delivery_terms_place?.message}
                 />
@@ -576,7 +576,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Ibermegin shertlerin kody"
+                  label="Ibermegin shertlerin kody "
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -620,7 +620,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Girish/chykysh erdarasy ady"
+                  label="Girish/chykysh erdarasy ady (29-njy öýjük)"
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
