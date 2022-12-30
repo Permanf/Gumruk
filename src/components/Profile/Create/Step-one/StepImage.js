@@ -13,6 +13,7 @@ import {
 } from "../../../../store/actions/data";
 import {
   getImageIds,
+  getlang,
   getToken,
   getUpload,
 } from "../../../../store/selectors/auth";
@@ -23,10 +24,12 @@ import { fetchData } from "../../../../store/middlewares";
 import Lottie from "lottie-react";
 import loader from "../../../../assets/Lottiefiles/loader.json";
 import ImageOld from "./ImageOld";
+import { declaration } from "../../translation";
 
 const StepImage = ({ active, setActive, state, setState }) => {
   const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
+  const lang = useSelector(getlang);
   const ids = useSelector(getImageIds);
   const nextStep = () => {
     if (ids.length > 0 || state.update_data?.id > 0) {
@@ -35,7 +38,7 @@ const StepImage = ({ active, setActive, state, setState }) => {
     } else {
       showNotification({
         color: "red",
-        title: "Surat hokman bolmaly!",
+        title: declaration[lang]?.error_image,
         icon: <IconX />,
         // message: "",
       });
@@ -204,14 +207,14 @@ const StepImage = ({ active, setActive, state, setState }) => {
             onClick={prevStep}
             className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
           >
-            Back
+            {declaration[lang]?.back}
           </div>
           <Button
             onClick={nextStep}
             type="submit"
             className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
           >
-            Next step
+            {declaration[lang]?.next}
           </Button>
         </>
       </Group>

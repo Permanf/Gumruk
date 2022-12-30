@@ -13,28 +13,13 @@ import { Logout1 } from "../../store/middlewares/auth";
 import { links } from "./Link";
 import { getlang } from "../../store/selectors/auth";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "SET_ACTIVE":
-      return {
-        ...state,
-        active: action.payload,
-      };
-    default:
-      return state;
-  }
-}
-
 const LayoutProfile = ({ children, title }) => {
-  const [state, setState] = useReducer(reducer, {
-    active: 1,
-  });
   const { width } = useViewportSize();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const lang = useSelector(getlang);
-  const { token } = useSelector((state) => state.auth);
+  // const { token } = useSelector((state) => state.auth);
   // console.log(router);
   // console.log(token);
   // useEffect(() => {
@@ -60,7 +45,7 @@ const LayoutProfile = ({ children, title }) => {
               >
                 {links(lang)?.map((item) => {
                   return item.id != 5 ? (
-                    <Link href={`${item?.link}`} key={item.id}>
+                    <Link href={`${item?.link}`} key={item?.id}>
                       <a
                         className={`font-normal py-3 text-base flex items-center px-5 mx-1 rounded-lg my-1 hover:text-blue-500`}
                       >
@@ -77,7 +62,7 @@ const LayoutProfile = ({ children, title }) => {
                       </a>
                     </Link>
                   ) : (
-                    <>
+                    <div key={item?.id}>
                       <hr className="my-5" />
                       <div
                         onClick={(e) => {
@@ -94,7 +79,7 @@ const LayoutProfile = ({ children, title }) => {
                           {item?.name}
                         </span>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
               </div>
@@ -151,7 +136,7 @@ const LayoutProfile = ({ children, title }) => {
                   </a>
                 </Link>
               ) : (
-                <>
+                <div key={item?.id}>
                   <hr className="my-5" />
                   <div
                     onClick={(e) => {
@@ -164,7 +149,7 @@ const LayoutProfile = ({ children, title }) => {
                     {item?.icon}
                     <span>{item?.name}</span>
                   </div>
-                </>
+                </div>
               );
             })}
           </div>

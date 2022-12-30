@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData, post } from "../../../../store/middlewares/index";
 import { showNotification } from "@mantine/notifications";
-import { getToken } from "../../../../store/selectors/auth";
+import { getlang, getToken } from "../../../../store/selectors/auth";
 import { IconX, IconCheck, IconHash, IconLoader } from "@tabler/icons";
 import {
   TextInput,
@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import loader from "../../../../assets/Lottiefiles/loader.json";
 import { useDebouncedValue } from "@mantine/hooks";
+import { declaration } from "../../translation";
 
 const ModalForm = ({
   data_yurt,
@@ -32,6 +33,7 @@ const ModalForm = ({
   // console.log(state);
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const lang = useSelector(getlang);
   // const [searchValue, onSearchChange] = useState("");
   const [valueName, setValueName] = useState("");
   const [searchValue] = useDebouncedValue(valueName, 500);
@@ -174,8 +176,8 @@ const ModalForm = ({
                   showNotification({
                     color: "green",
                     title: state.update_item?.id
-                      ? "Siz üstünlikli üýtgetdiňiz!"
-                      : "Siz üstünlikli haryt goşdynyz!",
+                      ? declaration[lang]?.update_declaration
+                      : declaration[lang]?.added_product,
                     icon: <IconCheck />,
                   });
 
@@ -184,7 +186,7 @@ const ModalForm = ({
                   // console.log(response.data);
                   showNotification({
                     color: "red",
-                    title: "Üstünlikli bolmady!",
+                    title: declaration[lang]?.not_success,
                     // message: "",
                     icon: <IconX />,
                     autoClose: 5000,
@@ -227,7 +229,7 @@ const ModalForm = ({
     } else {
       setError("brutto_weight", {
         type: "manual",
-        message: "Harydyň netto agramyndan uly bolmaly",
+        message: declaration[lang]?.error_brutto,
       });
     }
   };
@@ -254,7 +256,7 @@ const ModalForm = ({
         overlayBlur={3}
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Product create!"
+        title={declaration[lang]?.create_product}
       >
         {/* Modal content */}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -268,7 +270,7 @@ const ModalForm = ({
               <Autocomplete
                 value={valueName}
                 onChange={setValueName}
-                label="Name"
+                label={declaration[lang]?.product_name}
                 placeholder="Search..."
                 data={state.search_products}
                 nothingFound="No data"
@@ -296,8 +298,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Harydyň kody"
-                      placeholder="code"
+                      label={declaration[lang]?.product_code}
+                      placeholder={declaration[lang]?.product_code}
                       error={errors?.code?.message}
                     />
                   );
@@ -316,7 +318,7 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label={"Harydyň gelip çykan ýurdy"}
+                      label={declaration[lang]?.origin_country}
                       placeholder="Select"
                       data={data_yurt}
                       searchable
@@ -337,8 +339,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Harydyň brutto agramy"
-                      placeholder="brutto_weight"
+                      label={declaration[lang]?.brutto}
+                      placeholder={declaration[lang]?.brutto}
                       error={errors?.brutto_weight?.message}
                     />
                   );
@@ -357,8 +359,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label="Harydyň netto agramy"
-                      placeholder="netto_weight"
+                      label={declaration[lang]?.netto}
+                      placeholder={declaration[lang]?.netto}
                       error={errors?.netto_weight?.message}
                     />
                   );
@@ -378,8 +380,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label={"Harydyň möçberi"}
-                      placeholder="quantity"
+                      label={declaration[lang]?.valume}
+                      placeholder={declaration[lang]?.valume}
                       error={errors?.uom_quantity?.message}
                     />
                   );
@@ -399,8 +401,8 @@ const ModalForm = ({
                       onBlur={onBlur}
                       value={value}
                       ref={ref}
-                      label={"Harydyň bahasy"}
-                      placeholder="price"
+                      label={declaration[lang]?.price}
+                      placeholder={declaration[lang]?.price}
                       error={errors?.uom_price?.message}
                     />
                   );
@@ -421,7 +423,7 @@ const ModalForm = ({
                       ref={ref}
                       searchable
                       nothingFound="No options"
-                      label={"Harydyň ölçeg birligi"}
+                      label={declaration[lang]?.unit_measurement}
                       placeholder="Select"
                       data={data_size}
                       error={errors?.uom_name?.message}
@@ -437,7 +439,9 @@ const ModalForm = ({
               loading={state.loading}
               className="bg-blue-500"
             >
-              {state.update_item?.id ? "Update" : "Save"}
+              {state.update_item?.id
+                ? declaration[lang]?.update
+                : declaration[lang]?.save}
             </Button>
           </Center>
         </form>

@@ -5,6 +5,8 @@ import { fetchData } from "../../store/middlewares";
 import StepImage from "./Create/Step-one/StepImage";
 import StepForm from "./Create/Step-two/StepForm";
 import StepAdd from "./Create/Step-third/StepAdd";
+import { declaration } from "./translation";
+import { getlang } from "../../store/selectors/auth";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -128,18 +130,18 @@ function Step({ update_id }) {
   });
   const [active, setActive] = useState(0);
   const dispatch = useDispatch();
-  const { lang, token } = useSelector((state) => state.auth);
-  // console.log(token);
+  const { token } = useSelector((state) => state.auth);
+  const lang = useSelector(getlang);
   useEffect(() => {
     if (token) {
       dispatch(
         fetchData({
           token,
           url: `user/declaration/create`,
+          lang: lang,
           action: (response) => {
-            // console.log(response.data);
+            console.log(response.data);
             if (response.success) {
-              // console.log(response.data.data);
               setState({
                 type: "SET_DATA_DECLARATION",
                 payload: response?.data?.data,
@@ -159,10 +161,10 @@ function Step({ update_id }) {
           fetchData({
             token,
             url: `user/ticket/${update_id}/show`,
+            lang: lang,
             action: (response) => {
               // console.log(response.data);
               if (response.success) {
-                // console.log(response.data.data.declaration, "--show");
                 setState({
                   type: "SET_UPDATE_DATA",
                   payload: response?.data?.data,
@@ -183,7 +185,7 @@ function Step({ update_id }) {
         );
       }
     } // eslint-disable-next-line
-  }, [token, update_id]);
+  }, [token, lang, update_id]);
   return (
     <>
       {state.update_data?.notice?.message?.length > 0 ? (
@@ -200,47 +202,43 @@ function Step({ update_id }) {
         className="px-4"
       >
         <Stepper.Step
-          label="First step"
-          description="Image upload"
+          label={declaration[lang]?.first_step}
+          description={declaration[lang]?.image_upload}
           allowStepSelect={active > 0}
-          // loading={true}
         >
-          <h1 className="font-semibold my-5">Step 1 content: Image upload</h1>
+          <h1 className="font-semibold my-5">
+            {declaration[lang]?.first_step}: {declaration[lang]?.image_upload}
+          </h1>
           <StepImage
             active={active}
             setActive={setActive}
-            // update_data={state.update_data}
             state={state}
             setState={setState}
           />
         </Stepper.Step>
         <Stepper.Step
-          label="Second step"
-          description=" Declaration form"
+          label={declaration[lang]?.second_step}
+          description={declaration[lang]?.declaration_form}
           allowStepSelect={active > 1}
-          // color="red"
-          // completedIcon={<IconCircleX />}
         >
           <h1 className="font-semibold my-5">
-            Step 2 content: Declaration form
+            {declaration[lang]?.second_step}:{" "}
+            {declaration[lang]?.declaration_form}
           </h1>
           <StepForm
-            // data={state.data_declaration}
             active={active}
             setActive={setActive}
             state={state}
             setState={setState}
-            // update_data={state.update_data}
           />
         </Stepper.Step>
         <Stepper.Step
-          label="Final step"
-          description="Create products"
+          label={declaration[lang]?.third_step}
+          description={declaration[lang]?.create_product}
           allowStepSelect={active > 2}
-          // loading
         >
           <h1 className="font-semibold my-5">
-            Step 3 content: Create products
+            {declaration[lang]?.third_step}: {declaration[lang]?.create_product}
           </h1>
           <StepAdd
             active={active}

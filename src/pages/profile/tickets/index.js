@@ -11,10 +11,11 @@ import {
 } from "../../../store/actions/data";
 import { useEffect, useReducer } from "react";
 import { fetchData } from "../../../store/middlewares";
-import { getToken } from "../../../store/selectors/auth";
+import { getlang, getToken } from "../../../store/selectors/auth";
 import Lottie from "lottie-react";
 import notFound from "../../../assets/Lottiefiles/not-found.json";
 import loader from "../../../assets/Lottiefiles/loader.json";
+import { declaration } from "../../../components/Profile/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -43,6 +44,7 @@ const Tickets = () => {
   dispatch(imageIds(null));
   dispatch(setDeclarationId(null));
   const token = useSelector(getToken);
+  const lang = useSelector(getlang);
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
     if (token) {
@@ -71,11 +73,13 @@ const Tickets = () => {
     <LayoutProfile title="Biletler">
       <div className="p-7">
         <div className="flex justify-between  items-center mb-5">
-          <h1 className="my-3 font-semibold text-xl">Ticket list</h1>
+          <h1 className="my-3 font-semibold text-xl">
+            {declaration[lang]?.declaration}
+          </h1>
           <Link href={"/profile/tickets/create"}>
             <Button className="bg-blue-500">
               <IconPlus size={14} className="mr-2" />
-              Declaration create
+              {declaration[lang]?.declaration_create}
             </Button>
           </Link>
         </div>

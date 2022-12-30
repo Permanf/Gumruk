@@ -152,11 +152,12 @@ export function Sidebar({ state, setState, query }) {
                 }
                 key={location?.id}
                 label={
-                  lang == "English"
-                    ? location?.title?.en
-                    : lang == "Turkmen"
-                    ? location?.title?.tm
-                    : location?.title?.ru
+                  location?.title
+                  // lang == "English"
+                  //   ? location?.title?.en
+                  //   : lang == "Turkmen"
+                  //   ? location?.title?.tm
+                  //   : location?.title?.ru
                 }
                 className="my-5"
               />

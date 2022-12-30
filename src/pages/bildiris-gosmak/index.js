@@ -102,7 +102,7 @@ const NoticeAdd = () => {
         url: `user/announcement/create-select`,
         lang: lang,
         action: (response) => {
-          // console.log(response, "--select");
+          console.log(response, "--select");
           if (response?.data?.success) {
             setState({
               type: "SET_SELECT_DATA",
@@ -114,30 +114,20 @@ const NoticeAdd = () => {
         },
       })
     );
-  }, []);
+  }, [lang]);
 
   const categories = [];
   for (let i = 0; i < state.select_data?.categories?.length; i++) {
     categories.push({
       value: state.select_data?.categories[i]?.id,
-      label:
-        lang == "English"
-          ? state.select_data?.categories[i]?.name?.en
-          : lang == "Turkmen"
-          ? state.select_data?.categories[i]?.name?.tm
-          : state.select_data?.categories[i]?.name?.ru,
+      label: state.select_data?.categories[i]?.name,
     });
   }
   const locations = [];
   for (let i = 0; i < state.select_data?.locations?.length; i++) {
     locations.push({
       value: state.select_data?.locations[i]?.id,
-      label:
-        lang == "English"
-          ? state.select_data?.locations[i]?.title.en
-          : lang == "Turkmen"
-          ? state.select_data?.locations[i]?.title.tm
-          : state.select_data?.locations[i]?.title.ru,
+      label: state.select_data?.locations[i]?.title,
     });
   }
   useEffect(() => {

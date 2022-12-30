@@ -27,18 +27,24 @@ import {
   IconX,
   IconCheck,
 } from "@tabler/icons";
-import { getDeclarationId, getToken } from "../../../../store/selectors/auth";
+import {
+  getDeclarationId,
+  getlang,
+  getToken,
+} from "../../../../store/selectors/auth";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import notFound from "../../../../assets/Lottiefiles/not-found.json";
 import ModalForm from "./ModalForm";
+import { declaration } from "../../translation";
 
 function StepAdd({ active, setActive, state, setState }) {
   // console.log(state.products);
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const lang = useSelector(getlang);
   const get_declaration_id = useSelector(getDeclarationId);
   const router = useRouter();
 
@@ -62,15 +68,15 @@ function StepAdd({ active, setActive, state, setState }) {
   for (let i = 0; i < state.data_declaration?.unit?.length; i++) {
     data_size.push({
       value: state.data_declaration?.unit[i]?.id,
-      label: state.data_declaration?.unit[i]?.name?.ru,
+      label: state.data_declaration?.unit[i]?.name,
     });
   }
   const routeTickets = () => {
     if (state.products.length == 0) {
       showNotification({
         color: "red",
-        title: "Üstünlikli bolmady!",
-        message: "Iň bolmanda bir haryt bolmaly!",
+        title: declaration[lang]?.not_success,
+        message: declaration[lang]?.at_least,
         icon: <IconX />,
         autoClose: 5000,
       });
@@ -103,7 +109,7 @@ function StepAdd({ active, setActive, state, setState }) {
             // console.log(response?.data);
             showNotification({
               color: "green",
-              title: "Siz üstünlikli deklarasiýa goşdynyz!",
+              title: declaration[lang]?.success_declaration,
               icon: <IconCheck />,
             });
             router.push("/profile/tickets");
@@ -112,7 +118,7 @@ function StepAdd({ active, setActive, state, setState }) {
             // console.log(response.data);
             showNotification({
               color: "red",
-              title: "Üstünlikli bolmady!",
+              title: declaration[lang]?.not_success,
               // message: "",
               icon: <IconX />,
               autoClose: 5000,
@@ -124,11 +130,9 @@ function StepAdd({ active, setActive, state, setState }) {
   };
   const openDeleteModal = (id) =>
     openConfirmModal({
-      title: "Delete your product item",
+      title: declaration[lang]?.delete_title,
       centered: true,
-      children: (
-        <Text size="sm">Haryt elementiňizi pozmak isleýärsiňizmi?</Text>
-      ),
+      children: <Text size="sm">{declaration[lang]?.delete_question}</Text>,
       labels: { confirm: "Delete item", cancel: "Cancel" },
       confirmProps: { className: "bg-red-600", color: "red" },
       onCancel: () => console.log("Cancel"),
@@ -151,7 +155,7 @@ function StepAdd({ active, setActive, state, setState }) {
 
                   showNotification({
                     color: "green",
-                    title: "Haryt elementiňiz pozuldy!",
+                    title: declaration[lang]?.delete_item,
                     icon: <IconCheck />,
                   });
                   // console.log(response);
@@ -159,7 +163,7 @@ function StepAdd({ active, setActive, state, setState }) {
                   // console.log(response.data);
                   showNotification({
                     color: "red",
-                    title: "Üstünlikli bolmady!",
+                    title: declaration[lang]?.not_success,
                     // message: "",
                     icon: <IconX />,
                     autoClose: 5000,
@@ -215,7 +219,7 @@ function StepAdd({ active, setActive, state, setState }) {
                 });
               }}
             >
-              Update
+              {declaration[lang]?.update}
             </Menu.Item>
             <Menu.Item
               color="red"
@@ -229,7 +233,7 @@ function StepAdd({ active, setActive, state, setState }) {
                 }
               }}
             >
-              Delete
+              {declaration[lang]?.delete}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -256,7 +260,7 @@ function StepAdd({ active, setActive, state, setState }) {
       </Group>
       {state.products?.length == 0 ? (
         <div className="bg-red-100 w-full rounded-xl p-4">
-          <span className="text-red-500">Iň bolmanda bir haryt bolmaly!</span>
+          <span className="text-red-500">{declaration[lang]?.at_least}</span>
         </div>
       ) : null}
 
@@ -275,14 +279,16 @@ function StepAdd({ active, setActive, state, setState }) {
             <thead>
               <tr>
                 {/* <th>Id</th> */}
-                <th>Harydyn ady</th>
-                <th>Gelip cykan yurdy</th>
-                <th>Brutto</th>
-                <th>Netto</th>
-                <th>Olcheg birligi</th>
-                <th>Mochberi</th>
-                <th>Bahasy</th>
-                <th>Action</th>
+                <th>{declaration[lang]?.product_name}</th>
+                <th>{declaration[lang]?.origin_country}</th>
+                <th>{declaration[lang]?.brutto}</th>
+                <th>{declaration[lang]?.netto}</th>
+                <th>{declaration[lang]?.unit_measurement}</th>
+                <th>{declaration[lang]?.valume}</th>
+                <th>{declaration[lang]?.price}</th>
+                <th>
+                  <IconDotsVertical size={20} />
+                </th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>
@@ -291,7 +297,7 @@ function StepAdd({ active, setActive, state, setState }) {
       ) : (
         <div className="flex flex-col items-center my-10">
           <Lottie animationData={notFound} loop={true} className="h-52" />
-          <span>No data</span>
+          <span>нет данных</span>
         </div>
       )}
       <Group position="center" mt="xl" className="mt-10">
@@ -300,7 +306,7 @@ function StepAdd({ active, setActive, state, setState }) {
             onClick={prevStep}
             className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
           >
-            Back
+            {declaration[lang]?.back}
           </div>
           {state.update_id ? (
             <Button
@@ -309,7 +315,7 @@ function StepAdd({ active, setActive, state, setState }) {
               onClick={routeTickets}
               className="bg-blue-600 hover:bg-blue-500 hover:text-white rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
             >
-              Tassyklamak
+              {declaration[lang]?.confirmation}
             </Button>
           ) : (
             <Button
@@ -319,7 +325,7 @@ function StepAdd({ active, setActive, state, setState }) {
               loading={state.loading}
               className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
             >
-              Save
+              {declaration[lang]?.save}
             </Button>
           )}
         </>

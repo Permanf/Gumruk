@@ -15,9 +15,10 @@ import { useForm, Controller } from "react-hook-form";
 import { IconLock, IconMail, IconCalendar, IconUser } from "@tabler/icons";
 import { useEffect, useReducer, useState } from "react";
 import LayoutProfile from "../../components/Profile/Layout";
-import { getToken } from "../../store/selectors/auth";
+import { getlang, getToken } from "../../store/selectors/auth";
 import { showNotification } from "@mantine/notifications";
 import { userData } from "../../store/actions/auth";
+import { profile_translation } from "../../components/Profile/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -41,6 +42,7 @@ const Settings = () => {
   const router = useRouter();
   const { user } = useSelector((state) => state.auth);
   // console.log(user);
+  const lang = useSelector(getlang);
   const token = useSelector(getToken);
   // console.log(user);
   const schema = (user, tabs) =>
@@ -158,7 +160,7 @@ const Settings = () => {
               // console.log(response?.data?.data, "---error");
               setError("old_password", {
                 type: "manual",
-                message: "Öňki açar sözüňiz gabat gelmeyar",
+                message: profile_translation[lang]?.error_old_password,
               });
             }
           },
@@ -167,7 +169,7 @@ const Settings = () => {
     } else {
       setError("new_password_confirmation", {
         type: "manual",
-        message: "Taze açar sözüňiz gabat gelmeyar",
+        message: profile_translation[lang]?.error_new_password,
       });
     }
   };
@@ -187,7 +189,7 @@ const Settings = () => {
                 <Center>
                   <IconUser size={16} />
                   <Box ml={10} mt={2}>
-                    Şahsy maglumatlar
+                    {profile_translation[lang]?.personal_info}
                   </Box>
                 </Center>
               ),
@@ -198,7 +200,7 @@ const Settings = () => {
                 <Center>
                   <IconLock size={16} />
                   <Box ml={10} mt={2}>
-                    Açar sözi uytgetmek
+                    {profile_translation[lang]?.change_password}
                   </Box>
                 </Center>
               ),
@@ -207,7 +209,9 @@ const Settings = () => {
         />
         {tabs == "info" ? (
           <>
-            <h1 className="mb-5 text-lg font-semibold">Şahsy maglumatlar</h1>
+            <h1 className="mb-5 text-lg font-semibold">
+              {profile_translation[lang]?.personal_info}
+            </h1>
             <Controller
               control={control}
               name="first_name"
@@ -218,8 +222,8 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label={"Имя"}
-                    placeholder={"Имя"}
+                    label={profile_translation[lang]?.name}
+                    placeholder={profile_translation[lang]?.name}
                     error={errors?.first_name?.message}
                     className="my-2"
                   />
@@ -238,8 +242,8 @@ const Settings = () => {
                         onBlur={onBlur}
                         value={value}
                         ref={ref}
-                        label="Фамилия"
-                        placeholder="Фамилия"
+                        label={profile_translation[lang]?.last_name}
+                        placeholder={profile_translation[lang]?.last_name}
                         error={errors?.last_name?.message}
                         className="my-2"
                       />
@@ -257,8 +261,8 @@ const Settings = () => {
                         onBlur={onBlur}
                         value={value}
                         ref={ref}
-                        label="Отчество"
-                        placeholder="Отчество"
+                        label={profile_translation[lang]?.fathers_name}
+                        placeholder={profile_translation[lang]?.fathers_name}
                         error={errors?.fathers_name?.message}
                         className="my-2"
                       />
@@ -278,7 +282,7 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Email"
+                    label={profile_translation[lang]?.email}
                     placeholder="you@something.dev"
                     icon={<IconMail size={16} />}
                     error={errors?.email?.message}
@@ -298,8 +302,8 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Телефон"
-                    placeholder="Телефон"
+                    label={profile_translation[lang]?.phone}
+                    placeholder={profile_translation[lang]?.phone}
                     type="tel"
                     icon={
                       <p
@@ -319,7 +323,7 @@ const Settings = () => {
         ) : (
           <>
             <h1 className="mb-3 text-lg font-semibold my-5">
-              Açar sözi uytgetmek
+              {profile_translation[lang]?.change_password}
             </h1>
 
             <Controller
@@ -333,8 +337,8 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="Old Password"
-                    placeholder="Old password"
+                    label={profile_translation[lang]?.old_password}
+                    placeholder={profile_translation[lang]?.old_password}
                     icon={<IconLock size={16} />}
                     error={errors?.old_password?.message}
                   />
@@ -352,8 +356,8 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="New Password"
-                    placeholder="New password"
+                    label={profile_translation[lang]?.new_password}
+                    placeholder={profile_translation[lang]?.new_password}
                     icon={<IconLock size={16} />}
                     error={errors?.new_password?.message}
                   />
@@ -371,8 +375,8 @@ const Settings = () => {
                     onBlur={onBlur}
                     value={value}
                     ref={ref}
-                    label="New password corformation"
-                    placeholder="New password confirmation"
+                    label={profile_translation[lang]?.new_password_repeat}
+                    placeholder={profile_translation[lang]?.new_password_repeat}
                     icon={<IconLock size={16} />}
                     error={errors?.new_password_confirmation?.message}
                   />
@@ -388,7 +392,7 @@ const Settings = () => {
             loading={state.loading}
             className="bg-blue-600 mr-4 w-full sm:w-56 mt-5"
           >
-            Update
+            {profile_translation[lang]?.update}
           </Button>
         </Center>
       </form>

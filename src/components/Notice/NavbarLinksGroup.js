@@ -131,11 +131,7 @@ export function LinksGroup({ category, query }) {
                   : ""
               }`}
             >
-              {lang == "English"
-                ? category?.name?.en
-                : lang == "Turkmen"
-                ? category?.name?.tm
-                : category?.name?.ru}
+              {category?.name}
             </Box>
           </Box>
           {hasLinks && (

@@ -6,19 +6,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import { getImageIds, getToken } from "../../../../store/selectors/auth";
+import {
+  getImageIds,
+  getlang,
+  getToken,
+} from "../../../../store/selectors/auth";
 import {
   setDeclarationId,
   setFileProgress,
 } from "../../../../store/actions/data";
 import { showNotification } from "@mantine/notifications";
 import { IconX, IconCheck } from "@tabler/icons";
+import { declaration } from "../../translation";
 
 const StepForm = ({ active, setActive, state, setState }) => {
   const dispatch = useDispatch();
   const [scroll, scrollTo] = useWindowScroll();
   const ids = useSelector(getImageIds);
   const token = useSelector(getToken);
+  const lang = useSelector(getlang);
   if (ids.length == 0 && state.data_declaration?.id == "undefined") {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
@@ -27,7 +33,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   };
-  // console.log(state, "---step1");
+  console.log(token);
+  console.log(state.data_declaration, "---step1");
   const type_of_declaration = [];
   const data_yurt_different = [];
   const data_yurt = [];
@@ -37,14 +44,14 @@ const StepForm = ({ active, setActive, state, setState }) => {
   for (let i = 0; i < state.data_declaration?.typeOfDeclaration?.length; i++) {
     type_of_declaration.push({
       value: state.data_declaration?.typeOfDeclaration[i]?.id,
-      label: `${state.data_declaration?.typeOfDeclaration[i]?.code} | ${state.data_declaration?.typeOfDeclaration[i]?.name?.tm} | ${state.data_declaration?.typeOfDeclaration[i]?.description?.tm}`,
+      label: `${state.data_declaration?.typeOfDeclaration[i]?.code} - ${state.data_declaration?.typeOfDeclaration[i]?.name} - ${state.data_declaration?.typeOfDeclaration[i]?.description}`,
     });
   }
 
   for (let i = 0; i < state.data_declaration?.countries?.length; i++) {
     data_yurt.push({
       value: state.data_declaration?.countries[i]?.id,
-      label: state.data_declaration?.countries[i]?.name?.tm,
+      label: state.data_declaration?.countries[i]?.name,
     });
     data_yurt_short.push({
       value: state.data_declaration?.countries[i]?.id,
@@ -60,14 +67,17 @@ const StepForm = ({ active, setActive, state, setState }) => {
   for (let i = 0; i < state.data_declaration?.check_points?.length; i++) {
     data_check_points.push({
       value: state.data_declaration?.check_points[i]?.id,
-      label: state.data_declaration?.check_points[i]?.name?.tm,
+      label: state.data_declaration?.check_points[i]?.name,
     });
   }
-  data_yurt_different.push({
-    value: state.data_declaration?.different?.id,
-    label: state.data_declaration?.different?.name?.tm,
-  });
-  data_yurt_different = data_yurt_different.concat(data_yurt);
+  if (state.data_declaration?.different?.[0]?.id > 0) {
+    data_yurt_different.push({
+      value: state.data_declaration?.different?.[0]?.id,
+      label: state.data_declaration?.different?.[0]?.name,
+    });
+    data_yurt_different = data_yurt_different.concat(data_yurt);
+  }
+
   const schema = () =>
     Yup.object().shape({
       type_declaration_id: Yup.string().required(
@@ -263,8 +273,11 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label={"Deklarasiýanyň görnüşi (1-nji öýjük)"}
-                  placeholder={"Type_of_declaration"}
+                  searchable
+                  nothingFound="No options"
+                  maxDropdownHeight={280}
+                  label={declaration[lang]?.input1}
+                  placeholder={declaration[lang]?.input1}
                   data={type_of_declaration}
                   error={errors?.type_declaration_id?.message}
                 />
@@ -282,8 +295,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Iberiji/Export ediji ady (2-nji öýjük)"
-                  placeholder="Iberiji/Export ediji ady"
+                  label={declaration[lang]?.input2}
+                  placeholder={declaration[lang]?.input2}
                   error={errors?.exporter_name?.message}
                 />
               );
@@ -299,8 +312,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Iberiji/Export ediji kody"
-                  placeholder="Iberiji/Export ediji kody"
+                  label={declaration[lang]?.input3}
+                  placeholder={declaration[lang]?.input3}
                   error={errors?.exporter_code?.message}
                 />
               );
@@ -317,8 +330,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Alyjy ady (8-nji öýjük)"
-                  placeholder="Alyjy ady"
+                  label={declaration[lang]?.input4}
+                  placeholder={declaration[lang]?.input4}
                   error={errors?.consignee_name?.message}
                 />
               );
@@ -334,8 +347,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Alyjy kody"
-                  placeholder="Alyjy kody"
+                  label={declaration[lang]?.input5}
+                  placeholder={declaration[lang]?.input5}
                   error={errors?.consignee_code?.message}
                 />
               );
@@ -352,8 +365,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Maliye taydan duzgunleshdirmage jogapkar shahs ady (9-nji öýjük)"
-                  placeholder="Maliye taydan duzgunleshdirmage jogapkar shahs ady"
+                  label={declaration[lang]?.input6}
+                  placeholder={declaration[lang]?.input6}
                   error={errors?.financial_name?.message}
                 />
               );
@@ -369,8 +382,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Maliye taydan duzgunleshdirmage jogapkar shahs kody"
-                  placeholder="Maliye taydan duzgunleshdirmage jogapkar shahs kody"
+                  label={declaration[lang]?.input7}
+                  placeholder={declaration[lang]?.input7}
                   error={errors?.financial_code?.message}
                 />
               );
@@ -387,7 +400,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Sowda edyan (11-nji öýjük)"
+                  label={declaration[lang]?.input8}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -409,7 +422,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Iberish yurdun ady (15-nji öýjük)"
+                  label={declaration[lang]?.input9}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -431,7 +444,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Barmaly yurdun ady (10-njy öýjük)"
+                  label={declaration[lang]?.input10}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -454,7 +467,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Gelip chykan yurdy (16-nji öýjük)"
+                  label={declaration[lang]?.input11}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -475,8 +488,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Bellige alnan yurdyn mashyn nomeri (18-nji öýjük)"
-                  placeholder="departure_arrival_information_identity"
+                  label={declaration[lang]?.input12}
+                  placeholder={declaration[lang]?.input12}
                   error={
                     errors?.departure_arrival_information_identity?.message
                   }
@@ -495,7 +508,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Bellige alnan yurdyn kody (21-nji öýjük)"
+                  label={declaration[lang]?.input13}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -520,7 +533,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Serhetde bellige alan yurt (25-nji öýjük)"
+                  label={declaration[lang]?.input14}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -541,8 +554,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Serhetde bellige alnan yurdy mashyn nomeri"
-                  placeholder="Border_information_identity"
+                  label={declaration[lang]?.input15}
+                  placeholder={declaration[lang]?.input15}
                   error={errors?.border_information_identity?.message}
                 />
               );
@@ -558,8 +571,8 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   onBlur={onBlur}
                   value={value}
                   ref={ref}
-                  label="Ibermegin shertleri (20-nji öýjük)"
-                  placeholder="Delivery_terms_place"
+                  label={declaration[lang]?.input16}
+                  placeholder={declaration[lang]?.input16}
                   error={errors?.delivery_terms_place?.message}
                 />
               );
@@ -576,7 +589,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Ibermegin shertlerin kody "
+                  label={declaration[lang]?.input17}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -598,7 +611,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Ibermegin shertlerin yagdayy"
+                  label={declaration[lang]?.input18}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -620,7 +633,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
                   value={value}
                   ref={ref}
                   className="text-sm"
-                  label="Girish/chykysh erdarasy ady (29-njy öýjük)"
+                  label={declaration[lang]?.input19}
                   placeholder="Select"
                   searchable
                   nothingFound="No options"
@@ -638,14 +651,14 @@ const StepForm = ({ active, setActive, state, setState }) => {
               onClick={prevStep}
               className="bg-gray-200 hover:bg-gray-100 rounded-md border px-5 py-2 cursor-pointer font-semibold text-sm"
             >
-              Back
+              {declaration[lang]?.back}
             </div>
             <Button
               type="submit"
               loading={state.loading}
               className="bg-blue-600 hover:bg-blue-500 rounded-md px-5 py-2 cursor-pointer font-semibold text-sm text-white"
             >
-              Next step
+              {declaration[lang]?.next}
             </Button>
           </>
         </Group>

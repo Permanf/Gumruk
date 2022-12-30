@@ -47,7 +47,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
           // console.log(response);
           setState({ type: "SET_SIDEBAR_LOADING", payload: false });
           if (response?.data?.success) {
-            console.log(response.data.data);
+            console.log(response.data.data, "---fil");
             setState({
               type: "SET_SIDEBAR_DATA",
               payload: response?.data.data,
@@ -58,7 +58,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
         },
       })
     );
-  }, []);
+  }, [lang]);
   // console.log(value);
   useEffect(() => {
     if (value) {
