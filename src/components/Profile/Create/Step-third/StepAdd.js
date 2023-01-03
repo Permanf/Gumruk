@@ -133,7 +133,10 @@ function StepAdd({ active, setActive, state, setState }) {
       title: declaration[lang]?.delete_title,
       centered: true,
       children: <Text size="sm">{declaration[lang]?.delete_question}</Text>,
-      labels: { confirm: "Delete item", cancel: "Cancel" },
+      labels: {
+        confirm: declaration[lang]?.remove_item,
+        cancel: declaration[lang]?.cancel,
+      },
       confirmProps: { className: "bg-red-600", color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {

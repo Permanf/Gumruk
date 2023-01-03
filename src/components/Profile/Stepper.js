@@ -91,6 +91,11 @@ function reducer(state, action) {
         ...state,
         modal_btn: action.payload,
       };
+    case "SET_NEXT":
+      return {
+        ...state,
+        next: action.payload,
+      };
     case "SET_IMAGES":
       return {
         ...state,
@@ -125,10 +130,11 @@ function Step({ update_id }) {
     name_products: [],
     search_products: [],
     modal_btn: false,
+    next: false,
     images: [],
     loading_image: false,
   });
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(2);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const lang = useSelector(getlang);

@@ -151,14 +151,7 @@ export function Sidebar({ state, setState, query }) {
                   query?.locations?.includes(location?.id) ? true : false
                 }
                 key={location?.id}
-                label={
-                  location?.title
-                  // lang == "English"
-                  //   ? location?.title?.en
-                  //   : lang == "Turkmen"
-                  //   ? location?.title?.tm
-                  //   : location?.title?.ru
-                }
+                label={location?.title}
                 className="my-5"
               />
             );

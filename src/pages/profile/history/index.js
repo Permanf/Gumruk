@@ -4,10 +4,11 @@ import Ticket from "../../../components/Profile/Ticket";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useReducer } from "react";
 import { fetchData } from "../../../store/middlewares";
-import { getToken } from "../../../store/selectors/auth";
+import { getlang, getToken } from "../../../store/selectors/auth";
 import Lottie from "lottie-react";
 import notFound from "../../../assets/Lottiefiles/not-found.json";
 import loader from "../../../assets/Lottiefiles/loader.json";
+import { profile_links } from "../../../components/Profile/translation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -33,6 +34,7 @@ const History = () => {
   });
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const lang = useSelector(getlang);
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
     if (token) {
@@ -60,7 +62,9 @@ const History = () => {
   return (
     <LayoutProfile title="History declaration">
       <div className="p-7 w-full h-full">
-        <h1 className="mb-3 font-semibold text-xl">History declaration</h1>
+        <h1 className="mb-3 font-semibold text-xl">
+          {profile_links[lang]?.history_declaration}
+        </h1>
         {state.loading ? (
           <div className="flex flex-col items-center">
             <Lottie animationData={loader} loop={true} className="h-20" />

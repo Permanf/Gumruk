@@ -9,9 +9,13 @@ import {
 import { CurrentLocation } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { getlang } from "../../store/selectors/auth";
+import { ticket } from "../Profile/translation";
 
 const Card = ({ item, type }) => {
   const router = useRouter();
+  const lang = useSelector(getlang);
   // console.log(item.images);
 
   return (
@@ -89,7 +93,7 @@ const Card = ({ item, type }) => {
               className="mt-1 w-28"
               gradient={{ from: "yellow.3", to: "yellow" }}
             >
-              garaşylýar
+              {ticket[lang]?.pending}
             </Badge>
           ) : item.moderation == 2 ? (
             <Badge
@@ -97,7 +101,7 @@ const Card = ({ item, type }) => {
               className="mt-1 w-28"
               gradient={{ from: "red.3", to: "red" }}
             >
-              kabul edilmedi
+              {ticket[lang]?.returned}
             </Badge>
           ) : (
             <Badge
@@ -105,7 +109,7 @@ const Card = ({ item, type }) => {
               className="mt-1 w-28"
               gradient={{ from: "green.3", to: "green" }}
             >
-              kabul edildi
+              {ticket[lang]?.accept}
             </Badge>
           )
         ) : null}

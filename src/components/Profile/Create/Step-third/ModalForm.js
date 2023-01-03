@@ -64,8 +64,8 @@ const ModalForm = ({
 
   useEffect(() => {
     // console.log(state.update_item.id, "----+++");
-    // console.log(state.update_item, "----+++");
-    if (state.update_item.id || state.update_item.code) {
+    console.log(state.update_item.code, "----+++");
+    if (state.update_item.id || +state.update_item.code) {
       // setValue("name", state.update_item?.name);
       setValueName(state.update_item?.name);
       setValue("code", state.update_item?.code);
@@ -158,7 +158,21 @@ const ModalForm = ({
               token,
               action: (response) => {
                 setState({ type: "SET_LOADING", payload: false });
-                setOpened(false);
+                if (state?.next == true) {
+                  setOpened(true);
+                  setState({ type: "SET_MODAL_BTN", payload: false });
+                  setValueName("");
+                  setValue("name", "");
+                  setValue("code", "");
+                  setValue("country_of_origin_code", "");
+                  setValue("uom_name", "");
+                  setValue("uom_quantity", "");
+                  setValue("uom_price", "");
+                  setValue("brutto_weight", "");
+                  setValue("netto_weight", "");
+                } else {
+                  setOpened(false);
+                }
 
                 if (response.success) {
                   // console.log(response?.data.data);
@@ -200,7 +214,11 @@ const ModalForm = ({
             payload: {},
           });
         } else {
-          setOpened(false);
+          if (state?.next == true) {
+            setOpened(true);
+          } else {
+            setOpened(false);
+          }
 
           if (state.update_item.code) {
             setState({
@@ -437,12 +455,27 @@ const ModalForm = ({
             <Button
               type="submit"
               loading={state.loading}
+              onClick={() => {
+                setState({ type: "SET_NEXT", payload: false });
+              }}
               className="bg-blue-500"
             >
               {state.update_item?.id
                 ? declaration[lang]?.update
                 : declaration[lang]?.save}
             </Button>
+            {state.update_item?.id ? null : (
+              <Button
+                type="submit"
+                loading={state.loading}
+                onClick={() => {
+                  setState({ type: "SET_NEXT", payload: true });
+                }}
+                className="bg-blue-500 ml-4"
+              >
+                {declaration[lang]?.next_add}
+              </Button>
+            )}
           </Center>
         </form>
       </Modal>
