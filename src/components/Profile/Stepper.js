@@ -134,7 +134,7 @@ function Step({ update_id }) {
     images: [],
     loading_image: false,
   });
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const lang = useSelector(getlang);
