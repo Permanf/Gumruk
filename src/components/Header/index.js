@@ -1,5 +1,5 @@
 import HeaderTop from "./header_top";
-import { IconPhoto, IconSearch, IconUser } from "@tabler/icons";
+import { IconPhoto, IconSearch, IconUser, IconPlus } from "@tabler/icons";
 import { categories } from "./categories";
 import { useRouter } from "next/router";
 import logo_white from "../../assets/Logo/logo_white.svg";
@@ -72,7 +72,7 @@ const Header = () => {
         >
           <div className="flex">
             <div className="sm:w-56 flex items-center py-5">
-              {width <= 950 ? (
+              {width <= 1024 ? (
                 <Burger
                   color={router.pathname == "/" ? "#ffffff" : "#000000"}
                   size={20}
@@ -107,7 +107,7 @@ const Header = () => {
                 </a>
               </Link>
             </div>
-            {width > 950 ? (
+            {width > 1024 ? (
               <div className="flex items-center">
                 {categories(lang)?.map((item, index) => {
                   return (
@@ -163,7 +163,7 @@ const Header = () => {
         overlayBlur={3}
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Menu Sidebar"
+        // title="Menu Sidebar"
         padding="xl"
         size="lg"
       >
@@ -184,6 +184,16 @@ const Header = () => {
               </Link>
             );
           })}
+          <Link href={token?.length ? `/bildiris-gosmak` : `/agza/login`}>
+            <Button
+              size="xs"
+              className="w-48 rounded-full mt-3 border bg-blue-500 text-white"
+              // leftIcon={}
+            >
+              <IconPlus size={14} className="mr-2" />
+              {translation[lang]?.create}
+            </Button>
+          </Link>
         </div>
       </Drawer>
     </>
