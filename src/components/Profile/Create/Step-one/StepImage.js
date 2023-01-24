@@ -95,7 +95,7 @@ const StepImage = ({ active, setActive, state, setState }) => {
         formPayload.append("images", file.file);
         try {
           await axios({
-            baseURL: "http://95.85.127.198",
+            baseURL: "http://95.85.127.198:8080",
             url: state.update_id
               ? `/api/user/declaration/${state.update_id}/add/images`
               : "/api/user/image-store",

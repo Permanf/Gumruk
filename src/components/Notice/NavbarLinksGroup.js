@@ -112,7 +112,7 @@ export function LinksGroup({ category, query }) {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {category?.icon != null ? (
               <Image
-                src={`http://95.85.127.198/${category?.icon}`}
+                src={`http://95.85.127.198:8080/${category?.icon}`}
                 width={35}
                 height={35}
                 className="rounded-md"

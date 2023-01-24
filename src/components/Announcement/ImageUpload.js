@@ -32,7 +32,7 @@ const ImageUpload = () => {
         formPayload.append("images", file.file);
         try {
           await axios({
-            baseURL: "http://95.85.127.198",
+            baseURL: "http://95.85.127.198:8080",
             url: "/api/user/image-store",
             method: "post",
             data: formPayload,
