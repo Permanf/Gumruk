@@ -37,7 +37,7 @@ export const translation = {
     section1_2: "Предварительное таможенное декларирование",
     section1_3:
       "Мы создаем инновационные, стабильно работающие цифровые решения, которые упрощают операции для участников ВЭД. Наши продукты подойдут для бизнеса любого размера: от предпринимателей до глобальных корпораций.",
-    section1_4: "Hasaba almak",
+    section1_4: "Регистрация",
     news: "Новости",
     all_news: "Все новости",
     banner2_title: "ГОСУДАРСТВЕННАЯ ТАМОЖЕННАЯ СЛУЖБА ТУРКМЕНИСТАНА",
@@ -75,7 +75,7 @@ export const translation = {
     section1_2: "Preliminary customs declaration",
     section1_3:
       "We create innovative, stable digital solutions that simplify operations for foreign trade participants. Our products are suitable for businesses of any size: from entrepreneurs to global corporations",
-    section1_4: "Hasaba almak",
+    section1_4: "Registration",
     news: "News",
     all_news: "All news",
     banner2_title: "STATE CUSTOMS SERVICE OF TURKMENISTAN",

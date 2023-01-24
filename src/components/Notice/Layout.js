@@ -1,4 +1,4 @@
-import { Center, Group, Select } from "@mantine/core";
+import { Center, Group, Select, Drawer } from "@mantine/core";
 import Layout from "../Layouts/Layout";
 import { useViewportSize, useWindowScroll } from "@mantine/hooks";
 // import Link from "next/link";
@@ -18,6 +18,7 @@ function LayoutNotice({ children, title, state, setState, query }) {
   const lang = useSelector(getlang);
   const [scroll, scrollTo] = useWindowScroll();
   const router = useRouter();
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
     if (query?.price_sort == "asc") {
       setValue("asc1");
@@ -47,7 +48,6 @@ function LayoutNotice({ children, title, state, setState, query }) {
           // console.log(response);
           setState({ type: "SET_SIDEBAR_LOADING", payload: false });
           if (response?.data?.success) {
-            console.log(response.data.data, "---fil");
             setState({
               type: "SET_SIDEBAR_DATA",
               payload: response?.data.data,
@@ -105,19 +105,30 @@ function LayoutNotice({ children, title, state, setState, query }) {
           </h1>
 
           <div className="w-full flex my-10">
-            <Sidebar state={state} setState={setState} query={query} />
+            <Sidebar
+              state={state}
+              setState={setState}
+              query={query}
+              device="pc"
+            />
             {/* part2 */}
             <div
               className={`${
-                width > 1000 ? "w-3/4 ml-5" : "w-full relative overflow-hidden"
+                width > 1024 ? "w-3/4 ml-5" : "w-full relative overflow-hidden"
               }`}
             >
               <Group className="flex justify-between bg-white py-5 px-3 rounded-lg shadow-lg mb-3">
                 <span className="font-semibold text-sm sm:text-base">
                   {translation[lang]?.found} {state.all_data?.meta?.total}
                 </span>
-                <div className="w-full sm:w-fit flex justify-between items-center ">
-                  <span className="font-semibold flex sm:hidden">
+                <div className="w-full sm:w-fit flex justify-between items-center bg-red-300">
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpened(true);
+                    }}
+                    className="font-semibold flex lg:hidden mr-5 lg:mr-0 cursor-pointer"
+                  >
                     <Filter />
                     {translation[lang]?.filter}
                   </span>
@@ -142,6 +153,26 @@ function LayoutNotice({ children, title, state, setState, query }) {
           </div>
         </div>
       </Center>
+      <Drawer
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        opened={opened}
+        onClose={() => setOpened(false)}
+        // title="Menu Sidebar"
+        padding="xl"
+        size="lg"
+        position="right"
+      >
+        {/* Drawer content */}
+        <div className="flex flex-col">
+          <Sidebar
+            state={state}
+            setState={setState}
+            query={query}
+            device="mobile"
+          />
+        </div>
+      </Drawer>
     </Layout>
   );
 }

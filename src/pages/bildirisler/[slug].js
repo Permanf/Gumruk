@@ -49,6 +49,7 @@ const NoticeSlug = () => {
               type: "SET_DATA",
               payload: response?.data?.data,
             });
+            console.log(response?.data?.data, "=-data");
           } else {
             console.log(response);
           }

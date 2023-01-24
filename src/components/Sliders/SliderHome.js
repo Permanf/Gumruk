@@ -16,10 +16,10 @@ function SliderHome({ data, withControls }) {
       // className="bg-red-300 py-10"
       slideSize="33.333333%"
       slideGap="md"
-      // breakpoints={[
-      //   { maxWidth: "md", slideSize: "50%" },
-      //   { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
-      // ]}
+      breakpoints={[
+        { maxWidth: "md", slideSize: "50%" },
+        { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
+      ]}
       loop
       align="start"
       nextControlIcon={

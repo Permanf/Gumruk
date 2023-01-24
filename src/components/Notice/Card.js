@@ -34,7 +34,7 @@ const Card = ({ item, type }) => {
         {item?.images[0] ? (
           <div className="w-full h-full relative">
             <Image
-              src={`${item?.images[0]}`}
+              src={`${item?.images}`}
               layout="fill"
               className="rounded-2xl"
               // objectFit="cover"

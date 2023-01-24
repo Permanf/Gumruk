@@ -8,16 +8,6 @@ import {
   Input,
   Button,
 } from "@mantine/core";
-// import {
-//   IconNotes,
-//   IconCalendarStats,
-//   IconGauge,
-//   IconPresentationAnalytics,
-//   IconFileAnalytics,
-//   IconAdjustments,
-//   IconLock,
-//   IconSearch,
-// } from "@tabler/icons";
 import { LinksGroup } from "./NavbarLinksGroup";
 import { useViewportSize } from "@mantine/hooks";
 import SkeletonsSide from "./SkeletonsSide";
@@ -67,7 +57,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function Sidebar({ state, setState, query }) {
+export function Sidebar({ state, setState, query, device }) {
   // console.log(state.sidebar_data.categories, "-side");
   const lang = useSelector(getlang);
   const { width } = useViewportSize();
@@ -97,8 +87,10 @@ export function Sidebar({ state, setState, query }) {
       height={1000}
       p="md"
       className={`${classes.navbar} ${
-        width > 1000 ? "flex" : "hidden"
-      } w-1/4 flex-col rounded-xl shadow-lg`}
+        device == "mobile"
+          ? `flex w-full `
+          : `hidden lg:flex w-1/4 rounded-xl shadow-lg`
+      } flex-col `}
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">

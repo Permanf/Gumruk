@@ -122,7 +122,7 @@ const Home = () => {
             size="md"
             className="bg-white w-40 my-4 hover:text-white text-sm sm:text-lg"
           >
-            Hasaba almak
+            {translation[lang]?.section1_4}
           </Button>
           <div
             style={{
