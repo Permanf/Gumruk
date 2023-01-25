@@ -196,9 +196,6 @@ const NoticeAdd = () => {
             {" "}
             {announcement_create[lang]?.add_announcement}
           </Title>
-          {/* <Text color="dimmed" size="sm" align="center" mt={5}>
-            Для входа в кабинет, пожалуйста, зарегистрируйтесь
-          </Text> */}
           <Paper
             withBorder
             shadow="md"

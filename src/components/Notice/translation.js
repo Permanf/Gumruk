@@ -34,7 +34,7 @@ export const translation = {
     description: "Düşündiriş",
     created_at: "Senesi",
     category: "Kategoriýasy",
-    capacity: "Capacity",
+    capacity: "Göterjiligi",
     user: "Ulanyjy",
   },
   English: {
@@ -74,7 +74,7 @@ export const announcement_create = {
   Turkmen: {
     add_announcement: "Bildiriş goşmak",
     category: "Kategoriýalar",
-    capacity: "Capacity",
+    capacity: "Göterjiligi",
     region: "Sebitler",
     phone: "Telefon nomer",
     price: "Baha",
