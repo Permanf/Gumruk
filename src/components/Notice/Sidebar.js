@@ -58,7 +58,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function Sidebar({ state, setState, query, device }) {
-  // console.log(state.sidebar_data.categories, "-side");
   const lang = useSelector(getlang);
   const { width } = useViewportSize();
   const [scroll, scrollTo] = useWindowScroll();
@@ -88,9 +87,9 @@ export function Sidebar({ state, setState, query, device }) {
       p="md"
       className={`${classes.navbar} ${
         device == "mobile"
-          ? `flex w-full `
+          ? `flex w-full mb-5`
           : `hidden lg:flex w-1/4 rounded-xl shadow-lg`
-      } flex-col `}
+      } flex-col`}
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">

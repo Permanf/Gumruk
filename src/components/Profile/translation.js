@@ -1,8 +1,8 @@
 export const profile_links = {
   Russian: {
     profile: "Профиль",
-    declaration: "Деклорации",
-    history_declaration: "История деклорации",
+    declaration: "Деклораций",
+    history_declaration: "История деклораций",
     announcement: "Мои объявление",
     logout: "Выйти",
   },
@@ -71,15 +71,15 @@ export const profile_translation = {
 
 export const declaration = {
   Russian: {
-    declaration: "Деклорации",
-    declaration_create: "Создать деклорация",
-    declaration_update: "Изменить деклорация",
+    declaration: "Деклораций",
+    declaration_create: "Создать деклорацию",
+    declaration_update: "Изменить деклорацию",
     // step one
     first_step: "Первый шаг",
     second_step: "Второй шаг",
     third_step: "Третий шаг",
     image_upload: "Загрузка изображения",
-    declaration_form: "Форма декларации",
+    declaration_form: "Форма декларация",
     create_product: "Создать продукт",
     back: "Назад",
     next: "Следующий шаг",
@@ -88,7 +88,7 @@ export const declaration = {
     confirmation: "Подтверждение",
     error_image: "Изображение обязательно!",
     // step two
-    input1: "Тип декларации (1 ячейка)",
+    input1: "Тип декларация (1 ячейка)",
     input2: "Имя экспортера (2 ячейка)",
     input3: "Код экспортера (2 ячейка)",
     input4: "Имя получателя (8 ячейка)",
@@ -208,7 +208,7 @@ export const ticket = {
     pending: "Ожидаемый",
     accept: "Принимать",
     returned: "Возвращенный",
-    history_declaration: "История деклорации",
+    history_declaration: "История деклораций",
     announcement: "Мои объявление",
   },
   Turkmen: {

@@ -10,6 +10,7 @@ import { fetchData } from "../../store/middlewares";
 import { getlang, getToken } from "../../store/selectors/auth";
 import { useRouter } from "next/router";
 import { translation } from "./translation";
+import { ScrollArea } from "@mantine/core";
 
 function LayoutNotice({ children, title, state, setState, query }) {
   const [value, setValue] = useState("");
@@ -121,19 +122,19 @@ function LayoutNotice({ children, title, state, setState, query }) {
                 <span className="font-semibold text-sm sm:text-base">
                   {translation[lang]?.found} {state.all_data?.meta?.total}
                 </span>
-                <div className="w-full sm:w-fit flex justify-between items-center bg-red-300">
+                <div className="w-full sm:w-fit flex justify-between items-center ">
                   <span
                     onClick={(e) => {
                       e.preventDefault();
                       setOpened(true);
                     }}
-                    className="font-semibold flex lg:hidden mr-5 lg:mr-0 cursor-pointer"
+                    className="font-semibold px-4 py-1 flex lg:hidden mr-5 lg:mr-0 cursor-pointer border border-gray-300 rounded-sm"
                   >
                     <Filter />
                     {translation[lang]?.filter}
                   </span>
                   <Select
-                    className="border border-gray-50 rounded-sm"
+                    className="border border-gray-50 rounded-sm font-semibold"
                     // label="Your favorite framework/library"
                     value={value}
                     onChange={setValue}
@@ -158,20 +159,20 @@ function LayoutNotice({ children, title, state, setState, query }) {
         overlayBlur={3}
         opened={opened}
         onClose={() => setOpened(false)}
-        // title="Menu Sidebar"
-        padding="xl"
         size="lg"
         position="right"
       >
         {/* Drawer content */}
-        <div className="flex flex-col">
+        <ScrollArea className="p-4" type="scroll" style={{ height: "100%" }}>
           <Sidebar
             state={state}
             setState={setState}
             query={query}
             device="mobile"
+            // opened={opened}
+            setOpened={setOpened}
           />
-        </div>
+        </ScrollArea>
       </Drawer>
     </Layout>
   );
