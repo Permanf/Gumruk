@@ -58,7 +58,7 @@ const NotFound = () => {
     <Layout title="404 Not found" className="bg-gray-100">
       <Container className={classes.root}>
         <div className={classes.label}>404</div>
-        <Title className={classes.title}>Sahypa tapylmady.</Title>
+        <Title className={classes.title}>Not founded.</Title>
         <Text
           color="dimmed"
           size="lg"
@@ -74,7 +74,7 @@ const NotFound = () => {
               href="/"
               className="w-full h-full flex justify-center items-center"
             >
-              Baş sahypa
+              Home page
             </Link>
           </Button>
         </Group>

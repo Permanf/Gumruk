@@ -33,8 +33,9 @@ const StepForm = ({ active, setActive, state, setState }) => {
     setActive((current) => (current > 0 ? current - 1 : current));
     scrollTo({ y: 0 });
   };
-  console.log(token);
-  console.log(state.data_declaration, "---step1");
+
+  // console.log(token);
+  // console.log(state.data_declaration, "---step1");
   const type_of_declaration = [];
   const data_yurt_different = [];
   const data_yurt = [];
@@ -67,7 +68,7 @@ const StepForm = ({ active, setActive, state, setState }) => {
   for (let i = 0; i < state.data_declaration?.check_points?.length; i++) {
     data_check_points.push({
       value: state.data_declaration?.check_points[i]?.id,
-      label: state.data_declaration?.check_points[i]?.name,
+      label: `${state.data_declaration?.check_points[i]?.code} - ${state.data_declaration?.check_points[i]?.name}`,
     });
   }
   if (state.data_declaration?.different?.[0]?.id > 0) {
@@ -78,64 +79,61 @@ const StepForm = ({ active, setActive, state, setState }) => {
     data_yurt_different = data_yurt_different.concat(data_yurt);
   }
 
-  const schema = () =>
+  const schema = (lang) =>
     Yup.object().shape({
-      type_declaration_id: Yup.string().required(
-        "type_declaration_id hokman yazmaly"
-      ),
+      type_declaration_id: Yup.string().required(declaration[lang].error1),
       exporter_name: Yup.string()
-        .required("exporter_name hokman yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(500, "maxsimum 500 simbol bolmaly"),
+        .required(declaration[lang].error2)
+        .min(3, declaration[lang].error2_min)
+        .max(500, declaration[lang].error1_max),
       exporter_code: Yup.number(),
       consignee_name: Yup.string()
-        .required("consignee_name hokman yazmaly")
-        .min(10, "minimum 10 simbol bolmaly")
-        .max(500, "maxsimum 500 simbol bolmaly"),
+        .required(declaration[lang].error3)
+        .min(10, declaration[lang].error3_min)
+        .max(500, declaration[lang].error3_max),
       consignee_code: Yup.number(),
       financial_name: Yup.string()
-        .required("financial_name hokman yazmaly")
-        .min(10, "minimum 10 simbol bolmaly")
-        .max(500, "maxsimum 500 simbol bolmaly"),
+        .required(declaration[lang].error4)
+        .min(10, declaration[lang].error3_max)
+        .max(500, declaration[lang].error3_max),
       financial_code: Yup.number(),
-      trading_country: Yup.string().required("trading_country hokman yazmaly"),
-      export_country_name: Yup.string().required(
-        "export_country_name hokman yazmaly"
-      ),
-      destination_country_name: Yup.string().required(
-        "destination_country_name hokman yazmaly"
-      ),
-      country_of_origin_name: Yup.string().required(
-        "country_of_origin_name hokman yazmaly"
-      ),
+      trading_country: Yup.string().required(declaration[lang].error5),
+      export_country_name: Yup.string().required(declaration[lang].error6),
+      destination_country_name: Yup.string().required(declaration[lang].error7),
+      country_of_origin_name: Yup.string().required(declaration[lang].error8),
       departure_arrival_information_identity: Yup.string()
-        .required("departure_arrival_information_identity hokman yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(255, "maxsimum 255 simbol bolmaly"),
+        .required(declaration[lang].error9)
+        .min(3, declaration[lang].error9_min)
+        .max(255, declaration[lang].error9_max),
       departure_arrival_information_nationality: Yup.string().required(
-        "departure_arrival_information_nationality hokman yazmaly"
+        declaration[lang].error10
       ),
       border_information_identity: Yup.string()
-        .required("border_information_identity hokman yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(255, "maxsimum 255 simbol bolmaly"),
+        .required(declaration[lang].error11)
+        .min(3, declaration[lang].error9_min)
+        .max(255, declaration[lang].error9_max),
       border_information_nationality: Yup.string().required(
-        "border_information_nationality hokman yazmaly"
+        declaration[lang].error12
       ),
-      delivery_terms_code: Yup.string().required(
-        "delivery_terms_code hokman yazmaly"
-      ),
+      delivery_terms_code: Yup.string().required(declaration[lang].error13),
       delivery_terms_place: Yup.string()
-        .required("delivery_terms_place hokman yazmaly")
-        .min(3, "minimum 3 simbol bolmaly")
-        .max(255, "maxsimum 255 simbol bolmaly"),
+        .required(declaration[lang].error14)
+        .min(3, declaration[lang].error9_max)
+        .max(255, declaration[lang].error9_max),
       delivery_terms_situation: Yup.string().required(
-        "delivery_terms_situation hokman yazmaly"
+        declaration[lang].error15
       ),
-      border_office_name: Yup.string().required(
-        "border_office_name hokman yazmaly"
-      ),
+      border_office_name: Yup.string().required(declaration[lang].error16),
     });
+  const {
+    handleSubmit,
+    formState: { errors },
+    // setError,
+    setValue,
+    control,
+  } = useForm({
+    resolver: yupResolver(schema(lang)),
+  });
   useEffect(() => {
     if (state.update_2step?.id) {
       dispatch(setFileProgress({}));
@@ -190,16 +188,6 @@ const StepForm = ({ active, setActive, state, setState }) => {
       );
     }
   }, [state.update_2step]);
-
-  const {
-    handleSubmit,
-    formState: { errors },
-    // setError,
-    setValue,
-    control,
-  } = useForm({
-    resolver: yupResolver(schema()),
-  });
 
   const onSubmit = (data) => {
     data = {

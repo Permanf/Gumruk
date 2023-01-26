@@ -141,6 +141,33 @@ export const declaration = {
     input17: "Условия поставки, код  (20 ячейка)",
     input18: "Состояние Условия поставки (20 ячейка)",
     input19: "Girish/chykysh erdarasy ady (29 ячейка)",
+    // error message
+    error1: "Тип декларация обязательно",
+    error2: "Имя экспортера обязательно",
+    error2_min: "Должно быть не менее 3 символа",
+    error2_max: "Должно быть не более 500 символов",
+    error3: "Имя получателя обязательно",
+    error3_min: "Должно быть не менее 10 символов",
+    error3_max: "Должно быть не более 500 символов",
+    error4: "Лицо, ответственное за управление финансами, имя обязательно",
+    error5: "Торговец обязательно",
+    error6: "Имя страны отправителя обязательно",
+    error7: "Имя страны, получателя обязательно",
+    error8: "Страна происхождения продукта обязательно",
+    error9:
+      "Iberilende/gowshanda ulag serishdesini kybaplmak we onun bellige alnan yurdy mashyn nomeri обязательно",
+    error9_min: "Должно быть не менее 3 символа",
+    error9_max: "Должно быть не более 255 символов",
+    error10:
+      "Iberilende/gowshanda ulag serishdesini kybaplmak we onun bellige alnan yurdy kody обязательно",
+    error11:
+      "Serhetde aktiw ulag serishdesini kybaplamak we onun bellige alnan yurdy обязательно",
+    error12:
+      "Serhetde aktiw ulag serishdesini kybaplamak we onun bellige alnan yurdy mashyn nomeri обязательно",
+    error13: "Условия поставки обязательно",
+    error14: "Условия поставки, код обязательно",
+    error15: "Состояние Условия поставки обязательно",
+    error16: "Girish/chykysh erdarasy ady обязательно",
     // step three
     not_success: "Не успешный!",
     at_least: "Должен быть хотя бы один товар",
@@ -206,6 +233,33 @@ export const declaration = {
     input17: "Ibermegiň şertleri",
     input18: "Ibermegiň şertleri - ýurduň iki belgili kody",
     input19: "Giriş/çykyş edarasynyň ady (29-njy öýjük)",
+    // error message
+    error1: "Deklarasiýanyň görnüşi hokman bolmaly",
+    error2: "Iberiji/Export ediji ady hokman bolmaly",
+    error2_min: "Minimum 3 simbol bolmaly",
+    error2_max: "Maxsimum 500 simbol bolmaly",
+    error3: "Alyjy ady hokman bolmaly",
+    error3_min: "Minimum 10 simbol bolmaly",
+    error3_max: "Maxsimum 500 simbol bolmaly",
+    error4: "Maliye taydan duzgunleshdirmage jogapkar shahs ady hokman bolmaly",
+    error5: "Sowda edyan hokman bolmaly",
+    error6: "Iberish yurdun ady hokman bolmay",
+    error7: "Barmaly yurdun ady hokman bolmay",
+    error8: "Gelip chykan yurdy hokman bolmaly",
+    error9:
+      "Iberilende/gowshanda ulag serishdesini kybaplmak we onun bellige alnan yurdy mashyn nomeri hokman bolmaly",
+    error9_min: "Minimum 3 simbol bolmaly",
+    error9_max: "Maxsimum 255 simbol bolmaly",
+    error10:
+      "Iberilende/gowshanda ulag serishdesini kybaplmak we onun bellige alnan yurdy kody hokman bolmaly",
+    error11:
+      "Serhetde aktiw ulag serishdesini kybaplamak we onun bellige alnan yurdy hokman bolmaly",
+    error12:
+      "Serhetde aktiw ulag serishdesini kybaplamak we onun bellige alnan yurdy mashyn nomeri hokman bolmaly",
+    error13: "Ibermegiň şertleri - ýurdy hokman bolmaly",
+    error14: "Ibermegiň şertleri - ýurduň iki belgili kody hokman bolmaly",
+    error15: "Ibermegiň şertleri  hokman bolmaly",
+    error16: "Girish/chykysh erdarasy ady hokman bolmaly",
     // step three
     not_success: "Üstünlikli bolmady!",
     at_least: "Iň bolmanda bir haryt bolmaly!",
