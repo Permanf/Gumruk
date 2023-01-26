@@ -1,8 +1,8 @@
 export const profile_links = {
   Russian: {
     profile: "Профиль",
-    declaration: "Деклораций",
-    history_declaration: "История деклораций",
+    declaration: "Деклaраций",
+    history_declaration: "История деклaраций",
     announcement: "Мои объявление",
     logout: "Выйти",
   },
@@ -101,9 +101,9 @@ export const profile_translation = {
 
 export const declaration = {
   Russian: {
-    declaration: "Деклораций",
-    declaration_create: "Создать деклорацию",
-    declaration_update: "Изменить деклорацию",
+    declaration: "Деклaраций",
+    declaration_create: "Создать деклaрацию",
+    declaration_update: "Изменить деклaрацию",
     // step one
     first_step: "Первый шаг",
     second_step: "Второй шаг",
@@ -356,7 +356,7 @@ export const ticket = {
     pending: "Ожидаемый",
     accept: "Принимать",
     returned: "Возвращенный",
-    history_declaration: "История деклораций",
+    history_declaration: "История деклaраций",
     announcement: "Мои объявление",
   },
   Turkmen: {
