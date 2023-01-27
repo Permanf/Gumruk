@@ -54,7 +54,7 @@ const Hyzmatlar = () => {
         lang: lang,
         action: (response) => {
           setState({ type: "SET_LOADING", payload: false });
-          setState({ type: "SET_DATA", payload: response.data.data });
+          setState({ type: "SET_DATA", payload: response?.data?.data });
 
           console.log(response);
         },
@@ -63,8 +63,8 @@ const Hyzmatlar = () => {
   }, [lang]);
 
   const banner = {
-    title: translation[lang].banner_title,
-    description: translation[lang].banner_description,
+    title: translation[lang]?.banner_title,
+    description: translation[lang]?.banner_description,
     image: image,
     with: "500px",
     height: "300px",

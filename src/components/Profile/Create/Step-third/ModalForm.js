@@ -99,6 +99,7 @@ const ModalForm = ({
         fetchData({
           url: `user/wares/search?search=${searchValue}`,
           token,
+          lang: lang,
           action: (response) => {
             setState({ type: "SET_LOADING_NAME", payload: false });
             if (response.success) {

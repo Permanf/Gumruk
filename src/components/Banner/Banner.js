@@ -7,6 +7,7 @@ import {
   Button,
   SimpleGrid,
 } from "@mantine/core";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import image from "../../assets/Banner/Group.svg";
 import { getlang } from "../../store/selectors/auth";
@@ -71,13 +72,15 @@ export function Banner() {
             <Text color="dimmed" size="lg" className="text-sm sm:text-lg">
               {translation[lang]?.banner2_description}
             </Text>
-            <Button
-              size="md"
-              mt="xl"
-              className="bg-blue-700 w-44 text-sm sm:text-lg"
-            >
-              {translation[lang]?.banner_button}
-            </Button>
+            <Link href="/detail">
+              <Button
+                size="md"
+                mt="xl"
+                className="bg-blue-700 w-44 text-sm sm:text-lg"
+              >
+                {translation[lang]?.banner_button}
+              </Button>
+            </Link>
           </div>
           <div>
             <Image

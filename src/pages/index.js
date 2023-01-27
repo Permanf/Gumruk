@@ -22,6 +22,8 @@ import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeletons from "../components/Home/Skeletons";
 import { translation } from "../components/Header/translation";
+import Link from "next/link";
+import { getToken } from "../store/selectors/auth";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -61,6 +63,7 @@ const Home = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.data);
+  const token = useSelector(getToken);
 
   useEffect(() => {
     setState({ type: "SET_LOADING", payload: true });
@@ -116,14 +119,17 @@ const Home = () => {
           <span className="text-sm sm:w-96 mt-3 p-4 sm:p-0">
             {translation[lang]?.section1_3}
           </span>
-          <Button
-            variant="outline"
-            radius="md"
-            size="md"
-            className="bg-white w-40 my-4 hover:text-white text-sm sm:text-lg"
-          >
-            {translation[lang]?.section1_4}
-          </Button>
+          <Link href={token ? "/profile" : "/agza/login"}>
+            <Button
+              variant="outline"
+              radius="md"
+              size="md"
+              className="bg-white w-40 my-4 hover:text-white text-sm sm:text-lg"
+            >
+              {translation[lang]?.section1_4}
+            </Button>
+          </Link>
+
           <div
             style={{
               backgroundImage: `url(${section2.src})`,

@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["localhost", "95.85.127.198"],
+    domains: ["localhost", "back.terminal.gov.tm"],
   },
 };
 module.exports = nextConfig;

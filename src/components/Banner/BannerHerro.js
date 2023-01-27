@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Skeleton,
 } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
@@ -86,14 +87,16 @@ export function BannerHero({ banner }) {
               )}
             </Text>
             {banner?.button ? (
-              <Button
-                // variant="outline"
-                size="md"
-                mt="xl"
-                className={` bg-blue-700 text-sm sm:text-lg`}
-              >
-                {banner?.button}
-              </Button>
+              <Link href="/detail">
+                <Button
+                  // variant="outline"
+                  size="md"
+                  mt="xl"
+                  className={` bg-blue-700 text-sm sm:text-lg`}
+                >
+                  {banner?.button}
+                </Button>
+              </Link>
             ) : null}
             {banner?.info ? (
               <div className="flex justify-between mt-7 mb-3">
